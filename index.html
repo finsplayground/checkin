@@ -534,12 +534,12 @@ body::before {
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, runTransaction, remove, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import QRCode from "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/+esm";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgaGPUrRWslO7IPht1L6EbTix-a0FjRcw",
@@ -964,15 +964,9 @@ async function generateAndEmailPDF() {
     pid: participantId, cid: assignedCarId,
     name: first+' '+last, plate: assignedPlate, model: selectedModel
   });
-  const QRCodeLib = window.QRCode;
-  if (!QRCodeLib) throw new Error('QR code library not loaded — please refresh and try again');
-  const qrDataUrl = await new Promise((resolve, reject) => {
-    QRCodeLib.toDataURL(qrPayload, {
-      width: 200, margin: 2,
-      color: { dark: '#000000', light: '#ffffff' }
-    }, (err, url) => {
-      if (err) reject(err); else resolve(url);
-    });
+  const qrDataUrl = await QRCode.toDataURL(qrPayload, {
+    width: 200, margin: 2,
+    color: { dark: '#000000', light: '#ffffff' }
   });
 
   // ── Build PDF (white background — universally compatible) ──
@@ -1115,7 +1109,7 @@ function showSuccessScreen() {
   document.getElementById('suc-name').textContent  = first+' '+last;
   document.getElementById('suc-car').textContent   = selectedModel;
   document.getElementById('suc-plate').textContent = assignedPlate;
-  window.QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
+  QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
   document.getElementById('successScreen').classList.add('active');
   window.scrollTo({ top:0, behavior:'smooth' });
 }
