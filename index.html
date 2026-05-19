@@ -338,7 +338,6 @@ body::before {
 
 <div class="hero">
   <div class="hero-label">Vehicle Borrowing Agreement</div>
-  <h1 class="hero-title">Drive the<br><em>Future.</em></h1>
   <p class="hero-body">To borrow a vehicle at today's event, please complete this registration form. Your data is used solely to generate your borrowing agreement — nothing personal is stored online.</p>
 </div>
 
@@ -369,6 +368,12 @@ body::before {
       <input type="text" id="lastName" placeholder="Müller" autocomplete="family-name">
       <div class="field-error" id="err-lastName">Required</div>
     </div>
+  </div>
+
+  <div class="field">
+    <label>Company *</label>
+    <input type="text" id="company" placeholder="e.g. Müller GmbH" autocomplete="organization">
+    <div class="field-error" id="err-company">Required</div>
   </div>
 
   <div class="field">
@@ -487,6 +492,7 @@ body::before {
 
   <div class="review-block">
     <div class="review-row"><span class="review-key">Name</span><span class="review-val" id="rev-name">—</span></div>
+    <div class="review-row"><span class="review-key">Company</span><span class="review-val" id="rev-company">—</span></div>
     <div class="review-row"><span class="review-key">Email</span><span class="review-val" id="rev-email">—</span></div>
     <div class="review-row"><span class="review-key">Date of Birth</span><span class="review-val" id="rev-dob">—</span></div>
     <div class="review-row"><span class="review-key">Licence No.</span><span class="review-val" id="rev-licence">—</span></div>
@@ -519,10 +525,10 @@ body::before {
     <div class="review-row"><span class="review-key">Vehicle</span><span class="review-val" id="suc-car">—</span></div>
     <div class="review-row"><span class="review-key">Plate</span><span class="review-val" id="suc-plate">—</span></div>
   </div>
-  <div class="next-steps">
+  <div class="next-steps" id="nextSteps">
     <strong>What happens next</strong>
-    1. The PDF has downloaded to your device.<br>
-    2. Your email app opened — attach the PDF and send.<br>
+    1. The signed PDF has downloaded to your device.<br>
+    2. Your email app has opened — <strong style="color:var(--white)">please attach the PDF</strong> before sending.<br>
     3. Show this QR code at the key desk on the day.
   </div>
 </div>
@@ -775,7 +781,7 @@ function updateSteps(page) {
 // ── Page 1 validation ──
 window.validatePage1 = function() {
   let valid = true;
-  const fields = ['firstName','lastName','email','dob','licence','address'];
+  const fields = ['firstName','lastName','company','email','dob','licence','address'];
   fields.forEach(id => {
     const el  = document.getElementById(id);
     const err = document.getElementById('err-' + id);
@@ -881,9 +887,11 @@ window.validatePage3 = function() {
   if (!hasSig) { document.getElementById('err-sig').classList.add('visible'); return; }
   document.getElementById('err-sig').classList.remove('visible');
 
-  const first = document.getElementById('firstName').value.trim();
-  const last  = document.getElementById('lastName').value.trim();
+  const first   = document.getElementById('firstName').value.trim();
+  const last    = document.getElementById('lastName').value.trim();
+  const company = document.getElementById('company').value.trim();
   document.getElementById('rev-name').textContent    = first + ' ' + last;
+  document.getElementById('rev-company').textContent = company;
   document.getElementById('rev-email').textContent   = document.getElementById('email').value.trim();
   document.getElementById('rev-dob').textContent     = document.getElementById('dob').value;
   document.getElementById('rev-licence').textContent = document.getElementById('licence').value.trim();
@@ -951,6 +959,7 @@ async function generateAndEmailPDF() {
   const first   = document.getElementById('firstName').value.trim();
   const last    = document.getElementById('lastName').value.trim();
   const email   = document.getElementById('email').value.trim();
+  const company = document.getElementById('company').value.trim();
   const dob     = document.getElementById('dob').value;
   const licence = document.getElementById('licence').value.trim();
   const address = document.getElementById('address').value.trim();
@@ -1016,6 +1025,7 @@ async function generateAndEmailPDF() {
   // ── Participant details ──
   const rows = [
     ['Full Name',         first + ' ' + last],
+    ['Company',           company],
     ['Email Address',     email],
     ['Date of Birth',     dob],
     ["Driver's Licence",  licence],
@@ -1091,11 +1101,48 @@ async function generateAndEmailPDF() {
 
   // ── Save & email ──
   const fname = `${last.replace(/\s+/g,'')}_${assignedPlate.replace(/\s+/g,'')}.pdf`;
-  doc.save(fname); // use doc.save() — more reliable than manual blob
+  doc.save(fname);
 
-  const subject = encodeURIComponent(`Audi IR Event — Vehicle Agreement — ${first} ${last}`);
-  const body    = encodeURIComponent(`Dear ${first},\n\nPlease find attached your signed Vehicle Borrowing Agreement for the Audi Investor Relations Event on 17 September 2026.\n\nVehicle: ${selectedModel}\nLicence Plate: ${assignedPlate}\nParticipant ID: ${participantId.toUpperCase()}\n\nPlease show your QR code at the key desk on the day.\n\nBest regards,\nAudi Investor Relations Team`);
-  setTimeout(() => { window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`; }, 1000);
+  // Build email body — addressed to IR team, CC participant
+  // Note: mailto cannot attach files (browser security restriction)
+  // PDF has already downloaded — instructions to attach it manually are in the body
+  const subject = encodeURIComponent(`Vehicle Borrowing Agreement — ${first} ${last} — ${company}`);
+  const body = encodeURIComponent(
+`Dear IR Team,
+
+Please find below the vehicle borrowing agreement details for the following participant. The signed PDF has been downloaded to their device — please request it or check your downloads folder.
+
+PARTICIPANT DETAILS
+-------------------
+Name:             ${first} ${last}
+Company:          ${company}
+Email:            ${email}
+Date of Birth:    ${dob}
+Driver's Licence: ${licence}
+Address:          ${address}
+
+VEHICLE DETAILS
+---------------
+Model:            ${selectedModel}
+Licence Plate:    ${assignedPlate}
+Participant ID:   ${participantId.toUpperCase()}
+Event Date:       17 September 2026
+
+QR CODE (Participant ID)
+------------------------
+The participant's QR code is embedded in the downloaded PDF.
+Participant ID: ${participantId.toUpperCase()}
+
+⚠ ACTION REQUIRED: Please attach the PDF file "${fname}" which has been downloaded to your device before sending this email.
+
+Best regards,
+${first} ${last}
+${company}`
+  );
+
+  setTimeout(() => {
+    window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`;
+  }, 1000);
 
   window._qrPayload = qrPayload;
 }
