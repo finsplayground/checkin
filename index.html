@@ -964,8 +964,10 @@ async function generateAndEmailPDF() {
     pid: participantId, cid: assignedCarId,
     name: first+' '+last, plate: assignedPlate, model: selectedModel
   });
+  const QRCodeLib = window.QRCode;
+  if (!QRCodeLib) throw new Error('QR code library not loaded — please refresh and try again');
   const qrDataUrl = await new Promise((resolve, reject) => {
-    QRCode.toDataURL(qrPayload, {
+    QRCodeLib.toDataURL(qrPayload, {
       width: 200, margin: 2,
       color: { dark: '#000000', light: '#ffffff' }
     }, (err, url) => {
@@ -1113,7 +1115,7 @@ function showSuccessScreen() {
   document.getElementById('suc-name').textContent  = first+' '+last;
   document.getElementById('suc-car').textContent   = selectedModel;
   document.getElementById('suc-plate').textContent = assignedPlate;
-  QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
+  window.QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
   document.getElementById('successScreen').classList.add('active');
   window.scrollTo({ top:0, behavior:'smooth' });
 }
