@@ -786,7 +786,7 @@ window.validatePage1 = function() {
 // ── Signature ──
 const sigCanvas = document.getElementById('signatureCanvas');
 const sigCtx    = sigCanvas.getContext('2d');
-let drawing = false, hasSig = false;
+let drawing = false, hasSig = false, sigDataUrl = null;
 
 function resizeSig() {
   const rect = sigCanvas.getBoundingClientRect();
@@ -807,12 +807,29 @@ function pos(e) {
 
 sigCanvas.addEventListener('mousedown',  e => { drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); });
 sigCanvas.addEventListener('mousemove',  e => { if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; });
-sigCanvas.addEventListener('mouseup',    () => drawing=false);
+sigCanvas.addEventListener('mouseup',    () => { drawing=false; captureSig(); });
 sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); }, {passive:false});
 sigCanvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; }, {passive:false});
-sigCanvas.addEventListener('touchend',   () => drawing=false);
+sigCanvas.addEventListener('touchend',   () => { drawing=false; captureSig(); });
 
-window.clearSignature = () => { sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); hasSig=false; };
+function captureSig() {
+  if (!hasSig) return;
+  // Capture to a clean white-background JPEG immediately while canvas is visible
+  const flat = document.createElement('canvas');
+  flat.width  = sigCanvas.width  || 600;
+  flat.height = sigCanvas.height || 180;
+  const fCtx = flat.getContext('2d');
+  fCtx.fillStyle = '#ffffff';
+  fCtx.fillRect(0, 0, flat.width, flat.height);
+  fCtx.drawImage(sigCanvas, 0, 0);
+  sigDataUrl = flat.toDataURL('image/jpeg', 0.95);
+}
+
+window.clearSignature = () => {
+  sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
+  hasSig = false;
+  sigDataUrl = null;
+};
 window.updateConsentBtn = () => { document.getElementById('btnSign').disabled = !document.getElementById('consent').checked; };
 
 window.validatePage3 = function() {
@@ -893,17 +910,9 @@ async function generateAndEmailPDF() {
   const licence = document.getElementById('licence').value.trim();
   const address = document.getElementById('address').value.trim();
 
-  // ── Capture signature into a clean flat canvas (white bg, black strokes) ──
-  // This avoids devicePixelRatio scaling issues with jsPDF
-  const sigFlat = document.createElement('canvas');
-  sigFlat.width  = 600;
-  sigFlat.height = 180;
-  const fCtx = sigFlat.getContext('2d');
-  fCtx.fillStyle = '#ffffff';
-  fCtx.fillRect(0, 0, sigFlat.width, sigFlat.height);
-  // Draw the original signature scaled into the flat canvas
-  fCtx.drawImage(sigCanvas, 0, 0, sigFlat.width, sigFlat.height);
-  const sigDataUrl = sigFlat.toDataURL('image/jpeg', 0.95); // JPEG is safer than PNG for jsPDF
+  // ── Use pre-captured signature (captured when user finished signing on page 3) ──
+  if (!sigDataUrl) throw new Error('Signature not captured — please go back and sign again');
+  const sigImage = sigDataUrl;
 
   // ── Generate QR data URL first (await before creating doc) ──
   const qrPayload = JSON.stringify({
@@ -1013,7 +1022,7 @@ async function generateAndEmailPDF() {
   doc.setFillColor(255,255,255);
   doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
   doc.rect(M, y+8, 90, 28, 'FD');
-  doc.addImage(sigDataUrl, 'JPEG', M+1, y+9, 88, 26);
+  doc.addImage(sigImage, 'JPEG', M+1, y+9, 88, 26);
 
   // Signature line
   doc.setDrawColor(180,180,180);
