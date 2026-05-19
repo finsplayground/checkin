@@ -736,8 +736,13 @@ window.goToPage = function(page) {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('page' + page).classList.add('active');
   updateSteps(page);
-  // Extend timer when moving forward from car selection
-  if (page === 3 && softReservedCarId) {
+  // Initialise signature canvas the moment page 3 is visible in the DOM
+  if (page === 3) {
+    // rAF ensures the page is painted and has real dimensions before we measure
+    requestAnimationFrame(() => requestAnimationFrame(() => initSigCanvas()));
+  }
+  // Extend soft-reservation timer when moving forward past car selection
+  if (page >= 3 && softReservedCarId) {
     const newExpiry = Date.now() + TIMEOUT_MS;
     set(ref(db, `cars/${softReservedCarId}/pending/${sessionId}/expiresAt`), newExpiry);
     startCountdown(newExpiry);
@@ -787,38 +792,78 @@ window.validatePage1 = function() {
 const sigCanvas = document.getElementById('signatureCanvas');
 const sigCtx    = sigCanvas.getContext('2d');
 let drawing = false, hasSig = false, sigDataUrl = null;
+let sigInitialized = false;
 
-function resizeSig() {
-  const rect = sigCanvas.getBoundingClientRect();
-  sigCanvas.width  = rect.width  * (window.devicePixelRatio || 1);
-  sigCanvas.height = rect.height * (window.devicePixelRatio || 1);
-  sigCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-  sigCtx.strokeStyle = '#111'; sigCtx.lineWidth = 2.5;
-  sigCtx.lineCap = 'round'; sigCtx.lineJoin = 'round';
+function initSigCanvas() {
+  // Must be called when page 3 is actually visible so getBoundingClientRect works
+  const dpr  = window.devicePixelRatio || 1;
+  const rect  = sigCanvas.getBoundingClientRect();
+  const cssW  = rect.width  || sigCanvas.offsetWidth  || 300;
+  const cssH  = rect.height || sigCanvas.offsetHeight || 180;
+  sigCanvas.width  = cssW * dpr;
+  sigCanvas.height = cssH * dpr;
+  sigCtx.setTransform(1,0,0,1,0,0); // reset any previous transform
+  sigCtx.scale(dpr, dpr);
+  sigCtx.strokeStyle = '#111111';
+  sigCtx.lineWidth   = 2.5;
+  sigCtx.lineCap     = 'round';
+  sigCtx.lineJoin    = 'round';
+  sigInitialized = true;
 }
-window.addEventListener('resize', resizeSig);
-resizeSig();
+
+window.addEventListener('resize', () => {
+  if (sigInitialized) {
+    const prev = sigDataUrl; // preserve drawn sig if any
+    initSigCanvas();
+    // Redraw previous signature after resize
+    if (prev) {
+      const img = new Image();
+      img.onload = () => sigCtx.drawImage(img, 0, 0, sigCanvas.width / (window.devicePixelRatio||1), sigCanvas.height / (window.devicePixelRatio||1));
+      img.src = prev;
+    }
+  }
+});
 
 function pos(e) {
-  const r = sigCanvas.getBoundingClientRect();
-  const s = e.touches ? e.touches[0] : e;
-  return { x: s.clientX - r.left, y: s.clientY - r.top };
+  const r   = sigCanvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - r.left, y: src.clientY - r.top };
 }
 
-sigCanvas.addEventListener('mousedown',  e => { drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); });
-sigCanvas.addEventListener('mousemove',  e => { if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; });
-sigCanvas.addEventListener('mouseup',    () => { drawing=false; captureSig(); });
-sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); }, {passive:false});
-sigCanvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; }, {passive:false});
-sigCanvas.addEventListener('touchend',   () => { drawing=false; captureSig(); });
+sigCanvas.addEventListener('mousedown', e => {
+  if (!sigInitialized) initSigCanvas();
+  drawing = true;
+  sigCtx.beginPath();
+  const p = pos(e); sigCtx.moveTo(p.x, p.y);
+});
+sigCanvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const p = pos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); hasSig = true;
+});
+sigCanvas.addEventListener('mouseup',   () => { drawing = false; captureSig(); });
+sigCanvas.addEventListener('mouseleave',() => { if (drawing) { drawing = false; captureSig(); } });
+
+sigCanvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (!sigInitialized) initSigCanvas();
+  drawing = true;
+  sigCtx.beginPath();
+  const p = pos(e); sigCtx.moveTo(p.x, p.y);
+}, { passive: false });
+sigCanvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!drawing) return;
+  const p = pos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); hasSig = true;
+}, { passive: false });
+sigCanvas.addEventListener('touchend', () => { drawing = false; captureSig(); });
 
 function captureSig() {
   if (!hasSig) return;
-  // Capture to a clean white-background JPEG immediately while canvas is visible
+  const dpr  = window.devicePixelRatio || 1;
   const flat = document.createElement('canvas');
-  flat.width  = sigCanvas.width  || 600;
-  flat.height = sigCanvas.height || 180;
-  const fCtx = flat.getContext('2d');
+  flat.width  = sigCanvas.width;
+  flat.height = sigCanvas.height;
+  const fCtx  = flat.getContext('2d');
   fCtx.fillStyle = '#ffffff';
   fCtx.fillRect(0, 0, flat.width, flat.height);
   fCtx.drawImage(sigCanvas, 0, 0);
@@ -826,8 +871,8 @@ function captureSig() {
 }
 
 window.clearSignature = () => {
-  sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
-  hasSig = false;
+  sigCtx.clearRect(0, 0, sigCanvas.width / (window.devicePixelRatio||1), sigCanvas.height / (window.devicePixelRatio||1));
+  hasSig     = false;
   sigDataUrl = null;
 };
 window.updateConsentBtn = () => { document.getElementById('btnSign').disabled = !document.getElementById('consent').checked; };
