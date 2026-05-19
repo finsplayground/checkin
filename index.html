@@ -885,99 +885,167 @@ window.submitRegistration = async function() {
 // ── PDF ──
 async function generateAndEmailPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+
   const first   = document.getElementById('firstName').value.trim();
   const last    = document.getElementById('lastName').value.trim();
   const email   = document.getElementById('email').value.trim();
   const dob     = document.getElementById('dob').value;
   const licence = document.getElementById('licence').value.trim();
   const address = document.getElementById('address').value.trim();
-  const W = 210, M = 20;
 
-  doc.setFillColor(8,8,8); doc.rect(0,0,W,297,'F');
-  doc.setFillColor(187,10,33); doc.rect(0,0,6,297,'F');
-  doc.setFillColor(17,17,17); doc.rect(0,0,W,52,'F');
+  // ── Capture signature into a clean flat canvas (white bg, black strokes) ──
+  // This avoids devicePixelRatio scaling issues with jsPDF
+  const sigFlat = document.createElement('canvas');
+  sigFlat.width  = 600;
+  sigFlat.height = 180;
+  const fCtx = sigFlat.getContext('2d');
+  fCtx.fillStyle = '#ffffff';
+  fCtx.fillRect(0, 0, sigFlat.width, sigFlat.height);
+  // Draw the original signature scaled into the flat canvas
+  fCtx.drawImage(sigCanvas, 0, 0, sigFlat.width, sigFlat.height);
+  const sigDataUrl = sigFlat.toDataURL('image/jpeg', 0.95); // JPEG is safer than PNG for jsPDF
 
-  doc.setTextColor(255,255,255); doc.setFontSize(10); doc.setFont('helvetica','bold');
-  doc.text('○  ○  ○  ○', M+4, 18);
-  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(150,150,150);
-  doc.text('INVESTOR RELATIONS · VEHICLE EXPERIENCE', M+4, 25);
-  doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-  doc.text('VEHICLE BORROWING AGREEMENT', M+4, 40);
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
-  doc.text('17 SEPTEMBER 2026  ·  AUDI INVESTOR RELATIONS EVENT', M+4, 48);
-
-  doc.setFillColor(40,10,15); doc.rect(M,58,W-M*2,28,'F');
-  doc.setDrawColor(187,10,33); doc.setLineWidth(0.5); doc.rect(M,58,W-M*2,28);
-  doc.setFontSize(7); doc.setTextColor(187,10,33); doc.setFont('helvetica','bold');
-  doc.text('ASSIGNED VEHICLE', M+6, 66);
-  doc.setFontSize(16); doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
-  doc.text(selectedModel.toUpperCase(), M+6, 76);
-  doc.setFontSize(10); doc.setTextColor(150,150,150); doc.setFont('helvetica','normal');
-  doc.text('Licence Plate:', M+6, 83);
-  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
-  doc.text(assignedPlate, M+40, 83);
-
-  const rows = [
-    ['FULL NAME',        first+' '+last],
-    ['EMAIL ADDRESS',    email],
-    ['DATE OF BIRTH',    dob],
-    ["DRIVER'S LICENCE", licence],
-    ['ADDRESS',          address],
-    ['PARTICIPANT ID',   participantId.toUpperCase()],
-    ['DATE',             new Date().toLocaleDateString('en-GB')],
-  ];
-  let y = 98;
-  rows.forEach((row, i) => {
-    if (i%2===0) { doc.setFillColor(20,20,20); doc.rect(M,y-4,W-M*2,10,'F'); }
-    doc.setFontSize(7); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
-    doc.text(row[0], M+4, y+2);
-    doc.setTextColor(220,220,220); doc.setFont('helvetica','normal');
-    doc.text(doc.splitTextToSize(String(row[1]),100)[0], M+60, y+2);
-    y += 10;
+  // ── Generate QR data URL first (await before creating doc) ──
+  const qrPayload = JSON.stringify({
+    pid: participantId, cid: assignedCarId,
+    name: first+' '+last, plate: assignedPlate, model: selectedModel
+  });
+  const qrDataUrl = await new Promise((resolve, reject) => {
+    QRCode.toDataURL(qrPayload, {
+      width: 200, margin: 2,
+      color: { dark: '#000000', light: '#ffffff' }
+    }, (err, url) => {
+      if (err) reject(err); else resolve(url);
+    });
   });
 
+  // ── Build PDF (white background — universally compatible) ──
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const W = 210, M = 18;
+
+  // White base
+  doc.setFillColor(255,255,255);
+  doc.rect(0, 0, W, 297, 'F');
+
+  // Red left accent bar
+  doc.setFillColor(187, 10, 33);
+  doc.rect(0, 0, 5, 297, 'F');
+
+  // ── Header ──
+  doc.setFillColor(245, 245, 245);
+  doc.rect(0, 0, W, 46, 'F');
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.3);
+  doc.line(0, 46, W, 46);
+
+  doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(30,30,30);
+  doc.text('AUDI INVESTOR RELATIONS', M+2, 14);
+  doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(120,120,120);
+  doc.text('VEHICLE EXPERIENCE EVENT', M+2, 20);
+
+  doc.setFontSize(18); doc.setFont('helvetica', 'bold'); doc.setTextColor(20,20,20);
+  doc.text('VEHICLE BORROWING AGREEMENT', M+2, 35);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(140,140,140);
+  doc.text('17 SEPTEMBER 2026', M+2, 42);
+
+  // ── Vehicle block ──
+  doc.setFillColor(252, 235, 235);
+  doc.rect(M, 52, W-M*2, 26, 'F');
+  doc.setDrawColor(187,10,33); doc.setLineWidth(0.4);
+  doc.rect(M, 52, W-M*2, 26);
+
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(187,10,33);
+  doc.text('ASSIGNED VEHICLE', M+4, 60);
+  doc.setFontSize(15); doc.setFont('helvetica','bold'); doc.setTextColor(20,20,20);
+  doc.text(selectedModel, M+4, 70);
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
+  doc.text('Licence Plate:', M+4, 76);
+  doc.setFont('helvetica','bold'); doc.setTextColor(20,20,20);
+  doc.text(assignedPlate, M+38, 76);
+
+  // ── Participant details ──
+  const rows = [
+    ['Full Name',         first + ' ' + last],
+    ['Email Address',     email],
+    ['Date of Birth',     dob],
+    ["Driver's Licence",  licence],
+    ['Address',           address],
+    ['Participant ID',    participantId.toUpperCase()],
+    ['Registration Date', new Date().toLocaleDateString('en-GB')],
+  ];
+
+  let y = 86;
+  doc.setLineWidth(0.2);
+  rows.forEach((row, i) => {
+    const bg = i % 2 === 0 ? [248,248,248] : [255,255,255];
+    doc.setFillColor(...bg);
+    doc.rect(M, y, W-M*2, 9, 'F');
+    doc.setDrawColor(230,230,230);
+    doc.rect(M, y, W-M*2, 9);
+
+    doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(120,120,120);
+    doc.text(row[0].toUpperCase(), M+3, y+6);
+    doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
+    const val = doc.splitTextToSize(String(row[1]), 110)[0];
+    doc.text(val, M+52, y+6);
+    y += 9;
+  });
+
+  // ── Legal text ──
   y += 6;
-  doc.setFillColor(15,15,15); doc.rect(M,y,W-M*2,44,'F');
-  doc.setDrawColor(40,40,40); doc.rect(M,y,W-M*2,44);
-  doc.setFontSize(6.5); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
-  doc.text('TERMS & CONDITIONS', M+4, y+6);
+  doc.setFillColor(248,248,248);
+  doc.rect(M, y, W-M*2, 40, 'F');
+  doc.setDrawColor(220,220,220); doc.rect(M, y, W-M*2, 40);
+
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(80,80,80);
+  doc.text('TERMS & CONDITIONS', M+3, y+6);
   doc.setFont('helvetica','normal'); doc.setTextColor(90,90,90);
-  const legal = "I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received.";
-  doc.text(doc.splitTextToSize(legal, W-M*2-8), M+4, y+12);
+  const legal = "I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. Audi AG and the event organiser reserve the right to terminate borrowing privileges at any time.";
+  const legalLines = doc.splitTextToSize(legal, W-M*2-6);
+  doc.text(legalLines, M+3, y+12);
 
-  y += 52;
-  doc.setFontSize(7); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
-  doc.text('PARTICIPANT SIGNATURE', M, y);
-  doc.addImage(sigCanvas.toDataURL('image/png'), 'PNG', M, y+4, 80, 22);
-  doc.setDrawColor(60,60,60); doc.setLineWidth(0.3); doc.line(M, y+28, M+80, y+28);
-  doc.setFontSize(7); doc.setTextColor(80,80,80); doc.setFont('helvetica','normal');
-  doc.text(first+' '+last+'  ·  '+new Date().toLocaleString('en-GB'), M, y+33);
+  // ── Signature ──
+  y += 46;
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(80,80,80);
+  doc.text('PARTICIPANT SIGNATURE', M, y+5);
 
-  // QR Code
-  const qrPayload = JSON.stringify({ pid: participantId, cid: assignedCarId, name: first+' '+last, plate: assignedPlate, model: selectedModel });
-  const qrUrl = await new Promise(res => QRCode.toDataURL(qrPayload, { width:200, margin:1, color:{ dark:'#ffffff', light:'#080808' } }, (e,u)=>res(u)));
-  const qrX = W - M - 38;
-  doc.setFillColor(8,8,8); doc.rect(qrX-2,y-2,42,42,'F');
-  doc.addImage(qrUrl,'PNG', qrX, y, 38, 38);
-  doc.setFontSize(5.5); doc.setTextColor(80,80,80); doc.text('EVENT QR CODE', qrX+4, y+41);
+  // Signature box
+  doc.setFillColor(255,255,255);
+  doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
+  doc.rect(M, y+8, 90, 28, 'FD');
+  doc.addImage(sigDataUrl, 'JPEG', M+1, y+9, 88, 26);
 
-  doc.setFillColor(17,17,17); doc.rect(0,280,W,17,'F');
-  doc.setFontSize(6); doc.setTextColor(60,60,60);
-  doc.text('AUDI INVESTOR RELATIONS · VEHICLE EXPERIENCE · 17.09.2026 · CONFIDENTIAL', M, 289);
-  doc.setTextColor(80,80,80);
-  doc.text('ID: '+participantId.toUpperCase(), W-M-doc.getTextWidth('ID: '+participantId.toUpperCase()), 289);
+  // Signature line
+  doc.setDrawColor(180,180,180);
+  doc.line(M, y+38, M+90, y+38);
+  doc.setFontSize(6.5); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
+  doc.text(first+' '+last+'   '+new Date().toLocaleString('en-GB'), M, y+43);
 
-  // Save PDF
+  // ── QR Code ──
+  const qrX = W - M - 36;
+  const qrY = y + 6;
+  doc.setFillColor(255,255,255);
+  doc.setDrawColor(200,200,200); doc.rect(qrX-1, qrY-1, 38, 38, 'FD');
+  doc.addImage(qrDataUrl, 'PNG', qrX, qrY, 36, 36);
+  doc.setFontSize(6); doc.setTextColor(120,120,120);
+  doc.text('EVENT QR CODE', qrX+2, qrY+39);
+
+  // ── Footer ──
+  doc.setFillColor(245,245,245);
+  doc.rect(0, 282, W, 15, 'F');
+  doc.setDrawColor(220,220,220); doc.line(0, 282, W, 282);
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
+  doc.text('AUDI INVESTOR RELATIONS  ·  VEHICLE EXPERIENCE  ·  17.09.2026  ·  CONFIDENTIAL', M, 290);
+  const idText = 'ID: ' + participantId.toUpperCase();
+  doc.text(idText, W - M - doc.getTextWidth(idText), 290);
+
+  // ── Save & email ──
   const fname = `${last.replace(/\s+/g,'')}_${assignedPlate.replace(/\s+/g,'')}.pdf`;
-  const blob  = doc.output('blob');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = fname; a.click();
+  doc.save(fname); // use doc.save() — more reliable than manual blob
 
-  // Open mail
   const subject = encodeURIComponent(`Audi IR Event — Vehicle Agreement — ${first} ${last}`);
-  const body = encodeURIComponent(`Dear ${first},\n\nPlease find attached your signed Vehicle Borrowing Agreement for the Audi Investor Relations Event on 17 September 2026.\n\nVehicle: ${selectedModel}\nLicence Plate: ${assignedPlate}\nParticipant ID: ${participantId.toUpperCase()}\n\nPlease show your QR code at the key desk on the day.\n\nBest regards,\nAudi Investor Relations Team`);
-  setTimeout(() => { window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`; }, 600);
+  const body    = encodeURIComponent(`Dear ${first},\n\nPlease find attached your signed Vehicle Borrowing Agreement for the Audi Investor Relations Event on 17 September 2026.\n\nVehicle: ${selectedModel}\nLicence Plate: ${assignedPlate}\nParticipant ID: ${participantId.toUpperCase()}\n\nPlease show your QR code at the key desk on the day.\n\nBest regards,\nAudi Investor Relations Team`);
+  setTimeout(() => { window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`; }, 1000);
 
   window._qrPayload = qrPayload;
 }
