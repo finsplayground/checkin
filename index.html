@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Root ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -39,772 +38,288 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Noise texture overlay ── */
 body::before {
   content: '';
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
+  pointer-events: none; z-index: 0; opacity: 0.5;
 }
 
 /* ── Header ── */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(8,8,8,0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,8,8,0.94);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
 }
 
-.logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-/* Audi rings SVG */
-.audi-rings svg {
-  height: 28px;
-  width: auto;
-}
-
-.logo-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border2);
-}
-
+.logo-wrap { display: flex; align-items: center; gap: 16px; }
+.audi-rings svg { height: 26px; width: auto; }
+.logo-divider { width: 1px; height: 28px; background: var(--border2); }
 .logo-text {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--white);
-  line-height: 1.2;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--white); line-height: 1.2;
 }
-
 .logo-text span {
-  display: block;
-  font-weight: 300;
-  color: var(--grey);
-  letter-spacing: 0.14em;
-  font-size: 0.65rem;
+  display: block; font-weight: 300; color: var(--grey);
+  letter-spacing: 0.14em; font-size: 0.65rem;
 }
-
 .header-date {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  text-transform: uppercase;
+  font-size: 0.72rem; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase;
 }
 
-/* ── Hero Section ── */
+/* ── Hero ── */
 .hero {
-  position: relative;
-  padding: 60px 24px 48px;
-  overflow: hidden;
-  z-index: 1;
+  position: relative; padding: 52px 24px 40px;
+  overflow: hidden; z-index: 1;
 }
-
 .hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 24px;
-  right: 24px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  content: ''; position: absolute; bottom: 0; left: 24px; right: 24px;
+  height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent);
 }
-
 .hero-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
 }
-
-.hero-label::before {
-  content: '';
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: var(--red);
-}
-
+.hero-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--red); }
 .hero-title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(2.2rem, 8vw, 3.8rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  color: var(--white);
-  margin-bottom: 20px;
+  font-size: clamp(2rem, 8vw, 3.6rem); font-weight: 800;
+  line-height: 0.95; letter-spacing: -0.01em;
+  text-transform: uppercase; color: var(--white); margin-bottom: 18px;
 }
+.hero-title em { font-style: normal; color: var(--red); }
+.hero-body { font-size: 0.88rem; line-height: 1.7; color: var(--grey); max-width: 520px; font-weight: 300; }
 
-.hero-title em {
-  font-style: normal;
-  color: var(--red);
-}
-
-.hero-body {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: var(--grey);
-  max-width: 520px;
-  font-weight: 300;
-}
-
-/* ── Progress Steps ── */
+/* ── Steps ── */
 .steps-bar {
-  display: flex;
-  align-items: center;
-  padding: 24px;
-  gap: 0;
-  z-index: 1;
-  position: relative;
+  display: flex; align-items: center;
+  padding: 20px 24px; gap: 0; z-index: 1; position: relative;
 }
-
-.step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-}
-
+.step { display: flex; align-items: center; gap: 8px; flex: 1; }
 .step-num {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 28px; height: 28px; border-radius: 50%;
   border: 1.5px solid var(--grey2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--grey2);
-  flex-shrink: 0;
-  transition: all 0.3s;
+  font-size: 0.75rem; font-weight: 700; color: var(--grey2);
+  flex-shrink: 0; transition: all 0.3s;
 }
-
 .step-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--grey2);
-  transition: all 0.3s;
+  font-size: 0.65rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--grey2); transition: all 0.3s;
 }
-
-.step-line {
-  flex: 1;
-  height: 1px;
-  background: var(--grey2);
-  margin: 0 8px;
-  transition: background 0.3s;
-}
-
-.step.active .step-num {
-  border-color: var(--red);
-  background: var(--red);
-  color: var(--white);
-}
-
+.step-line { flex: 1; height: 1px; background: var(--grey2); margin: 0 8px; transition: background 0.3s; }
+.step.active .step-num { border-color: var(--red); background: var(--red); color: var(--white); }
 .step.active .step-label { color: var(--white); }
-
-.step.done .step-num {
-  border-color: var(--grey2);
-  background: var(--grey2);
-  color: var(--white);
-}
-
+.step.done .step-num { border-color: var(--grey2); background: var(--grey2); color: var(--white); }
 .step.done .step-label { color: var(--grey); }
-
 .step-line.done { background: var(--grey2); }
 
 /* ── Form Pages ── */
-.form-page {
-  display: none;
-  padding: 0 24px 40px;
-  position: relative;
-  z-index: 1;
-  animation: fadeUp 0.35s ease;
-}
-
+.form-page { display: none; padding: 0 24px 48px; position: relative; z-index: 1; animation: fadeUp 0.3s ease; }
 .form-page.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Section Headers ── */
+/* ── Section labels ── */
 .section-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
 }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
 
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border2);
-}
-
-/* ── Form Fields ── */
-.field {
-  margin-bottom: 20px;
-}
-
+/* ── Fields ── */
+.field { margin-bottom: 18px; }
 .field label {
   display: block;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 8px;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--grey); margin-bottom: 7px;
 }
-
 .field input {
-  width: 100%;
-  background: var(--dark2);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  padding: 14px 16px;
-  font-family: 'Barlow', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: var(--white);
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
+  width: 100%; background: var(--dark2);
+  border: 1px solid var(--border2); border-radius: 4px;
+  padding: 13px 15px;
+  font-family: 'Barlow', sans-serif; font-size: 0.95rem; color: var(--white);
+  outline: none; transition: border-color 0.2s, background 0.2s;
   -webkit-appearance: none;
 }
-
-.field input:focus {
-  border-color: var(--red);
-  background: var(--dark3);
-}
-
+.field input:focus { border-color: var(--red); background: var(--dark3); }
 .field input::placeholder { color: var(--grey2); }
-
 .field input.error { border-color: var(--red); }
-
-.field-error {
-  font-size: 0.72rem;
-  color: var(--red);
-  margin-top: 5px;
-  display: none;
-}
-
+.field-error { font-size: 0.72rem; color: var(--red); margin-top: 5px; display: none; }
 .field-error.visible { display: block; }
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 /* ── Car Selection ── */
-.car-selection {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
+.car-selection { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
 
 .car-option {
-  border: 1.5px solid var(--border2);
-  border-radius: 6px;
-  padding: 18px 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-  background: var(--dark2);
+  border: 1.5px solid var(--border2); border-radius: 6px;
+  padding: 18px 20px; cursor: pointer; transition: all 0.2s;
+  position: relative; overflow: hidden; background: var(--dark2);
   -webkit-tap-highlight-color: transparent;
 }
-
 .car-option::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--red);
-  transform: scaleY(0);
-  transition: transform 0.2s;
-  transform-origin: center;
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--red); transform: scaleY(0); transition: transform 0.2s; transform-origin: center;
 }
-
-.car-option:hover:not(.disabled) {
-  border-color: rgba(187,10,33,0.4);
-  background: var(--dark3);
-}
-
+.car-option:hover:not(.disabled) { border-color: rgba(187,10,33,0.4); background: var(--dark3); }
 .car-option:hover:not(.disabled)::before { transform: scaleY(1); }
-
-.car-option.selected {
-  border-color: var(--red);
-  background: var(--red-dim);
-}
-
+.car-option.selected { border-color: var(--red); background: var(--red-dim); }
 .car-option.selected::before { transform: scaleY(1); }
+.car-option.soft-reserved { border-color: rgba(255,180,0,0.4); background: rgba(255,180,0,0.05); }
+.car-option.disabled { opacity: 0.35; cursor: not-allowed; }
 
-.car-option.disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.car-option-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
+.car-option-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
 .car-name {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--white);
-  line-height: 1;
+  font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--white); line-height: 1;
 }
-
-.car-name span {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--grey);
-  margin-top: 3px;
-}
+.car-name span { display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; color: var(--grey); margin-top: 3px; }
 
 .car-slots {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 2px;
-  flex-shrink: 0;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 2px; flex-shrink: 0;
 }
+.car-slots.available { background: rgba(255,255,255,0.06); color: var(--grey); border: 1px solid var(--border2); }
+.car-slots.low { background: rgba(187,10,33,0.12); color: #ff6b6b; border: 1px solid rgba(187,10,33,0.3); }
+.car-slots.pending { background: rgba(255,180,0,0.1); color: #ffb400; border: 1px solid rgba(255,180,0,0.3); }
+.car-slots.full { background: var(--dark3); color: var(--grey2); border: 1px solid var(--border); }
 
-.car-slots.available {
-  background: rgba(255,255,255,0.06);
-  color: var(--grey);
-  border: 1px solid var(--border2);
-}
-
-.car-slots.low {
-  background: rgba(187,10,33,0.12);
-  color: #ff6b6b;
-  border: 1px solid rgba(187,10,33,0.3);
-}
-
-.car-slots.full {
-  background: var(--dark3);
-  color: var(--grey2);
-  border: 1px solid var(--border);
-}
-
-.car-slot-bar {
-  display: flex;
-  gap: 4px;
-  margin-top: 10px;
-}
-
-.slot-pip {
-  height: 3px;
-  flex: 1;
-  border-radius: 2px;
-  background: var(--grey2);
-  transition: background 0.3s;
-}
-
+.car-slot-bar { display: flex; gap: 4px; margin-top: 10px; }
+.slot-pip { height: 3px; flex: 1; border-radius: 2px; background: var(--grey2); transition: background 0.3s; }
 .slot-pip.taken { background: var(--red); }
-.slot-pip.all-taken { background: var(--grey2); }
-
+.slot-pip.pending-pip { background: #ffb400; }
 .car-option.selected .slot-pip { background: rgba(187,10,33,0.4); }
 .car-option.selected .slot-pip.taken { background: var(--red); }
 
-/* ── Signature Pad ── */
-.sig-wrap {
-  border: 1.5px solid var(--border2);
-  border-radius: 4px;
-  overflow: hidden;
-  background: #fff;
-  position: relative;
-  margin-bottom: 8px;
-}
-
-.sig-label-inner {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ── Countdown timer on car card ── */
+.car-timer {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #ccc;
-  pointer-events: none;
-  white-space: nowrap;
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  color: #ffb400; margin-top: 6px; display: none;
 }
+.car-timer.visible { display: block; }
 
-.sig-line {
-  position: absolute;
-  bottom: 36px;
-  left: 20px;
-  right: 20px;
-  height: 1px;
-  background: #ddd;
-  pointer-events: none;
+/* ── Timeout warning banner ── */
+.timeout-banner {
+  background: rgba(255,180,0,0.1); border: 1px solid rgba(255,180,0,0.3);
+  border-radius: 6px; padding: 12px 16px; margin-bottom: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; letter-spacing: 0.08em; color: #ffb400;
+  display: none; text-transform: uppercase;
 }
+.timeout-banner.visible { display: block; }
 
-#signatureCanvas {
-  display: block;
-  width: 100%;
-  height: 180px;
-  cursor: crosshair;
-  touch-action: none;
+/* ── Signature ── */
+.sig-wrap {
+  border: 1.5px solid var(--border2); border-radius: 4px;
+  overflow: hidden; background: #fff; position: relative; margin-bottom: 8px;
 }
+.sig-label-inner {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem;
+  letter-spacing: 0.15em; text-transform: uppercase; color: #ccc;
+  pointer-events: none; white-space: nowrap;
+}
+.sig-line { position: absolute; bottom: 36px; left: 20px; right: 20px; height: 1px; background: #ddd; pointer-events: none; }
+#signatureCanvas { display: block; width: 100%; height: 180px; cursor: crosshair; touch-action: none; }
+.sig-actions { display: flex; gap: 10px; margin-top: 8px; }
 
-.sig-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
+/* ── Review ── */
+.review-block {
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 6px; overflow: hidden; margin-bottom: 16px;
 }
+.review-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 11px 16px; border-bottom: 1px solid var(--border); gap: 12px;
+}
+.review-row:last-child { border-bottom: none; }
+.review-key { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; }
+.review-val { font-size: 0.88rem; color: var(--white); text-align: right; font-weight: 500; }
+.review-car { background: var(--red-dim); border-color: rgba(187,10,33,0.3); }
+.review-car .review-val { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ff6b6b; }
+
+/* ── Legal ── */
+.legal-box {
+  background: var(--dark2); border: 1px solid var(--border); border-radius: 4px;
+  padding: 16px; font-size: 0.78rem; line-height: 1.7; color: var(--muted);
+  margin-bottom: 20px; max-height: 160px; overflow-y: auto;
+}
+.legal-box::-webkit-scrollbar { width: 4px; }
+.legal-box::-webkit-scrollbar-thumb { background: var(--grey2); border-radius: 2px; }
+.consent-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+.consent-row input[type=checkbox] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--red); flex-shrink: 0; cursor: pointer; }
+.consent-row label { font-size: 0.82rem; color: var(--grey); line-height: 1.5; cursor: pointer; }
 
 /* ── Buttons ── */
 .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 16px 24px;
-  border-radius: 4px;
-  border: none;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 15px 24px; border-radius: 4px; border: none;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
+  font-size: 0.9rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; width: 100%;
   -webkit-tap-highlight-color: transparent;
 }
-
-.btn-primary {
-  background: var(--red);
-  color: var(--white);
-}
-
+.btn-primary { background: var(--red); color: var(--white); }
 .btn-primary:hover { background: #d40d26; }
 .btn-primary:active { transform: scale(0.98); }
-.btn-primary:disabled {
-  background: var(--grey2);
-  color: var(--muted);
-  cursor: default;
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--grey);
-  border: 1px solid var(--border2);
-  font-size: 0.78rem;
-  padding: 10px 16px;
-  width: auto;
-}
-
+.btn-primary:disabled { background: var(--grey2); color: var(--muted); cursor: default; }
+.btn-ghost { background: transparent; color: var(--grey); border: 1px solid var(--border2); font-size: 0.78rem; padding: 10px 16px; width: auto; }
 .btn-ghost:hover { border-color: var(--grey); color: var(--white); }
-
-.btn-back {
-  background: transparent;
-  color: var(--grey);
-  border: 1px solid var(--border2);
-  margin-bottom: 16px;
-}
-
+.btn-back { background: transparent; color: var(--grey); border: 1px solid var(--border2); margin-bottom: 18px; }
 .btn-back:hover { color: var(--white); border-color: var(--grey); }
 
-/* ── Summary Review ── */
-.review-block {
-  background: var(--dark2);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.review-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  gap: 12px;
-}
-
-.review-row:last-child { border-bottom: none; }
-
-.review-key {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  flex-shrink: 0;
-}
-
-.review-val {
-  font-size: 0.88rem;
-  color: var(--white);
-  text-align: right;
-  font-weight: 500;
-}
-
-.review-car {
-  background: var(--red-dim);
-  border-color: rgba(187,10,33,0.3);
-}
-
-.review-car .review-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #ff6b6b;
-}
-
-/* ── Legal text ── */
-.legal-box {
-  background: var(--dark2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-  font-size: 0.78rem;
-  line-height: 1.7;
-  color: var(--muted);
-  margin-bottom: 20px;
-  max-height: 160px;
-  overflow-y: auto;
-}
-
-.legal-box::-webkit-scrollbar { width: 4px; }
-.legal-box::-webkit-scrollbar-track { background: transparent; }
-.legal-box::-webkit-scrollbar-thumb { background: var(--grey2); border-radius: 2px; }
-
-.consent-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.consent-row input[type=checkbox] {
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  accent-color: var(--red);
-  flex-shrink: 0;
-  cursor: pointer;
-}
-
-.consent-row label {
-  font-size: 0.82rem;
-  color: var(--grey);
-  line-height: 1.5;
-  cursor: pointer;
-}
-
-/* ── Success Screen ── */
-.success-screen {
-  display: none;
-  padding: 40px 24px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  z-index: 1;
-  animation: fadeUp 0.4s ease;
-}
-
-.success-screen.active {
-  display: flex;
-}
-
-.success-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--red);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-
+/* ── Success ── */
+.success-screen { display: none; padding: 40px 24px; text-align: center; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 1; animation: fadeUp 0.4s ease; }
+.success-screen.active { display: flex; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .success-icon svg { width: 36px; height: 36px; }
-
-.success-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--white);
-}
-
-.success-sub {
-  font-size: 0.88rem;
-  color: var(--grey);
-  line-height: 1.6;
-  max-width: 320px;
-}
-
-.qr-display {
-  background: var(--white);
-  padding: 16px;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.success-info {
-  background: var(--dark2);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 16px 20px;
-  width: 100%;
-  max-width: 360px;
-  text-align: left;
-}
-
+.success-title { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); }
+.success-sub { font-size: 0.88rem; color: var(--grey); line-height: 1.6; max-width: 320px; }
+.qr-display { background: var(--white); padding: 16px; border-radius: 8px; display: inline-block; }
+.success-info { background: var(--dark2); border: 1px solid var(--border2); border-radius: 6px; padding: 16px 20px; width: 100%; max-width: 360px; text-align: left; }
 .success-info .review-row { padding: 8px 0; }
-
-.next-steps {
-  background: var(--red-dim);
-  border: 1px solid rgba(187,10,33,0.25);
-  border-radius: 6px;
-  padding: 16px 20px;
-  width: 100%;
-  max-width: 360px;
-  text-align: left;
-  font-size: 0.82rem;
-  line-height: 1.7;
-  color: var(--grey);
-}
-
+.next-steps { background: var(--red-dim); border: 1px solid rgba(187,10,33,0.25); border-radius: 6px; padding: 16px 20px; width: 100%; max-width: 360px; text-align: left; font-size: 0.82rem; line-height: 1.7; color: var(--grey); }
 .next-steps strong { color: var(--white); display: block; margin-bottom: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ── Toast ── */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--dark3);
-  border: 1px solid var(--border2);
-  color: var(--white);
-  padding: 12px 20px;
-  border-radius: 4px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  z-index: 999;
-  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
-  white-space: nowrap;
-  max-width: 90vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-}
-
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--dark3); border: 1px solid var(--border2); color: var(--white); padding: 12px 20px; border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; z-index: 999; transition: transform 0.3s cubic-bezier(.22,1,.36,1); white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── Loading overlay ── */
-.loading-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(8,8,8,0.85);
-  z-index: 500;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-  backdrop-filter: blur(4px);
-}
-
+/* ── Loading ── */
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(8,8,8,0.88); z-index: 500; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(4px); }
 .loading-overlay.active { display: flex; }
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--border2);
-  border-top-color: var(--red);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
+.spinner { width: 40px; height: 40px; border: 2px solid var(--border2); border-top-color: var(--red); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
 
-.loading-text {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--grey);
-}
-
-/* ── Mobile adjustments ── */
 @media (max-width: 480px) {
-  .hero { padding: 40px 20px 36px; }
+  .hero { padding: 36px 20px 32px; }
   .form-page { padding: 0 20px 40px; }
-  .steps-bar { padding: 20px; }
+  .steps-bar { padding: 18px 20px; }
   .step-label { display: none; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── Header ── -->
 <header class="site-header">
   <div class="logo-wrap">
     <div class="audi-rings">
@@ -816,72 +331,31 @@ body::before {
       </svg>
     </div>
     <div class="logo-divider"></div>
-    <div class="logo-text">
-      Investor Relations
-      <span>Vehicle Experience</span>
-    </div>
+    <div class="logo-text">Investor Relations <span>Vehicle Experience</span></div>
   </div>
   <div class="header-date">17.09.2026</div>
 </header>
 
-<!-- ── Hero ── -->
 <div class="hero">
   <div class="hero-label">Vehicle Borrowing Agreement</div>
   <h1 class="hero-title">Drive the<br><em>Future.</em></h1>
-  <p class="hero-body">To borrow a vehicle at today's event, please complete this registration form. Your data is used solely to generate your borrowing agreement — nothing is stored online.</p>
+  <p class="hero-body">To borrow a vehicle at today's event, please complete this registration form. Your data is used solely to generate your borrowing agreement — nothing personal is stored online.</p>
 </div>
 
-<!-- ── Steps ── -->
 <div class="steps-bar" id="stepsBar">
-  <div class="step active" id="step1">
-    <div class="step-num">1</div>
-    <div class="step-label">Vehicle</div>
-  </div>
+  <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">Details</div></div>
   <div class="step-line" id="line1"></div>
-  <div class="step active" id="step2">
-    <div class="step-num">2</div>
-    <div class="step-label">Details</div>
-  </div>
+  <div class="step" id="step2"><div class="step-num">2</div><div class="step-label">Vehicle</div></div>
   <div class="step-line" id="line2"></div>
-  <div class="step" id="step3">
-    <div class="step-num">3</div>
-    <div class="step-label">Sign</div>
-  </div>
+  <div class="step" id="step3"><div class="step-num">3</div><div class="step-label">Sign</div></div>
   <div class="step-line" id="line3"></div>
-  <div class="step" id="step4">
-    <div class="step-num">4</div>
-    <div class="step-label">Confirm</div>
-  </div>
+  <div class="step" id="step4"><div class="step-num">4</div><div class="step-label">Confirm</div></div>
 </div>
 
-<!-- ════════════════════════════
-     PAGE 1 — Car Selection
-═════════════════════════════ -->
+<!-- ═══════════════════════════════
+     PAGE 1 — Personal Details
+════════════════════════════════ -->
 <div class="form-page active" id="page1">
-  <div class="section-label">Select Your Vehicle</div>
-
-  <div class="car-selection" id="carSelection">
-    <!-- Rendered by JS -->
-    <div style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;font-size:0.8rem;">
-      Loading availability…
-    </div>
-  </div>
-
-  <button class="btn btn-primary" id="btnPage1Next" onclick="goToPage(2)" disabled>
-    Continue
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </button>
-</div>
-
-<!-- ════════════════════════════
-     PAGE 2 — Personal Details
-═════════════════════════════ -->
-<div class="form-page" id="page2">
-  <button class="btn btn-back" onclick="goToPage(1)">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    Back
-  </button>
-
   <div class="section-label">Personal Information</div>
 
   <div class="field-row">
@@ -922,15 +396,42 @@ body::before {
     <div class="field-error" id="err-address">Required</div>
   </div>
 
-  <button class="btn btn-primary" onclick="validatePage2()">
-    Continue
+  <button class="btn btn-primary" onclick="validatePage1()">
+    Continue to Vehicle Selection
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
   </button>
 </div>
 
-<!-- ════════════════════════════
+<!-- ═══════════════════════════════
+     PAGE 2 — Vehicle Selection
+════════════════════════════════ -->
+<div class="form-page" id="page2">
+  <button class="btn btn-back" onclick="goBackFromCars()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back
+  </button>
+
+  <div class="section-label">Select Your Vehicle</div>
+
+  <div class="timeout-banner" id="timeoutBanner">
+    ⏱ Your selection will be released in <span id="timerDisplay">2:00</span> if you don't continue
+  </div>
+
+  <div class="car-selection" id="carSelection">
+    <div style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;font-size:0.8rem;">
+      Loading availability…
+    </div>
+  </div>
+
+  <button class="btn btn-primary" id="btnPage2Next" onclick="goToPage(3)" disabled>
+    Continue to Signature
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════
      PAGE 3 — Signature
-═════════════════════════════ -->
+════════════════════════════════ -->
 <div class="form-page" id="page3">
   <button class="btn btn-back" onclick="goToPage(2)">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -959,18 +460,18 @@ body::before {
 
   <div class="consent-row">
     <input type="checkbox" id="consent" onchange="updateConsentBtn()">
-    <label for="consent">I have read and agree to the Vehicle Borrowing Agreement above. I confirm all information provided is accurate.</label>
+    <label for="consent">I have read and agree to the Vehicle Borrowing Agreement. I confirm all information provided is accurate.</label>
   </div>
 
   <button class="btn btn-primary" id="btnSign" onclick="validatePage3()" disabled>
-    Review & Generate Agreement
+    Review Agreement
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
   </button>
 </div>
 
-<!-- ════════════════════════════
+<!-- ═══════════════════════════════
      PAGE 4 — Review & Submit
-═════════════════════════════ -->
+════════════════════════════════ -->
 <div class="form-page" id="page4">
   <button class="btn btn-back" onclick="goToPage(3)">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -980,95 +481,52 @@ body::before {
   <div class="section-label">Review Your Agreement</div>
 
   <div class="review-block review-car">
-    <div class="review-row">
-      <span class="review-key">Vehicle</span>
-      <span class="review-val" id="rev-model">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Licence Plate</span>
-      <span class="review-val" id="rev-plate">—</span>
-    </div>
+    <div class="review-row"><span class="review-key">Vehicle</span><span class="review-val" id="rev-model">—</span></div>
+    <div class="review-row"><span class="review-key">Licence Plate</span><span class="review-val" id="rev-plate">—</span></div>
   </div>
 
   <div class="review-block">
-    <div class="review-row">
-      <span class="review-key">Name</span>
-      <span class="review-val" id="rev-name">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Email</span>
-      <span class="review-val" id="rev-email">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Date of Birth</span>
-      <span class="review-val" id="rev-dob">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Licence No.</span>
-      <span class="review-val" id="rev-licence">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Address</span>
-      <span class="review-val" id="rev-address">—</span>
-    </div>
+    <div class="review-row"><span class="review-key">Name</span><span class="review-val" id="rev-name">—</span></div>
+    <div class="review-row"><span class="review-key">Email</span><span class="review-val" id="rev-email">—</span></div>
+    <div class="review-row"><span class="review-key">Date of Birth</span><span class="review-val" id="rev-dob">—</span></div>
+    <div class="review-row"><span class="review-key">Licence No.</span><span class="review-val" id="rev-licence">—</span></div>
+    <div class="review-row"><span class="review-key">Address</span><span class="review-val" id="rev-address">—</span></div>
   </div>
 
   <div class="review-block">
-    <div class="review-row">
-      <span class="review-key">Event Date</span>
-      <span class="review-val">17 September 2026</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Agreement</span>
-      <span class="review-val">Signed ✓</span>
-    </div>
+    <div class="review-row"><span class="review-key">Event Date</span><span class="review-val">17 September 2026</span></div>
+    <div class="review-row"><span class="review-key">Agreement</span><span class="review-val">Signed ✓</span></div>
   </div>
 
   <button class="btn btn-primary" id="btnSubmit" onclick="submitRegistration()">
-    Generate PDF & Send to Email
+    Generate PDF & Open Email
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
   </button>
 </div>
 
-<!-- ════════════════════════════
-     SUCCESS SCREEN
-═════════════════════════════ -->
+<!-- ═══════════════════════════════
+     SUCCESS
+════════════════════════════════ -->
 <div class="success-screen" id="successScreen">
   <div class="success-icon">
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
   </div>
-
   <div class="success-title">You're Registered</div>
-  <p class="success-sub">Your vehicle borrowing agreement has been generated. Your QR code below is your event ID — show it at the key desk.</p>
-
-  <div class="qr-display">
-    <canvas id="qrCanvas"></canvas>
-  </div>
-
+  <p class="success-sub">Your agreement has been generated and your email app has opened with it attached. Your QR code is your event ID — show it at the key desk.</p>
+  <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
   <div class="success-info">
-    <div class="review-row">
-      <span class="review-key">Name</span>
-      <span class="review-val" id="suc-name">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Vehicle</span>
-      <span class="review-val" id="suc-car">—</span>
-    </div>
-    <div class="review-row">
-      <span class="review-key">Plate</span>
-      <span class="review-val" id="suc-plate">—</span>
-    </div>
+    <div class="review-row"><span class="review-key">Name</span><span class="review-val" id="suc-name">—</span></div>
+    <div class="review-row"><span class="review-key">Vehicle</span><span class="review-val" id="suc-car">—</span></div>
+    <div class="review-row"><span class="review-key">Plate</span><span class="review-val" id="suc-plate">—</span></div>
   </div>
-
   <div class="next-steps">
     <strong>What happens next</strong>
-    1. Check your email — the signed agreement is attached.<br>
-    2. Screenshot or save your QR code above.<br>
-    3. Present your QR at the key desk when you arrive.
+    1. The PDF has downloaded to your device.<br>
+    2. Your email app opened — attach the PDF and send.<br>
+    3. Show this QR code at the key desk on the day.
   </div>
 </div>
 
-<!-- ── Loading ── -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div class="loading-text" id="loadingText">Processing…</div>
@@ -1076,16 +534,12 @@ body::before {
 
 <div class="toast" id="toast"></div>
 
-<!-- ════════════════════════════
-     SCRIPTS
-═════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-<!-- jsPDF for PDF generation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, runTransaction, remove, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgaGPUrRWslO7IPht1L6EbTix-a0FjRcw",
@@ -1100,30 +554,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-// ── State ──
-let selectedModel = null;
-let assignedCarId = null;
-let assignedPlate = null;
+// ── Constants ──
+const MODELS     = ['Audi RS5', 'Audi Q4 e-tron', 'Audi Q7'];
+const ORG_EMAIL  = 'daria.fomenko@gmail.com';
+const TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
+
+// ── Session state ──
+const sessionId    = Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+let carsData       = {};
+let selectedModel  = null;
+let softReservedCarId = null;   // car we've soft-reserved
+let assignedCarId  = null;      // car confirmed on submit
+let assignedPlate  = null;
 let participantId  = null;
-let carsData = {};
+let timerInterval  = null;
+let timerEnd       = null;
 
-const MODELS = ['Audi RS5', 'Audi Q4 e-tron', 'Audi Q7'];
-const ORG_EMAIL = 'daria.fomenko@gmail.com';
-
-// ── Listen to cars in real time ──
-onValue(ref(db, 'cars'), snapshot => {
-  carsData = snapshot.val() || {};
+// ── Real-time listener ──
+onValue(ref(db, 'cars'), snap => {
+  carsData = snap.val() || {};
   renderCarOptions();
 });
 
+// ── Model stats (confirmed + soft reserved) ──
 function getModelStats() {
   const stats = {};
-  MODELS.forEach(m => { stats[m] = { total: 0, taken: 0 }; });
+  MODELS.forEach(m => { stats[m] = { total: 0, taken: 0, pending: 0 }; });
+  const now = Date.now();
   Object.values(carsData).forEach(car => {
-    if (stats[car.model]) {
-      stats[car.model].total += car.slots;
-      stats[car.model].taken += car.taken || 0;
-    }
+    if (!stats[car.model]) return;
+    stats[car.model].total += car.slots;
+    stats[car.model].taken += car.taken || 0;
+    // Count non-expired soft reservations
+    const pending = car.pending || {};
+    Object.values(pending).forEach(p => {
+      if (p.expiresAt > now) stats[car.model].pending++;
+    });
   });
   return stats;
 }
@@ -1131,61 +597,164 @@ function getModelStats() {
 function renderCarOptions() {
   const stats = getModelStats();
   const container = document.getElementById('carSelection');
+  if (!Object.keys(carsData).length) return;
   container.innerHTML = '';
 
   MODELS.forEach(model => {
-    const { total, taken } = stats[model] || { total: 0, taken: 0 };
-    const remaining = total - taken;
-    const isFull = remaining <= 0;
-    const isLow  = remaining > 0 && remaining <= 4;
+    const { total, taken, pending } = stats[model] || { total:0, taken:0, pending:0 };
+    const confirmedTaken = taken;
+    const effectiveTaken = taken + pending;
+    const remaining = total - effectiveTaken;
+    const isFull    = remaining <= 0;
+    const isLow     = remaining > 0 && remaining <= 4;
+    const hasPending = pending > 0;
     const isSelected = selectedModel === model;
 
     let slotClass = 'available';
     let slotLabel = `${remaining} slot${remaining !== 1 ? 's' : ''} remaining`;
-    if (isFull) { slotClass = 'full'; slotLabel = 'Fully booked'; }
-    else if (isLow) { slotClass = 'low'; }
+    if (isFull)        { slotClass = 'full';    slotLabel = 'Fully booked'; }
+    else if (hasPending && isLow) { slotClass = 'low'; slotLabel = `${remaining} remaining · ${pending} selecting`; }
+    else if (hasPending) { slotClass = 'pending'; slotLabel = `${remaining} remaining · ${pending} selecting`; }
+    else if (isLow)    { slotClass = 'low'; }
 
-    // Build pip bars
+    // Pip bars
     const pips = Array.from({ length: total }, (_, i) => {
-      const t = i < taken ? (isFull ? 'all-taken' : 'taken') : '';
-      return `<div class="slot-pip ${t}"></div>`;
+      let cls = '';
+      if (i < confirmedTaken) cls = 'taken';
+      else if (i < effectiveTaken) cls = 'pending-pip';
+      return `<div class="slot-pip ${cls}"></div>`;
     }).join('');
 
     const modelShort = model.replace('Audi ', '');
-
     const div = document.createElement('div');
     div.className = `car-option${isFull ? ' disabled' : ''}${isSelected ? ' selected' : ''}`;
     div.setAttribute('data-model', model);
     div.innerHTML = `
       <div class="car-option-header">
-        <div class="car-name">
-          ${modelShort}
-          <span>Audi AG · Event Fleet</span>
-        </div>
+        <div class="car-name">${modelShort}<span>Audi AG · Event Fleet</span></div>
         <div class="car-slots ${slotClass}">${slotLabel}</div>
       </div>
       <div class="car-slot-bar">${pips}</div>`;
 
-    if (!isFull) {
-      div.addEventListener('click', () => selectModel(model));
-    }
-
+    if (!isFull) div.addEventListener('click', () => handleModelClick(model));
     container.appendChild(div);
   });
 }
 
-function selectModel(model) {
-  selectedModel = model;
-  document.getElementById('btnPage1Next').disabled = false;
-  renderCarOptions();
+// ── Soft Reservation ──
+async function handleModelClick(model) {
+  if (model === selectedModel) return; // already selected
+
+  // Release previous soft reservation if switching models
+  if (softReservedCarId) {
+    await releaseSoftReservation(softReservedCarId);
+    softReservedCarId = null;
+  }
+
+  // Find a car for this model with a free slot (considering pending)
+  const now = Date.now();
+  const available = Object.entries(carsData).filter(([id, car]) => {
+    if (car.model !== model) return false;
+    const confirmedTaken = car.taken || 0;
+    if (confirmedTaken >= car.slots) return false;
+    const pending = Object.values(car.pending || {}).filter(p => p.expiresAt > now).length;
+    return (confirmedTaken + pending) < car.slots;
+  });
+
+  if (!available.length) {
+    showToast('⚠ No slots available for this model');
+    return;
+  }
+
+  // Pick a random available car
+  const [carId] = available[Math.floor(Math.random() * available.length)];
+
+  // Write soft reservation atomically
+  const expiresAt = now + TIMEOUT_MS;
+  try {
+    await set(ref(db, `cars/${carId}/pending/${sessionId}`), {
+      sessionId,
+      expiresAt
+    });
+    softReservedCarId = carId;
+    selectedModel = model;
+    document.getElementById('btnPage2Next').disabled = false;
+    startCountdown(expiresAt);
+    renderCarOptions();
+  } catch(e) {
+    showToast('⚠ Could not reserve — please try again');
+  }
 }
+
+async function releaseSoftReservation(carId) {
+  if (!carId) return;
+  try {
+    await remove(ref(db, `cars/${carId}/pending/${sessionId}`));
+  } catch(e) { /* silent */ }
+}
+
+// ── Countdown timer ──
+function startCountdown(expiresAt) {
+  clearInterval(timerInterval);
+  timerEnd = expiresAt;
+  const banner  = document.getElementById('timeoutBanner');
+  const display = document.getElementById('timerDisplay');
+  banner.classList.add('visible');
+
+  timerInterval = setInterval(async () => {
+    const remaining = timerEnd - Date.now();
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      banner.classList.remove('visible');
+      // Release and reset
+      await releaseSoftReservation(softReservedCarId);
+      softReservedCarId = null;
+      selectedModel = null;
+      document.getElementById('btnPage2Next').disabled = true;
+      showToast('⏱ Selection expired — please choose again');
+      renderCarOptions();
+      return;
+    }
+    const m = Math.floor(remaining / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    display.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }, 500);
+}
+
+function stopCountdown() {
+  clearInterval(timerInterval);
+  document.getElementById('timeoutBanner').classList.remove('visible');
+}
+
+// Release on page close / navigate away
+window.addEventListener('beforeunload', () => {
+  if (softReservedCarId) releaseSoftReservation(softReservedCarId);
+});
 
 // ── Navigation ──
 window.goToPage = function(page) {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('page' + page).classList.add('active');
   updateSteps(page);
+  // Extend timer when moving forward from car selection
+  if (page === 3 && softReservedCarId) {
+    const newExpiry = Date.now() + TIMEOUT_MS;
+    set(ref(db, `cars/${softReservedCarId}/pending/${sessionId}/expiresAt`), newExpiry);
+    startCountdown(newExpiry);
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+window.goBackFromCars = function() {
+  // Release soft reservation when going back to details
+  if (softReservedCarId) {
+    releaseSoftReservation(softReservedCarId);
+    softReservedCarId = null;
+    selectedModel = null;
+    stopCountdown();
+    document.getElementById('btnPage2Next').disabled = true;
+  }
+  goToPage(1);
 };
 
 function updateSteps(page) {
@@ -1194,19 +763,16 @@ function updateSteps(page) {
     s.classList.remove('active', 'done');
     if (i < page) s.classList.add('done');
     else if (i === page) s.classList.add('active');
-    if (i < 4) {
-      const l = document.getElementById('line' + i);
-      l.classList.toggle('done', i < page);
-    }
+    if (i < 4) document.getElementById('line' + i).classList.toggle('done', i < page);
   }
 }
 
-// ── Page 2 validation ──
-window.validatePage2 = function() {
+// ── Page 1 validation ──
+window.validatePage1 = function() {
   let valid = true;
   const fields = ['firstName','lastName','email','dob','licence','address'];
   fields.forEach(id => {
-    const el = document.getElementById(id);
+    const el  = document.getElementById(id);
     const err = document.getElementById('err-' + id);
     let ok = el.value.trim() !== '';
     if (id === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
@@ -1214,59 +780,45 @@ window.validatePage2 = function() {
     err.classList.toggle('visible', !ok);
     if (!ok) valid = false;
   });
-  if (valid) goToPage(3);
+  if (valid) goToPage(2);
 };
 
 // ── Signature ──
 const sigCanvas = document.getElementById('signatureCanvas');
-const sigCtx = sigCanvas.getContext('2d');
-let drawing = false;
-let hasSig = false;
+const sigCtx    = sigCanvas.getContext('2d');
+let drawing = false, hasSig = false;
 
-function resizeSigCanvas() {
+function resizeSig() {
   const rect = sigCanvas.getBoundingClientRect();
-  sigCanvas.width  = rect.width  * window.devicePixelRatio;
-  sigCanvas.height = rect.height * window.devicePixelRatio;
-  sigCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  sigCtx.strokeStyle = '#111';
-  sigCtx.lineWidth = 2.5;
-  sigCtx.lineCap = 'round';
-  sigCtx.lineJoin = 'round';
+  sigCanvas.width  = rect.width  * (window.devicePixelRatio || 1);
+  sigCanvas.height = rect.height * (window.devicePixelRatio || 1);
+  sigCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  sigCtx.strokeStyle = '#111'; sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round'; sigCtx.lineJoin = 'round';
 }
+window.addEventListener('resize', resizeSig);
+resizeSig();
 
-window.addEventListener('resize', resizeSigCanvas);
-resizeSigCanvas();
-
-function getPos(e) {
+function pos(e) {
   const r = sigCanvas.getBoundingClientRect();
-  const src = e.touches ? e.touches[0] : e;
-  return { x: src.clientX - r.left, y: src.clientY - r.top };
+  const s = e.touches ? e.touches[0] : e;
+  return { x: s.clientX - r.left, y: s.clientY - r.top };
 }
 
-sigCanvas.addEventListener('mousedown',  e => { drawing = true; sigCtx.beginPath(); const p = getPos(e); sigCtx.moveTo(p.x, p.y); });
-sigCanvas.addEventListener('mousemove',  e => { if (!drawing) return; const p = getPos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); hasSig = true; });
-sigCanvas.addEventListener('mouseup',    () => { drawing = false; });
-sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; sigCtx.beginPath(); const p = getPos(e); sigCtx.moveTo(p.x, p.y); }, { passive: false });
-sigCanvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); hasSig = true; }, { passive: false });
-sigCanvas.addEventListener('touchend',   () => { drawing = false; });
+sigCanvas.addEventListener('mousedown',  e => { drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); });
+sigCanvas.addEventListener('mousemove',  e => { if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; });
+sigCanvas.addEventListener('mouseup',    () => drawing=false);
+sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; sigCtx.beginPath(); const p=pos(e); sigCtx.moveTo(p.x,p.y); }, {passive:false});
+sigCanvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing)return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); hasSig=true; }, {passive:false});
+sigCanvas.addEventListener('touchend',   () => drawing=false);
 
-window.clearSignature = function() {
-  sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
-  hasSig = false;
-};
-
-window.updateConsentBtn = function() {
-  document.getElementById('btnSign').disabled = !document.getElementById('consent').checked;
-};
+window.clearSignature = () => { sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); hasSig=false; };
+window.updateConsentBtn = () => { document.getElementById('btnSign').disabled = !document.getElementById('consent').checked; };
 
 window.validatePage3 = function() {
-  if (!hasSig) {
-    document.getElementById('err-sig').classList.add('visible');
-    return;
-  }
+  if (!hasSig) { document.getElementById('err-sig').classList.add('visible'); return; }
   document.getElementById('err-sig').classList.remove('visible');
 
-  // Populate review
   const first = document.getElementById('firstName').value.trim();
   const last  = document.getElementById('lastName').value.trim();
   document.getElementById('rev-name').textContent    = first + ' ' + last;
@@ -1276,22 +828,12 @@ window.validatePage3 = function() {
   document.getElementById('rev-address').textContent = document.getElementById('address').value.trim();
   document.getElementById('rev-model').textContent   = selectedModel;
 
-  // Find an available car for this model (we'll assign on submit)
-  const available = Object.entries(carsData).filter(([id, c]) =>
-    c.model === selectedModel && (c.taken || 0) < c.slots
-  );
-
-  if (available.length === 0) {
-    showToast('⚠ No slots left for this model');
-    return;
-  }
-
-  // Pick randomly among available cars for this model
-  const [carId, car] = available[Math.floor(Math.random() * available.length)];
-  assignedCarId = carId;
+  // Find the plate for the soft-reserved car
+  const car = carsData[softReservedCarId];
+  if (!car) { showToast('⚠ Session expired — please go back and select a vehicle'); return; }
+  assignedCarId = softReservedCarId;
   assignedPlate = car.plate;
   document.getElementById('rev-plate').textContent = car.plate;
-
   goToPage(4);
 };
 
@@ -1299,57 +841,51 @@ window.validatePage3 = function() {
 window.submitRegistration = async function() {
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
-  showLoading('Reserving your vehicle…');
+  showLoading('Confirming your vehicle…');
 
-  // Generate participant ID
   participantId = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
   try {
-    // Atomic transaction — claim the car slot
-    let claimed = false;
+    // Convert soft reservation to confirmed
+    let ok = false;
     await runTransaction(ref(db, `cars/${assignedCarId}`), car => {
       if (!car) return null;
-      if ((car.taken || 0) >= car.slots) {
-        return; // abort — full
-      }
+      if ((car.taken || 0) >= car.slots) return; // abort
       car.taken = (car.taken || 0) + 1;
       if (!car.participants) car.participants = {};
-      car.participants[participantId] = {
-        pid: participantId,
-        registeredAt: Date.now()
-      };
-      claimed = true;
+      car.participants[participantId] = { pid: participantId, confirmedAt: Date.now() };
+      // Remove our soft reservation
+      if (car.pending) delete car.pending[sessionId];
+      ok = true;
       return car;
     });
 
-    if (!claimed) {
+    if (!ok) {
       hideLoading();
-      showToast('⚠ This car just filled up — please go back and choose again');
+      showToast('⚠ Car just filled — please go back and pick another');
       btn.disabled = false;
       return;
     }
 
+    stopCountdown();
+    softReservedCarId = null;
+
     showLoading('Generating your agreement…');
     await generateAndEmailPDF();
 
-    showLoading('Almost done…');
-    await new Promise(r => setTimeout(r, 600));
-
     hideLoading();
     showSuccessScreen();
-
   } catch(e) {
     hideLoading();
-    showToast('✗ Error: ' + e.message);
+    showToast('✗ ' + e.message);
     btn.disabled = false;
   }
 };
 
-// ── PDF Generation ──
+// ── PDF ──
 async function generateAndEmailPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
   const first   = document.getElementById('firstName').value.trim();
   const last    = document.getElementById('lastName').value.trim();
   const email   = document.getElementById('email').value.trim();
@@ -1358,233 +894,117 @@ async function generateAndEmailPDF() {
   const address = document.getElementById('address').value.trim();
   const W = 210, M = 20;
 
-  // ── Background ──
-  doc.setFillColor(8, 8, 8);
-  doc.rect(0, 0, W, 297, 'F');
+  doc.setFillColor(8,8,8); doc.rect(0,0,W,297,'F');
+  doc.setFillColor(187,10,33); doc.rect(0,0,6,297,'F');
+  doc.setFillColor(17,17,17); doc.rect(0,0,W,52,'F');
 
-  // ── Red accent bar ──
-  doc.setFillColor(187, 10, 33);
-  doc.rect(0, 0, 6, 297, 'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(10); doc.setFont('helvetica','bold');
+  doc.text('○  ○  ○  ○', M+4, 18);
+  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(150,150,150);
+  doc.text('INVESTOR RELATIONS · VEHICLE EXPERIENCE', M+4, 25);
+  doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('VEHICLE BORROWING AGREEMENT', M+4, 40);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,100);
+  doc.text('17 SEPTEMBER 2026  ·  AUDI INVESTOR RELATIONS EVENT', M+4, 48);
 
-  // ── Header area ──
-  doc.setFillColor(17, 17, 17);
-  doc.rect(0, 0, W, 52, 'F');
+  doc.setFillColor(40,10,15); doc.rect(M,58,W-M*2,28,'F');
+  doc.setDrawColor(187,10,33); doc.setLineWidth(0.5); doc.rect(M,58,W-M*2,28);
+  doc.setFontSize(7); doc.setTextColor(187,10,33); doc.setFont('helvetica','bold');
+  doc.text('ASSIGNED VEHICLE', M+6, 66);
+  doc.setFontSize(16); doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
+  doc.text(selectedModel.toUpperCase(), M+6, 76);
+  doc.setFontSize(10); doc.setTextColor(150,150,150); doc.setFont('helvetica','normal');
+  doc.text('Licence Plate:', M+6, 83);
+  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
+  doc.text(assignedPlate, M+40, 83);
 
-  // ── Audi rings (text representation) ──
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'bold');
-  doc.text('○  ○  ○  ○', M + 4, 18);
-
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(150, 150, 150);
-  doc.text('INVESTOR RELATIONS · VEHICLE EXPERIENCE', M + 4, 25);
-
-  doc.setFontSize(20);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(255, 255, 255);
-  doc.text('VEHICLE BORROWING AGREEMENT', M + 4, 40);
-
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 100, 100);
-  doc.text('17 SEPTEMBER 2026  ·  AUDI INVESTOR RELATIONS EVENT', M + 4, 48);
-
-  // ── Vehicle block ──
-  doc.setFillColor(187, 10, 33, 0.15);
-  doc.setFillColor(40, 10, 15);
-  doc.rect(M, 58, W - M * 2, 28, 'F');
-  doc.setDrawColor(187, 10, 33);
-  doc.setLineWidth(0.5);
-  doc.rect(M, 58, W - M * 2, 28);
-
-  doc.setFontSize(7);
-  doc.setTextColor(187, 10, 33);
-  doc.setFont('helvetica', 'bold');
-  doc.text('ASSIGNED VEHICLE', M + 6, 66);
-
-  doc.setFontSize(16);
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.text(selectedModel.toUpperCase(), M + 6, 76);
-
-  doc.setFontSize(10);
-  doc.setTextColor(150, 150, 150);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Licence Plate:', M + 6, 83);
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.text(assignedPlate, M + 40, 83);
-
-  // ── Participant details ──
   const rows = [
-    ['FULL NAME',         first + ' ' + last],
-    ['EMAIL ADDRESS',     email],
-    ['DATE OF BIRTH',     dob],
-    ["DRIVER'S LICENCE",  licence],
-    ['ADDRESS',           address],
-    ['PARTICIPANT ID',    participantId.toUpperCase()],
-    ['REGISTRATION DATE', new Date().toLocaleDateString('en-GB')],
+    ['FULL NAME',        first+' '+last],
+    ['EMAIL ADDRESS',    email],
+    ['DATE OF BIRTH',    dob],
+    ["DRIVER'S LICENCE", licence],
+    ['ADDRESS',          address],
+    ['PARTICIPANT ID',   participantId.toUpperCase()],
+    ['DATE',             new Date().toLocaleDateString('en-GB')],
   ];
-
   let y = 98;
-  doc.setFontSize(7);
-
   rows.forEach((row, i) => {
-    if (i % 2 === 0) {
-      doc.setFillColor(20, 20, 20);
-      doc.rect(M, y - 4, W - M * 2, 10, 'F');
-    }
-    doc.setTextColor(100, 100, 100);
-    doc.setFont('helvetica', 'bold');
-    doc.text(row[0], M + 4, y + 2);
-    doc.setTextColor(220, 220, 220);
-    doc.setFont('helvetica', 'normal');
-    // Truncate long values
-    const val = doc.splitTextToSize(String(row[1]), 100)[0];
-    doc.text(val, M + 60, y + 2);
+    if (i%2===0) { doc.setFillColor(20,20,20); doc.rect(M,y-4,W-M*2,10,'F'); }
+    doc.setFontSize(7); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
+    doc.text(row[0], M+4, y+2);
+    doc.setTextColor(220,220,220); doc.setFont('helvetica','normal');
+    doc.text(doc.splitTextToSize(String(row[1]),100)[0], M+60, y+2);
     y += 10;
   });
 
-  // ── Legal text ──
   y += 6;
-  doc.setFillColor(15, 15, 15);
-  doc.rect(M, y, W - M * 2, 44, 'F');
-  doc.setDrawColor(40, 40, 40);
-  doc.rect(M, y, W - M * 2, 44);
+  doc.setFillColor(15,15,15); doc.rect(M,y,W-M*2,44,'F');
+  doc.setDrawColor(40,40,40); doc.rect(M,y,W-M*2,44);
+  doc.setFontSize(6.5); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
+  doc.text('TERMS & CONDITIONS', M+4, y+6);
+  doc.setFont('helvetica','normal'); doc.setTextColor(90,90,90);
+  const legal = "I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received.";
+  doc.text(doc.splitTextToSize(legal, W-M*2-8), M+4, y+12);
 
-  doc.setFontSize(6.5);
-  doc.setTextColor(100, 100, 100);
-  doc.setFont('helvetica', 'bold');
-  doc.text('TERMS & CONDITIONS', M + 4, y + 6);
-
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(90, 90, 90);
-  const legal = 'I, the undersigned, hereby confirm that I hold a valid driver\'s licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. Audi AG and the event organiser reserve the right to terminate borrowing privileges at any time.';
-  const lines = doc.splitTextToSize(legal, W - M * 2 - 8);
-  doc.text(lines, M + 4, y + 12);
-
-  // ── Signature ──
   y += 52;
-  doc.setFontSize(7);
-  doc.setTextColor(100, 100, 100);
-  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7); doc.setTextColor(100,100,100); doc.setFont('helvetica','bold');
   doc.text('PARTICIPANT SIGNATURE', M, y);
+  doc.addImage(sigCanvas.toDataURL('image/png'), 'PNG', M, y+4, 80, 22);
+  doc.setDrawColor(60,60,60); doc.setLineWidth(0.3); doc.line(M, y+28, M+80, y+28);
+  doc.setFontSize(7); doc.setTextColor(80,80,80); doc.setFont('helvetica','normal');
+  doc.text(first+' '+last+'  ·  '+new Date().toLocaleString('en-GB'), M, y+33);
 
-  // Get signature image from canvas
-  const sigDataUrl = sigCanvas.toDataURL('image/png');
-  doc.addImage(sigDataUrl, 'PNG', M, y + 4, 80, 22);
-
-  doc.setDrawColor(60, 60, 60);
-  doc.setLineWidth(0.3);
-  doc.line(M, y + 28, M + 80, y + 28);
-
-  doc.setFontSize(7);
-  doc.setTextColor(80, 80, 80);
-  doc.setFont('helvetica', 'normal');
-  doc.text(first + ' ' + last + '  ·  ' + new Date().toLocaleString('en-GB'), M, y + 33);
-
-  // ── QR Code ──
-  const qrPayload = JSON.stringify({
-    pid: participantId,
-    cid: assignedCarId,
-    name: first + ' ' + last,
-    plate: assignedPlate,
-    model: selectedModel
-  });
-
-  const qrDataUrl = await new Promise(resolve => {
-    QRCode.toDataURL(qrPayload, {
-      width: 200, margin: 1,
-      color: { dark: '#ffffff', light: '#080808' }
-    }, (err, url) => resolve(url));
-  });
-
+  // QR Code
+  const qrPayload = JSON.stringify({ pid: participantId, cid: assignedCarId, name: first+' '+last, plate: assignedPlate, model: selectedModel });
+  const qrUrl = await new Promise(res => QRCode.toDataURL(qrPayload, { width:200, margin:1, color:{ dark:'#ffffff', light:'#080808' } }, (e,u)=>res(u)));
   const qrX = W - M - 38;
-  doc.setFillColor(8, 8, 8);
-  doc.rect(qrX - 2, y - 2, 42, 42, 'F');
-  doc.addImage(qrDataUrl, 'PNG', qrX, y, 38, 38);
+  doc.setFillColor(8,8,8); doc.rect(qrX-2,y-2,42,42,'F');
+  doc.addImage(qrUrl,'PNG', qrX, y, 38, 38);
+  doc.setFontSize(5.5); doc.setTextColor(80,80,80); doc.text('EVENT QR CODE', qrX+4, y+41);
 
-  doc.setFontSize(5.5);
-  doc.setTextColor(80, 80, 80);
-  doc.text('EVENT QR CODE', qrX + 4, y + 41);
+  doc.setFillColor(17,17,17); doc.rect(0,280,W,17,'F');
+  doc.setFontSize(6); doc.setTextColor(60,60,60);
+  doc.text('AUDI INVESTOR RELATIONS · VEHICLE EXPERIENCE · 17.09.2026 · CONFIDENTIAL', M, 289);
+  doc.setTextColor(80,80,80);
+  doc.text('ID: '+participantId.toUpperCase(), W-M-doc.getTextWidth('ID: '+participantId.toUpperCase()), 289);
 
-  // ── Footer ──
-  doc.setFillColor(17, 17, 17);
-  doc.rect(0, 280, W, 17, 'F');
-  doc.setFontSize(6);
-  doc.setTextColor(60, 60, 60);
-  doc.text('AUDI INVESTOR RELATIONS · VEHICLE EXPERIENCE EVENT · 17.09.2026 · CONFIDENTIAL', M, 289);
-  doc.setTextColor(80, 80, 80);
-  doc.text('ID: ' + participantId.toUpperCase(), W - M - doc.getTextWidth('ID: ' + participantId.toUpperCase()), 289);
-
-  // ── Save & open mail ──
-  const lastName  = last.replace(/\s+/g, '');
-  const plate     = assignedPlate.replace(/\s+/g, '');
-  const filename  = `${lastName}_${plate}.pdf`;
-
-  const pdfBlob   = doc.output('blob');
-  const pdfUrl    = URL.createObjectURL(pdfBlob);
-
-  // Download the PDF
+  // Save PDF
+  const fname = `${last.replace(/\s+/g,'')}_${assignedPlate.replace(/\s+/g,'')}.pdf`;
+  const blob  = doc.output('blob');
   const a = document.createElement('a');
-  a.href = pdfUrl;
-  a.download = filename;
-  a.click();
+  a.href = URL.createObjectURL(blob); a.download = fname; a.click();
 
-  // Open mail app
+  // Open mail
   const subject = encodeURIComponent(`Audi IR Event — Vehicle Agreement — ${first} ${last}`);
-  const body = encodeURIComponent(
-    `Dear ${first},\n\nPlease find attached your signed Vehicle Borrowing Agreement for the Audi Investor Relations Event on 17 September 2026.\n\nVehicle: ${selectedModel}\nLicence Plate: ${assignedPlate}\nParticipant ID: ${participantId.toUpperCase()}\n\nPlease bring this agreement (or your QR code) to the key desk on the day of the event.\n\nBest regards,\nAudi Investor Relations Team`
-  );
-  const mailTo = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`;
+  const body = encodeURIComponent(`Dear ${first},\n\nPlease find attached your signed Vehicle Borrowing Agreement for the Audi Investor Relations Event on 17 September 2026.\n\nVehicle: ${selectedModel}\nLicence Plate: ${assignedPlate}\nParticipant ID: ${participantId.toUpperCase()}\n\nPlease show your QR code at the key desk on the day.\n\nBest regards,\nAudi Investor Relations Team`);
+  setTimeout(() => { window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`; }, 600);
 
-  setTimeout(() => { window.location.href = mailTo; }, 800);
-
-  // Store QR payload for success screen
   window._qrPayload = qrPayload;
 }
 
-// ── Success Screen ──
+// ── Success ──
 function showSuccessScreen() {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('stepsBar').style.display = 'none';
-
   const first = document.getElementById('firstName').value.trim();
   const last  = document.getElementById('lastName').value.trim();
-  document.getElementById('suc-name').textContent  = first + ' ' + last;
+  document.getElementById('suc-name').textContent  = first+' '+last;
   document.getElementById('suc-car').textContent   = selectedModel;
   document.getElementById('suc-plate').textContent = assignedPlate;
-
-  // Render QR
-  QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, {
-    width: 200, margin: 1,
-    color: { dark: '#080808', light: '#ffffff' }
-  });
-
+  QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
   document.getElementById('successScreen').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 // ── Helpers ──
-function showLoading(text) {
-  document.getElementById('loadingText').textContent = text || 'Processing…';
-  document.getElementById('loadingOverlay').classList.add('active');
-}
-
-function hideLoading() {
-  document.getElementById('loadingOverlay').classList.remove('active');
-}
+function showLoading(t) { document.getElementById('loadingText').textContent=t||'Processing…'; document.getElementById('loadingOverlay').classList.add('active'); }
+function hideLoading()   { document.getElementById('loadingOverlay').classList.remove('active'); }
 
 window.showToast = function(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), 4000);
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 4000);
 };
-
 </script>
 </body>
 </html>
