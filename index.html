@@ -298,6 +298,25 @@ body::before {
 .next-steps { background: var(--red-dim); border: 1px solid rgba(187,10,33,0.25); border-radius: 6px; padding: 16px 20px; width: 100%; max-width: 360px; text-align: left; font-size: 0.82rem; line-height: 1.7; color: var(--grey); }
 .next-steps strong { color: var(--white); display: block; margin-bottom: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
+.btn-action {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border2);
+  background: var(--dark2); cursor: pointer; width: 100%;
+  -webkit-tap-highlight-color: transparent; transition: all 0.2s;
+  text-align: left;
+}
+.btn-action:hover { border-color: rgba(187,10,33,0.4); background: var(--dark3); }
+.btn-action:active { transform: scale(0.98); }
+.btn-action svg:first-child { color: var(--red); flex-shrink: 0; }
+.btn-action-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.btn-action-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; color: var(--white); text-transform: uppercase; }
+.btn-action-sub { font-size: 0.72rem; color: var(--muted); font-family: 'Barlow', sans-serif; font-weight: 400; }
+.btn-action-arrow { color: var(--grey2); flex-shrink: 0; }
+.btn-action-mail { border-color: rgba(187,10,33,0.3); background: var(--red-dim); }
+.btn-action-mail svg:first-child { color: var(--red); }
+.btn-action-mail .btn-action-label { color: #ff8899; }
+.btn-action-mail:hover { border-color: var(--red); }
+
 /* ── Toast ── */
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--dark3); border: 1px solid var(--border2); color: var(--white); padding: 12px 20px; border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; z-index: 999; transition: transform 0.3s cubic-bezier(.22,1,.36,1); white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
 .toast.show { transform: translateX(-50%) translateY(0); }
@@ -655,18 +674,50 @@ body::before {
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
   </div>
   <div class="success-title">You're Registered</div>
-  <p class="success-sub">Your agreement has been generated and your email app has opened with it attached. Your QR code is your event ID — show it at the key desk.</p>
+  <p class="success-sub">Your borrowing agreement is ready. Complete the three steps below — all on your own terms.</p>
+
   <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
+
   <div class="success-info">
     <div class="review-row"><span class="review-key">Name</span><span class="review-val" id="suc-name">—</span></div>
     <div class="review-row"><span class="review-key">Vehicle</span><span class="review-val" id="suc-car">—</span></div>
     <div class="review-row"><span class="review-key">Plate</span><span class="review-val" id="suc-plate">—</span></div>
   </div>
-  <div class="next-steps" id="nextSteps">
-    <strong>What happens next</strong>
-    1. The signed PDF has downloaded to your device.<br>
-    2. Your email app has opened — <strong style="color:var(--white)">please attach the PDF</strong> before sending.<br>
-    3. Show this QR code at the key desk on the day.
+
+  <div class="success-actions">
+    <button class="btn btn-action" onclick="downloadQR()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="18" width="3" height="3"/></svg>
+      <div class="btn-action-text">
+        <span class="btn-action-label">Save QR Code</span>
+        <span class="btn-action-sub">Download as image to your device</span>
+      </div>
+      <svg class="btn-action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
+    </button>
+
+    <button class="btn btn-action" onclick="downloadPDF()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div class="btn-action-text">
+        <span class="btn-action-label">Download Agreement</span>
+        <span class="btn-action-sub">Save signed PDF to your device</span>
+      </div>
+      <svg class="btn-action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
+    </button>
+
+    <button class="btn btn-action btn-action-mail" onclick="openEmail()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div class="btn-action-text">
+        <span class="btn-action-label">Send Email</span>
+        <span class="btn-action-sub">Open mail app — attach PDF before sending</span>
+      </div>
+      <svg class="btn-action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <div class="next-steps">
+    <strong>Checklist</strong>
+    1. Save your QR code — you'll need it at the key desk.<br>
+    2. Download the signed agreement PDF.<br>
+    3. Email it to us with the PDF attached.
   </div>
 </div>
 
@@ -1267,14 +1318,14 @@ async function generateAndEmailPDF() {
   doc.text(idText, W - M - doc.getTextWidth(idText), 290);
 
   // ── Save & email ──
+  // ── Store PDF blob and email data for separate buttons ──
   const fname = `${last.replace(/\s+/g,'')}_${assignedPlate.replace(/\s+/g,'')}.pdf`;
-  doc.save(fname);
-
-  // Build email body — addressed to IR team, CC participant
-  // Note: mailto cannot attach files (browser security restriction)
-  // PDF has already downloaded — instructions to attach it manually are in the body
-  const subject = encodeURIComponent(`Vehicle Borrowing Agreement — ${first} ${last} — ${company}`);
-  const body = encodeURIComponent(
+  window._pdfDoc   = doc;
+  window._pdfFname = fname;
+  window._emailData = {
+    to: ORG_EMAIL, cc: email,
+    subject: `Vehicle Borrowing Agreement — ${first} ${last} — ${company}`,
+    body:
 `⚠ ACTION REQUIRED: Please attach the PDF file "${fname}" (downloaded to your device) before sending this email.
 
 ---
@@ -1302,16 +1353,36 @@ Event Date:       17 September 2026
 Best regards,
 ${first} ${last}
 ${company}`
-  );
-
-  setTimeout(() => {
-    window.location.href = `mailto:${ORG_EMAIL}?cc=${encodeURIComponent(email)}&subject=${subject}&body=${body}`;
-  }, 1000);
+  };
 
   window._qrPayload = qrPayload;
 }
 
-// ── Success ──
+// ── Success screen actions ──
+window.downloadQR = function() {
+  const canvas = document.getElementById('qrCanvas');
+  const a = document.createElement('a');
+  a.href     = canvas.toDataURL('image/png');
+  a.download = 'AudiIR_EventQR.png';
+  a.click();
+  showToast('✓ QR code saved');
+};
+
+window.downloadPDF = function() {
+  if (!window._pdfDoc) { showToast('⚠ Please complete registration first'); return; }
+  window._pdfDoc.save(window._pdfFname);
+  showToast('✓ PDF downloaded');
+};
+
+window.openEmail = function() {
+  if (!window._emailData) { showToast('⚠ Please complete registration first'); return; }
+  const d = window._emailData;
+  const url = `mailto:${d.to}?cc=${encodeURIComponent(d.cc)}&subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.body)}`;
+  // Use a hidden link to avoid navigating away from the success screen
+  const a = document.createElement('a');
+  a.href = url;
+  a.click();
+};
 function showSuccessScreen() {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('stepsBar').style.display = 'none';
