@@ -11,75 +11,27 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:  #080808;
-  --dark:   #111111;
-  --dark2:  #161616;
-  --dark3:  #1e1e1e;
-  --red:    #BB0A21;
-  --red-dim:rgba(187,10,33,0.12);
-  --green:  #1a7a45;
-  --green-bright: #4caf50;
-  --green-light: rgba(26,122,69,0.15);
-  --amber:  #b8860b;
-  --amber-light: rgba(184,134,11,0.12);
-  --white:  #ffffff;
-  --grey:   #888888;
-  --grey2:  #444444;
-  --border: rgba(255,255,255,0.07);
-  --border2:rgba(255,255,255,0.13);
-  --text:   #e8e8e8;
-  --muted:  #555555;
+  --black:  #080808; --dark: #111111; --dark2: #161616; --dark3: #1e1e1e;
+  --red: #BB0A21; --red-dim: rgba(187,10,33,0.12);
+  --green: #1a7a45; --green-bright: #4caf50; --green-light: rgba(26,122,69,0.15);
+  --white: #ffffff; --grey: #888888; --grey2: #444444;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+  --text: #e8e8e8; --muted: #555555;
 }
 
-html, body {
-  height: 100%; background: var(--black);
-  color: var(--text); font-family: 'Barlow', sans-serif;
-  overflow: hidden;
-}
+html, body { height: 100%; background: var(--black); color: var(--text); font-family: 'Barlow', sans-serif; overflow: hidden; }
 
 /* ── Login ── */
-.login-screen {
-  position: fixed; inset: 0; background: var(--black);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000; padding: 24px;
-}
-
-.login-box {
-  background: var(--dark2); border: 1px solid var(--border2);
-  border-radius: 16px; padding: 32px 24px; width: 100%; max-width: 340px;
-  display: flex; flex-direction: column; gap: 18px;
-}
-
-.login-logo { display: flex; justify-content: center; margin-bottom: 4px; }
+.login-screen { position: fixed; inset: 0; background: var(--black); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px; }
+.login-box { background: var(--dark2); border: 1px solid var(--border2); border-radius: 16px; padding: 32px 24px; width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 18px; }
+.login-logo { display: flex; justify-content: center; }
 .login-logo svg { height: 22px; }
-
-.login-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.2rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 0.04em; color: var(--white); text-align: center;
-}
-
+.login-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); text-align: center; }
 .login-field { display: flex; flex-direction: column; gap: 6px; }
-.login-field label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey);
-}
-.login-field input {
-  background: var(--dark3); border: 1px solid var(--border2);
-  border-radius: 8px; padding: 13px 14px;
-  font-family: 'Barlow', sans-serif; font-size: 1rem; color: var(--white);
-  outline: none; -webkit-appearance: none; transition: border-color 0.2s;
-}
+.login-field label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey); }
+.login-field input { background: var(--dark3); border: 1px solid var(--border2); border-radius: 8px; padding: 13px 14px; font-family: 'Barlow', sans-serif; font-size: 1rem; color: var(--white); outline: none; -webkit-appearance: none; transition: border-color 0.2s; }
 .login-field input:focus { border-color: var(--red); }
-
-.login-btn {
-  background: var(--red); color: var(--white); border: none;
-  border-radius: 10px; padding: 15px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent;
-}
-
+.login-btn { background: var(--red); color: var(--white); border: none; border-radius: 10px; padding: 15px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .login-error { font-size: 0.78rem; color: var(--red); text-align: center; display: none; }
 .login-error.visible { display: block; }
 
@@ -88,302 +40,136 @@ html, body {
 .app.visible { display: flex; }
 
 /* ── Header ── */
-.header {
-  background: var(--dark2); border-bottom: 1px solid var(--border);
-  padding: 12px 20px; display: flex; align-items: center;
-  justify-content: space-between; flex-shrink: 0;
-}
+.header { background: var(--dark2); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .header-logo { display: flex; align-items: center; gap: 10px; }
 .header-logo svg { height: 18px; }
-.header-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--white);
-}
+.header-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); }
 .header-sub { font-size: 0.65rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; }
-
 .live-dot-wrap { display: flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; color: var(--green-bright); letter-spacing: 0.1em; }
 .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
 /* ── Bottom Tabs ── */
-.bottom-tabs {
-  display: flex; background: var(--dark2);
-  border-top: 1px solid var(--border); flex-shrink: 0;
-  padding: 0 0 env(safe-area-inset-bottom);
-}
-
-.btab {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: 4px; padding: 10px 4px 8px; border: none; background: transparent;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.62rem;
-  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); cursor: pointer; transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent; position: relative;
-}
+.bottom-tabs { display: flex; background: var(--dark2); border-top: 1px solid var(--border); flex-shrink: 0; padding: 0 0 env(safe-area-inset-bottom); }
+.btab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px 8px; border: none; background: transparent; font-family: 'Barlow Condensed', sans-serif; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; position: relative; }
 .btab svg { width: 20px; height: 20px; opacity: 0.5; transition: opacity 0.2s; }
 .btab.active { color: var(--white); }
 .btab.active svg { opacity: 1; }
-.btab.active::after {
-  content: ''; position: absolute; top: 0; left: 20%; right: 20%;
-  height: 2px; background: var(--red); border-radius: 0 0 2px 2px;
-}
-
-.btab-badge {
-  position: absolute; top: 6px; right: calc(50% - 18px);
-  background: var(--red); color: var(--white);
-  border-radius: 10px; padding: 1px 5px;
-  font-size: 0.55rem; font-weight: 700; min-width: 16px; text-align: center;
-  display: none;
-}
+.btab.active::after { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--red); border-radius: 0 0 2px 2px; }
+.btab-badge { position: absolute; top: 6px; right: calc(50% - 18px); background: var(--red); color: var(--white); border-radius: 10px; padding: 1px 5px; font-size: 0.55rem; font-weight: 700; min-width: 16px; text-align: center; display: none; }
 .btab-badge.visible { display: block; }
 
 /* ── Content ── */
 .content { flex: 1; overflow: hidden; position: relative; }
-.tab-panel { display: none; position: absolute; inset: 0; overflow-y: auto; flex-direction: column; }
+.tab-panel { display: none; position: absolute; inset: 0; overflow-y: auto; flex-direction: column; padding: 20px; gap: 14px; }
 .tab-panel.active { display: flex; }
 
 /* ── Section label ── */
-.section-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--red);
-  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-}
+.section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 10px; }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
 
-/* ── Camera Scanner ── */
-.scanner-wrap {
-  position: relative; width: 100%; aspect-ratio: 1;
-  background: var(--dark); overflow: hidden; flex-shrink: 0;
-}
+/* ── Scanner Modal ── */
+.scanner-modal { display: none; position: fixed; inset: 0; background: var(--black); z-index: 200; flex-direction: column; }
+.scanner-modal.open { display: flex; }
 
-.scanner-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scanner-modal-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; background: var(--dark2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.scanner-modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); }
+.scanner-close-btn { background: var(--dark3); border: 1px solid var(--border2); color: var(--grey); border-radius: 8px; padding: 8px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
-.scanner-overlay {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  pointer-events: none;
-}
+.scanner-viewport { position: relative; flex: 1; background: var(--dark); overflow: hidden; }
+.scanner-viewport video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.scan-frame { width: 58%; aspect-ratio: 1; position: relative; }
-
-.scan-frame::before, .scan-frame::after,
-.scan-frame .cbr, .scan-frame .cbl {
-  content: ''; position: absolute; width: 22px; height: 22px;
-  border-color: #fff; border-style: solid;
-}
-.scan-frame::before { top:0;left:0; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
-.scan-frame::after  { top:0;right:0; border-width:3px 3px 0 0; border-radius:0 4px 0 0; }
-.scan-frame .cbr { bottom:0;right:0; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
-.scan-frame .cbl { bottom:0;left:0; border-width:0 0 3px 3px; border-radius:0 0 0 4px; }
-
-.scan-line {
-  position: absolute; left: 4%; width: 92%; height: 2px;
-  background: linear-gradient(90deg, transparent, #fff, transparent);
-  animation: scanLine 2s ease-in-out infinite; top: 0;
-}
+.scan-frame-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.scan-frame { width: 65%; aspect-ratio: 1; position: relative; }
+.scan-frame::before,.scan-frame::after,.scan-frame .cbr,.scan-frame .cbl { content: ''; position: absolute; width: 26px; height: 26px; border-color: #fff; border-style: solid; }
+.scan-frame::before { top:0;left:0; border-width:3px 0 0 3px; border-radius:5px 0 0 0; }
+.scan-frame::after  { top:0;right:0; border-width:3px 3px 0 0; border-radius:0 5px 0 0; }
+.scan-frame .cbr { bottom:0;right:0; border-width:0 3px 3px 0; border-radius:0 0 5px 0; }
+.scan-frame .cbl { bottom:0;left:0; border-width:0 0 3px 3px; border-radius:0 0 0 5px; }
+.scan-line { position: absolute; left: 4%; width: 92%; height: 2px; background: linear-gradient(90deg, transparent, var(--red), transparent); animation: scanLine 2s ease-in-out infinite; top: 0; }
 @keyframes scanLine { 0%{top:4%;opacity:0;} 10%{opacity:1;} 90%{opacity:1;} 100%{top:96%;opacity:0;} }
 
-/* Result overlay */
-.scan-result-overlay {
-  position: absolute; inset: 0; display: none;
-  align-items: center; justify-content: center; flex-direction: column;
-  gap: 12px;
-}
-.scan-result-overlay.show { display: flex; }
-.scan-result-overlay.green { background: rgba(26,122,69,0.92); }
-.scan-result-overlay.red   { background: rgba(187,10,33,0.92); }
+.scan-hint { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
 
-.result-icon-big {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 2rem;
-}
-
-.result-text-big {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.4rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 0.04em; color: var(--white); text-align: center;
-}
-
-.result-sub {
-  font-size: 0.82rem; color: rgba(255,255,255,0.7);
-  text-align: center; padding: 0 24px; line-height: 1.5;
-}
-
-/* ── Scan Area Below Camera ── */
-.scan-area { padding: 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
-
-/* ── Result Card ── */
-.result-card {
-  border-radius: 12px; padding: 16px 18px;
-  border: 1px solid var(--border2); background: var(--dark2);
-  display: none; flex-direction: column; gap: 10px;
-}
-.result-card.show { display: flex; }
-.result-card.green-card { border-color: rgba(76,175,80,0.4); background: var(--green-light); }
-.result-card.red-card   { border-color: rgba(187,10,33,0.4); background: var(--red-dim); }
-
-.result-card-header { display: flex; align-items: center; gap: 12px; }
-.result-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.result-dot.green { background: var(--green-bright); }
-.result-dot.red   { background: var(--red); }
-.result-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
-.result-card-detail { font-size: 0.8rem; color: var(--grey); line-height: 1.5; }
-
-.result-plate {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem;
-  background: var(--dark3); border: 1px solid var(--border2);
-  padding: 4px 10px; border-radius: 4px; display: inline-block;
-  color: var(--grey); letter-spacing: 0.06em; margin-top: 2px;
-}
+/* Result flash on scanner */
+.scan-flash { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+.scan-flash.show { display: flex; }
+.scan-flash.ok  { background: rgba(26,122,69,0.94); }
+.scan-flash.bad { background: rgba(187,10,33,0.94); }
+.flash-icon { font-size: 3.5rem; }
+.flash-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; }
+.flash-sub { font-size: 0.85rem; color: rgba(255,255,255,0.75); text-align: center; padding: 0 32px; line-height: 1.5; }
 
 /* ── Buttons ── */
-.btn {
-  display: flex; align-items: center; justify-content: center; gap: 9px;
-  padding: 15px; border-radius: 10px; border: none;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; cursor: pointer; transition: all 0.18s;
-  width: 100%; -webkit-tap-highlight-color: transparent;
-}
+.btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 12px; border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.18s; width: 100%; -webkit-tap-highlight-color: transparent; }
 .btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+.btn-scan    { background: var(--dark2); color: var(--white); border: 1.5px solid var(--border2); }
+.btn-scan:active { border-color: var(--red); }
 .btn-green   { background: var(--green); color: var(--white); }
 .btn-red     { background: var(--red); color: var(--white); }
 .btn-secondary { background: var(--dark3); color: var(--text); border: 1px solid var(--border2); }
-.btn-ghost   { background: transparent; color: var(--grey); border: 1px solid var(--border2); }
-.btn-sm      { padding: 10px; font-size: 0.78rem; }
-.btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+.btn-ghost   { background: transparent; color: var(--grey); border: 1px solid var(--border2); font-size: 0.8rem; padding: 12px; }
+.btn-sm      { padding: 10px 14px; font-size: 0.78rem; width: auto; }
+
+/* ── Result Card ── */
+.result-card { border-radius: 12px; padding: 16px 18px; border: 1px solid var(--border2); background: var(--dark2); display: none; flex-direction: column; gap: 10px; }
+.result-card.show { display: flex; }
+.result-card.ok  { border-color: rgba(76,175,80,0.4); background: var(--green-light); }
+.result-card.bad { border-color: rgba(187,10,33,0.4); background: var(--red-dim); }
+.result-header { display: flex; align-items: center; gap: 12px; }
+.result-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.result-dot.green { background: var(--green-bright); }
+.result-dot.red   { background: var(--red); }
+.result-title  { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+.result-detail { font-size: 0.8rem; color: var(--grey); line-height: 1.5; }
 
 /* ── Car List ── */
-.car-list { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; }
+.car-list { display: flex; flex-direction: column; gap: 8px; }
+.car-item { background: var(--dark2); border: 1.5px solid var(--border2); border-radius: 12px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.18s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; }
+.car-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grey2); transition: background 0.2s; }
+.car-item:active:not(.disabled) { transform: scale(0.98); }
+.car-item:not(.disabled):active::before { background: var(--red); }
+.car-item-plate { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.06em; color: var(--white); flex-shrink: 0; }
+.car-item-model { font-size: 0.8rem; color: var(--grey); flex: 1; line-height: 1.4; }
+.car-item-chevron { color: var(--grey2); flex-shrink: 0; }
 
-.car-item {
-  background: var(--dark2); border: 1.5px solid var(--border2);
-  border-radius: 12px; padding: 16px 18px;
-  display: flex; align-items: center; gap: 14px;
-  cursor: pointer; transition: all 0.18s;
-  -webkit-tap-highlight-color: transparent;
-  position: relative; overflow: hidden;
-}
-.car-item::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; background: var(--grey2); transition: background 0.2s;
-}
-.car-item:active { transform: scale(0.98); }
-.car-item:not(.disabled):hover { border-color: rgba(187,10,33,0.4); }
-.car-item:not(.disabled):hover::before { background: var(--red); }
-.car-item.disabled { opacity: 0.35; cursor: not-allowed; }
-.car-item.selected { border-color: var(--red); background: var(--red-dim); }
-.car-item.selected::before { background: var(--red); }
+/* ── Key Handout Screen ── */
+.key-screen { display: none; position: absolute; inset: 0; background: var(--black); flex-direction: column; padding: 20px; gap: 14px; overflow-y: auto; z-index: 10; }
+.key-screen.show { display: flex; }
 
-.car-item-plate {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 1rem;
-  font-weight: 700; letter-spacing: 0.06em; color: var(--white);
-  flex-shrink: 0;
-}
-.car-item-model { font-size: 0.8rem; color: var(--grey); flex: 1; }
-.car-item-status {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem;
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-  flex-shrink: 0;
-}
-
-/* ── Confirm Screen ── */
-.confirm-screen {
-  display: none; position: absolute; inset: 0;
-  background: var(--black); flex-direction: column;
-  padding: 24px; gap: 16px; overflow-y: auto; z-index: 10;
-}
-.confirm-screen.show { display: flex; }
-
-.confirm-car-block {
-  background: var(--dark2); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 20px; text-align: center;
-}
-.confirm-car-model {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.6rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 0.02em; color: var(--white); margin-bottom: 6px;
-}
-.confirm-car-plate {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem;
-  background: var(--dark3); border: 1px solid var(--border2);
-  padding: 5px 14px; border-radius: 4px;
-  display: inline-block; color: var(--grey); letter-spacing: 0.08em;
-}
-
-.confirm-action-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--red); text-align: center;
-}
+.car-badge { background: var(--dark2); border: 1px solid var(--border2); border-radius: 12px; padding: 18px 20px; text-align: center; }
+.car-badge-model { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; color: var(--white); margin-bottom: 6px; }
+.car-badge-plate { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; background: var(--dark3); border: 1px solid var(--border2); padding: 4px 14px; border-radius: 4px; display: inline-block; color: var(--grey); letter-spacing: 0.08em; }
 
 .driver-slots { display: flex; flex-direction: column; gap: 8px; }
-
-.driver-slot {
-  background: var(--dark2); border: 1px solid var(--border2);
-  border-radius: 10px; padding: 14px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-}
+.driver-slot { background: var(--dark2); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
 .driver-slot.confirmed { border-color: rgba(76,175,80,0.4); background: var(--green-light); }
+.driver-slot-left { display: flex; flex-direction: column; gap: 3px; }
+.driver-slot-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.driver-slot-pid { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; color: var(--green-bright); }
+.driver-slot-role { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.driver-slot.confirmed .driver-slot-role { color: var(--green-bright); }
 
-.driver-slot-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-}
-.driver-slot-pid {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.82rem; color: var(--green-bright); margin-top: 4px;
-}
-.driver-slot-role {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+.step-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); text-align: center; }
 
-.scan-instruction {
-  text-align: center; padding: 16px;
-  font-size: 0.82rem; color: var(--muted); line-height: 1.5;
-}
+.role-select { display: none; flex-direction: column; gap: 8px; }
+.role-select.show { display: flex; }
+.role-select p { font-size: 0.8rem; color: var(--muted); text-align: center; }
+.role-btns { display: flex; gap: 10px; }
+.role-btns .btn { flex: 1; padding: 14px; font-size: 0.85rem; }
 
-/* inline mini scanner */
-.mini-scanner-wrap {
-  position: relative; border-radius: 10px; overflow: hidden;
-  aspect-ratio: 4/3; background: var(--dark3); flex-shrink: 0;
-  display: none;
-}
-.mini-scanner-wrap.show { display: block; }
-.mini-scanner-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.mini-scanner-overlay {
-  position: absolute; inset: 0; display: flex;
-  align-items: center; justify-content: center; pointer-events: none;
-}
-.mini-frame { width: 55%; aspect-ratio: 1; position: relative; }
-.mini-frame::before,.mini-frame::after,.mini-frame .mbr,.mini-frame .mbl {
-  content:''; position:absolute; width:18px; height:18px;
-  border-color:#fff; border-style:solid;
-}
-.mini-frame::before{top:0;left:0;border-width:2.5px 0 0 2.5px;border-radius:3px 0 0 0;}
-.mini-frame::after {top:0;right:0;border-width:2.5px 2.5px 0 0;border-radius:0 3px 0 0;}
-.mini-frame .mbr{bottom:0;right:0;border-width:0 2.5px 2.5px 0;border-radius:0 0 3px 0;}
-.mini-frame .mbl{bottom:0;left:0;border-width:0 0 2.5px 2.5px;border-radius:0 0 0 3px;}
+/* ── Confirm Screen (Swap/Return) ── */
+.confirm-screen { display: none; position: absolute; inset: 0; background: var(--black); flex-direction: column; padding: 20px; gap: 14px; overflow-y: auto; z-index: 10; }
+.confirm-screen.show { display: flex; }
 
 /* ── Toast ── */
-.toast {
-  position: fixed; bottom: 80px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--dark3); border: 1px solid var(--border2);
-  color: var(--white); padding: 10px 20px; border-radius: 8px;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  z-index: 999; transition: transform 0.3s cubic-bezier(.22,1,.36,1);
-  white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-}
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--dark3); border: 1px solid var(--border2); color: var(--white); padding: 10px 20px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; z-index: 999; transition: transform 0.3s cubic-bezier(.22,1,.36,1); white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
 .toast.show { transform: translateX(-50%) translateY(0); }
+
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.divider { height: 1px; background: var(--border); margin: 2px 0; }
 </style>
 </head>
 <body>
@@ -392,12 +178,7 @@ html, body {
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <svg viewBox="0 0 148 40" fill="none">
-        <circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-      </svg>
+      <svg viewBox="0 0 148 40" fill="none"><circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/></svg>
     </div>
     <div class="login-title">Staff Access</div>
     <div class="login-field">
@@ -409,17 +190,35 @@ html, body {
   </div>
 </div>
 
+<!-- ════════════════════════════════════
+     SCANNER MODAL (shared by all tabs)
+═════════════════════════════════════ -->
+<div class="scanner-modal" id="scannerModal">
+  <div class="scanner-modal-header">
+    <div class="scanner-modal-title" id="scannerModalTitle">Scan QR Code</div>
+    <button class="scanner-close-btn" onclick="closeScanner()">✕ Cancel</button>
+  </div>
+  <div class="scanner-viewport">
+    <video id="scannerVideo" autoplay playsinline muted></video>
+    <canvas id="scannerCanvas" style="display:none"></canvas>
+    <div class="scan-frame-overlay">
+      <div class="scan-frame"><div class="cbr"></div><div class="cbl"></div><div class="scan-line"></div></div>
+    </div>
+    <div class="scan-flash" id="scanFlash">
+      <div class="flash-icon" id="flashIcon">✓</div>
+      <div class="flash-title" id="flashTitle">—</div>
+      <div class="flash-sub" id="flashSub">—</div>
+    </div>
+    <div class="scan-hint">Point at QR code</div>
+  </div>
+</div>
+
 <!-- ── App ── -->
 <div class="app" id="app">
 
   <div class="header">
     <div class="header-logo">
-      <svg viewBox="0 0 148 40" fill="none">
-        <circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-        <circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/>
-      </svg>
+      <svg viewBox="0 0 148 40" fill="none"><circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/><circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/></svg>
       <div>
         <div class="header-title">Event Staff</div>
         <div class="header-sub">17.09.2026 · 15:00–16:30</div>
@@ -430,211 +229,165 @@ html, body {
 
   <div class="content">
 
-    <!-- ══════════════════════════════
-         TAB 1 — ARRIVAL
-    ══════════════════════════════ -->
+    <!-- ════════════════ TAB 1 — ARRIVAL ════════════════ -->
     <div class="tab-panel active" id="panel-arrival">
-      <!-- Camera -->
-      <div class="scanner-wrap" id="arrivalCamWrap">
-        <video id="arrivalVideo" autoplay playsinline muted></video>
-        <canvas id="arrivalCanvas" style="display:none"></canvas>
-        <div class="scanner-overlay">
-          <div class="scan-frame">
-            <div class="cbr"></div><div class="cbl"></div>
-            <div class="scan-line"></div>
-          </div>
+      <div class="section-label">Arrival Check-in</div>
+
+      <div class="result-card" id="arrivalResultCard">
+        <div class="result-header">
+          <div class="result-dot" id="arrivalDot"></div>
+          <div class="result-title" id="arrivalTitle">—</div>
         </div>
-        <!-- Result overlay on camera -->
-        <div class="scan-result-overlay" id="arrivalResultOverlay">
-          <div class="result-icon-big" id="arrivalResultIcon">✓</div>
-          <div class="result-text-big" id="arrivalResultText">CONFIRMED</div>
-          <div class="result-sub" id="arrivalResultSub"></div>
-        </div>
+        <div class="result-detail" id="arrivalDetail">—</div>
       </div>
 
-      <div class="scan-area">
-        <div class="section-label">Arrival Check-in</div>
+      <button class="btn btn-green" id="btnConfirmArrival" style="display:none" onclick="confirmArrival()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirm Arrival
+      </button>
 
-        <!-- Result card -->
-        <div class="result-card" id="arrivalCard">
-          <div class="result-card-header">
-            <div class="result-dot" id="arrivalDot"></div>
-            <div class="result-card-title" id="arrivalCardTitle">—</div>
-          </div>
-          <div class="result-card-detail" id="arrivalCardDetail">—</div>
-        </div>
+      <button class="btn btn-scan" onclick="openScanner('arrival')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="18" width="3" height="3"/></svg>
+        Scan Participant QR
+      </button>
 
-        <button class="btn btn-green" id="btnConfirmArrival" style="display:none" onclick="confirmArrival()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Confirm Arrival
-        </button>
+      <button class="btn btn-ghost" id="btnScanNextArrival" style="display:none" onclick="resetArrival()">
+        Scan Next Person
+      </button>
 
-        <button class="btn btn-secondary" id="btnScanNextArrival" style="display:none" onclick="resetArrival()">
-          Scan Next
-        </button>
-
-        <div id="arrivalIdle" style="text-align:center;padding:20px 0;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;">
-          Point camera at participant QR code
-        </div>
+      <div class="empty-state" id="arrivalIdle">
+        Tap "Scan Participant QR" to begin
       </div>
     </div>
 
-    <!-- ══════════════════════════════
-         TAB 2 — KEY HANDOUT
-    ══════════════════════════════ -->
+    <!-- ════════════════ TAB 2 — KEY HANDOUT ════════════════ -->
     <div class="tab-panel" id="panel-keys">
-      <div style="padding:16px 20px 0;">
-        <div class="section-label">Key Handout</div>
-        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Select a car, then scan both driver QR codes</p>
-      </div>
+      <div class="section-label">Key Handout</div>
+      <p style="font-size:0.82rem;color:var(--muted);">Select a car, then scan driver QR codes</p>
+      <div class="car-list" id="keyCarList"><div class="empty-state">Loading cars…</div></div>
 
-      <!-- Car list -->
-      <div class="car-list" id="keyCarList">
-        <div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">Loading cars…</div>
-      </div>
-
-      <!-- Key handout confirm screen -->
-      <div class="confirm-screen" id="keyConfirmScreen">
-        <button class="btn btn-ghost btn-sm" onclick="closeKeyConfirm()" style="width:auto;align-self:flex-start;">
+      <!-- Key handout detail screen -->
+      <div class="key-screen" id="keyScreen">
+        <button class="btn btn-ghost btn-sm" onclick="closeKeyScreen()" style="align-self:flex-start;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-          Back
+          Back to Cars
         </button>
 
-        <div class="confirm-car-block">
-          <div class="confirm-car-model" id="keyCarModel">—</div>
-          <div class="confirm-car-plate" id="keyCarPlate">—</div>
+        <div class="car-badge">
+          <div class="car-badge-model" id="keyCarModel">—</div>
+          <div class="car-badge-plate" id="keyCarPlate">—</div>
         </div>
-
-        <div class="confirm-action-title">Scan Both Drivers</div>
 
         <div class="driver-slots">
           <div class="driver-slot" id="keySlot1">
-            <div>
-              <div class="driver-slot-label">First Scan</div>
-              <div class="driver-slot-pid" id="keyPid1">Awaiting scan…</div>
+            <div class="driver-slot-left">
+              <div class="driver-slot-label">First Driver</div>
+              <div class="driver-slot-pid" id="keyPid1" style="color:var(--muted);">Not scanned yet</div>
             </div>
-            <div class="driver-slot-role" id="keyRole1" style="color:var(--muted)">—</div>
+            <div class="driver-slot-role" id="keyRole1">—</div>
           </div>
           <div class="driver-slot" id="keySlot2">
-            <div>
-              <div class="driver-slot-label">Second Scan</div>
-              <div class="driver-slot-pid" id="keyPid2">Awaiting scan…</div>
+            <div class="driver-slot-left">
+              <div class="driver-slot-label">Second Driver</div>
+              <div class="driver-slot-pid" id="keyPid2" style="color:var(--muted);">Not scanned yet</div>
             </div>
-            <div class="driver-slot-role" id="keyRole2" style="color:var(--muted)">—</div>
+            <div class="driver-slot-role" id="keyRole2">—</div>
           </div>
         </div>
 
-        <!-- Mini scanner -->
-        <div class="mini-scanner-wrap show" id="keyScannerWrap">
-          <video id="keyVideo" autoplay playsinline muted></video>
-          <canvas id="keyCanvas" style="display:none"></canvas>
-          <div class="mini-scanner-overlay">
-            <div class="mini-frame"><div class="mbr"></div><div class="mbl"></div></div>
+        <!-- Step label -->
+        <div class="step-label" id="keyStepLabel">Step 1 — Scan first driver</div>
+
+        <!-- Error -->
+        <div id="keyError" style="display:none;background:var(--red-dim);border:1px solid rgba(187,10,33,0.3);border-radius:10px;padding:12px 16px;font-size:0.82rem;color:#ff8899;text-align:center;line-height:1.4;"></div>
+
+        <!-- Scan button (shown when waiting for scan) -->
+        <button class="btn btn-scan" id="btnKeyScan" onclick="openScanner('key')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="18" width="3" height="3"/></svg>
+          <span id="btnKeyScanLabel">Scan First Driver</span>
+        </button>
+
+        <!-- Role selection (shown after first scan) -->
+        <div class="role-select" id="keyRoleSelect">
+          <p>Who drives first?</p>
+          <div class="role-btns">
+            <button class="btn btn-secondary" onclick="assignRole(1)">Driver 1 — First</button>
+            <button class="btn btn-secondary" onclick="assignRole(2)">Driver 2 — Second</button>
           </div>
         </div>
 
-        <div class="scan-instruction" id="keyScanInstruction">Scan the first driver's QR code</div>
+        <div class="divider" id="keyDivider" style="display:none;"></div>
 
-        <div id="keyRoleSelect" style="display:none;flex-direction:column;gap:8px;">
-          <p style="font-size:0.8rem;color:var(--muted);text-align:center;">Who drives first?</p>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-secondary" onclick="assignRole(1)" style="flex:1;">Driver 1 (First)</button>
-            <button class="btn btn-secondary" onclick="assignRole(2)" style="flex:1;">Driver 2 (Second)</button>
-          </div>
-        </div>
+        <!-- Solo option (shown after role assigned, before second scan) -->
+        <button class="btn btn-secondary" id="btnSolo" style="display:none;" onclick="confirmSoloDrive()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          No Second Driver — Solo
+        </button>
 
+        <!-- Final confirm (shown after both scanned) -->
         <button class="btn btn-green" id="btnConfirmKeys" style="display:none;" onclick="confirmKeyHandout()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
           Hand Over Keys
         </button>
-
-        <div id="keyError" style="display:none;background:var(--red-dim);border:1px solid rgba(187,10,33,0.3);border-radius:8px;padding:12px 16px;font-size:0.82rem;color:#ff8899;text-align:center;"></div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════
-         TAB 3 — SWAP
-    ══════════════════════════════ -->
+    <!-- ════════════════ TAB 3 — SWAP ════════════════ -->
     <div class="tab-panel" id="panel-swap">
-      <div style="padding:16px 20px 0;">
-        <div class="section-label">Driver Swap</div>
-        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Tap a car to confirm the drivers have swapped</p>
-      </div>
-      <div class="car-list" id="swapCarList">
-        <div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">No cars currently out</div>
-      </div>
+      <div class="section-label">Driver Swap</div>
+      <p style="font-size:0.82rem;color:var(--muted);">Cars currently out — tap to confirm swap</p>
+      <div class="car-list" id="swapCarList"><div class="empty-state">No cars currently out</div></div>
 
-      <!-- Swap confirm -->
       <div class="confirm-screen" id="swapConfirmScreen">
-        <button class="btn btn-ghost btn-sm" onclick="closeSwapConfirm()" style="width:auto;align-self:flex-start;">
+        <button class="btn btn-ghost btn-sm" onclick="closeSwapConfirm()" style="align-self:flex-start;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Back
         </button>
-
-        <div class="confirm-car-block">
-          <div class="confirm-car-model" id="swapCarModel">—</div>
-          <div class="confirm-car-plate" id="swapCarPlate">—</div>
+        <div class="car-badge">
+          <div class="car-badge-model" id="swapCarModel">—</div>
+          <div class="car-badge-plate" id="swapCarPlate">—</div>
         </div>
-
-        <div class="confirm-action-title">Confirm Driver Swap</div>
-
-        <div style="background:var(--dark2);border:1px solid var(--border2);border-radius:10px;padding:16px;text-align:center;">
-          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Driver 1 → Driver 2</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--white);">
-            <span id="swapD1Pid" style="color:var(--grey);font-size:0.82rem;">—</span>
-            <span style="color:var(--red);margin:0 8px;">→</span>
-            <span id="swapD2Pid" style="color:var(--grey);font-size:0.82rem;">—</span>
-          </div>
+        <div class="step-label">Confirm Driver Swap</div>
+        <div style="background:var(--dark2);border:1px solid var(--border2);border-radius:10px;padding:16px;text-align:center;line-height:1.8;">
+          <div style="font-size:0.72rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Handover</div>
+          <span id="swapD1" style="font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-size:0.85rem;">—</span>
+          <span style="color:var(--red);margin:0 10px;font-size:1.1rem;">→</span>
+          <span id="swapD2" style="font-family:'Barlow Condensed',sans-serif;color:var(--grey);font-size:0.85rem;">—</span>
         </div>
-
-        <p style="font-size:0.78rem;color:var(--muted);text-align:center;line-height:1.5;">
-          Confirm that the drivers of this vehicle have physically swapped seats. This will timestamp the handover.
-        </p>
-
+        <p style="font-size:0.78rem;color:var(--muted);text-align:center;line-height:1.5;">Confirm drivers have physically swapped seats. This timestamps the handover.</p>
         <button class="btn btn-green" onclick="confirmSwap()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
           Confirm Swap
         </button>
-
         <button class="btn btn-ghost" onclick="closeSwapConfirm()">Cancel</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════════
-         TAB 4 — RETURN
-    ══════════════════════════════ -->
+    <!-- ════════════════ TAB 4 — RETURN ════════════════ -->
     <div class="tab-panel" id="panel-return">
-      <div style="padding:16px 20px 0;">
-        <div class="section-label">Key Return</div>
-        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Tap a car to confirm keys have been returned</p>
-      </div>
-      <div class="car-list" id="returnCarList">
-        <div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">No cars to return yet</div>
-      </div>
+      <div class="section-label">Key Return</div>
+      <p style="font-size:0.82rem;color:var(--muted);">All cars with keys out — tap to confirm return</p>
+      <div class="car-list" id="returnCarList"><div class="empty-state">No cars to return yet</div></div>
 
-      <!-- Return confirm -->
       <div class="confirm-screen" id="returnConfirmScreen">
-        <button class="btn btn-ghost btn-sm" onclick="closeReturnConfirm()" style="width:auto;align-self:flex-start;">
+        <button class="btn btn-ghost btn-sm" onclick="closeReturnConfirm()" style="align-self:flex-start;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Back
         </button>
-
-        <div class="confirm-car-block">
-          <div class="confirm-car-model" id="returnCarModel">—</div>
-          <div class="confirm-car-plate" id="returnCarPlate">—</div>
+        <div class="car-badge">
+          <div class="car-badge-model" id="returnCarModel">—</div>
+          <div class="car-badge-plate" id="returnCarPlate">—</div>
         </div>
-
-        <div class="confirm-action-title">Confirm Key Return</div>
-
-        <p style="font-size:0.78rem;color:var(--muted);text-align:center;line-height:1.5;">
-          Confirm that the keys for this vehicle have been physically returned. This will close the log for this car.
-        </p>
-
+        <div class="step-label">Confirm Key Return</div>
+        <div style="background:var(--dark2);border:1px solid var(--border2);border-radius:10px;padding:16px;">
+          <div style="font-size:0.7rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Return timestamp written for</div>
+          <div id="returnDriverList" style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;color:var(--grey);line-height:1.8;">—</div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--muted);text-align:center;line-height:1.5;">Same return time logged for all drivers of this car.</p>
         <button class="btn btn-green" onclick="confirmReturn()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
           Confirm Return
         </button>
-
         <button class="btn btn-ghost" onclick="closeReturnConfirm()">Cancel</button>
       </div>
     </div>
@@ -671,7 +424,7 @@ html, body {
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgaGPUrRWslO7IPht1L6EbTix-a0FjRcw",
@@ -688,21 +441,19 @@ const db  = getDatabase(app);
 const PASSWORD = 'Audi@F1';
 
 // ── State ──
-let carsData   = {};
-let regsData   = {};
-let eventsData = {};
-let currentTab = 'arrival';
+let carsData = {}, regsData = {}, eventsData = {};
+let scannerStream = null, scannerFrame = null;
+let scannerMode   = null; // 'arrival' | 'key'
+let scannerActive = false;
 
-// Arrival state
-let arrivalStream = null, arrivalFrame = null;
-let pendingArrival = null; // { pid, cid, model, plate }
+// Arrival
+let pendingArrival = null;
 
-// Key handout state
-let keyStream = null, keyFrame = null;
-let selectedCar = null; // { cid, model, plate }
-let keyScans = []; // [{pid, role}]
+// Key handout
+let selectedCar = null;
+let keyScans    = []; // [{pid, role}]
 
-// Swap/Return state
+// Swap / Return
 let selectedSwapCar   = null;
 let selectedReturnCar = null;
 
@@ -713,18 +464,21 @@ window.login = function() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').classList.add('visible');
     startListeners();
-    startArrivalCamera();
   } else {
     document.getElementById('loginErr').classList.add('visible');
     document.getElementById('loginPw').value = '';
   }
 };
 
-// ── Firebase Listeners ──
+// ── Firebase ──
 function startListeners() {
   onValue(ref(db, 'cars'),          s => { carsData   = s.val() || {}; renderCarLists(); });
-  onValue(ref(db, 'registrations'), s => { regsData   = s.val() || {}; });
+  onValue(ref(db, 'registrations'), s => { regsData   = s.val() || {}; renderCarLists(); });
   onValue(ref(db, 'eventLog'),      s => { eventsData = s.val() || {}; renderCarLists(); updateBadges(); });
+}
+
+function getPidsForCar(cid) {
+  return Object.keys(regsData).filter(pid => regsData[pid].cid === cid);
 }
 
 // ── Tab Navigation ──
@@ -733,209 +487,222 @@ window.showTab = function(name) {
   document.querySelectorAll('.btab').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   document.getElementById('btab-' + name).classList.add('active');
-  currentTab = name;
+};
 
-  if (name === 'arrival') {
-    startArrivalCamera();
-  } else {
-    stopArrivalCamera();
+// ════════════════════════════════
+// SCANNER MODAL (shared)
+// ════════════════════════════════
+window.openScanner = async function(mode) {
+  scannerMode = mode;
+  document.getElementById('scannerModal').classList.add('open');
+  document.getElementById('scanFlash').className = 'scan-flash';
+  document.getElementById('scannerModalTitle').textContent =
+    mode === 'arrival' ? 'Scan Participant QR' : 'Scan Driver QR';
+
+  try {
+    scannerStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' } }
+    });
+    const v = document.getElementById('scannerVideo');
+    v.srcObject = scannerStream;
+    await v.play();
+    scannerActive = true;
+    scanLoop();
+  } catch(e) {
+    closeScanner();
+    showToast('⚠ Camera unavailable');
   }
 };
 
-// ══════════════════════════════
-// TAB 1 — ARRIVAL
-// ══════════════════════════════
-async function startArrivalCamera() {
-  if (arrivalStream) return;
-  try {
-    arrivalStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } });
-    const video = document.getElementById('arrivalVideo');
-    video.srcObject = arrivalStream;
-    await video.play();
-    scanArrival();
-  } catch(e) { showToast('⚠ Camera unavailable'); }
-}
+window.closeScanner = function() {
+  scannerActive = false;
+  if (scannerStream) { scannerStream.getTracks().forEach(t => t.stop()); scannerStream = null; }
+  if (scannerFrame)  { cancelAnimationFrame(scannerFrame); scannerFrame = null; }
+  document.getElementById('scannerModal').classList.remove('open');
+  scannerMode = null;
+};
 
-function stopArrivalCamera() {
-  if (arrivalStream) { arrivalStream.getTracks().forEach(t => t.stop()); arrivalStream = null; }
-  if (arrivalFrame)  { cancelAnimationFrame(arrivalFrame); arrivalFrame = null; }
-}
-
-function scanArrival() {
-  const video  = document.getElementById('arrivalVideo');
-  const canvas = document.getElementById('arrivalCanvas');
-  const ctx    = canvas.getContext('2d');
+function scanLoop() {
+  const v   = document.getElementById('scannerVideo');
+  const c   = document.getElementById('scannerCanvas');
+  const ctx = c.getContext('2d');
 
   function loop() {
-    if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
-      const img  = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (!scannerActive) return;
+    if (v.readyState === v.HAVE_ENOUGH_DATA) {
+      c.width = v.videoWidth; c.height = v.videoHeight;
+      ctx.drawImage(v, 0, 0);
+      const img  = ctx.getImageData(0, 0, c.width, c.height);
       const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
-      if (code && code.data && !pendingArrival) {
-        handleArrivalScan(code.data);
+      if (code && code.data) {
+        handleScan(code.data);
         return;
       }
     }
-    arrivalFrame = requestAnimationFrame(loop);
+    scannerFrame = requestAnimationFrame(loop);
   }
-  arrivalFrame = requestAnimationFrame(loop);
+  scannerFrame = requestAnimationFrame(loop);
 }
 
-function handleArrivalScan(raw) {
+function handleScan(raw) {
   let parsed;
-  try { parsed = JSON.parse(raw); } catch { showToast('⚠ Invalid QR code'); return; }
-
+  try { parsed = JSON.parse(raw); } catch { showFlash(false, 'INVALID QR', 'Not a valid event code'); return; }
   const { pid, cid, plate, model } = parsed;
-  if (!pid || !cid) { showToast('⚠ Not a valid event QR'); return; }
+  if (!pid || !cid) { showFlash(false, 'INVALID QR', 'Not a valid event code'); return; }
 
-  // Check paperwork confirmed in Firebase
+  if (scannerMode === 'arrival') handleArrivalScan(pid, cid, model, plate);
+  else if (scannerMode === 'key') handleKeyScan(pid, cid);
+}
+
+function showFlash(ok, title, sub, autoClose = false) {
+  const el = document.getElementById('scanFlash');
+  el.className = `scan-flash show ${ok ? 'ok' : 'bad'}`;
+  document.getElementById('flashIcon').textContent  = ok ? '✓' : '✗';
+  document.getElementById('flashTitle').textContent = title;
+  document.getElementById('flashSub').textContent   = sub;
+  if (navigator.vibrate) navigator.vibrate(ok ? 60 : [200,100,200]);
+
+  if (autoClose) {
+    setTimeout(() => { closeScanner(); }, 1400);
+  } else {
+    setTimeout(() => { el.className = 'scan-flash'; }, 1800);
+    setTimeout(() => { if (scannerActive) scanLoop(); }, 1800);
+  }
+}
+
+// ════════════════════════════════
+// TAB 1 — ARRIVAL
+// ════════════════════════════════
+function handleArrivalScan(pid, cid, model, plate) {
   const ev = eventsData[pid] || {};
-  const paperworkOk = ev.paperwork === true;
 
-  // Check not already arrived
   if (ev.arrivedAt) {
-    showArrivalResult(false, 'Already checked in', `${model} · ${plate}`, pid);
+    showFlash(false, 'ALREADY IN', `${model} · ${plate}`);
+    pendingArrival = null;
+    setTimeout(() => { showArrivalResult(false, 'Already Checked In', `${model} · ${plate}`); closeScanner(); }, 1800);
     return;
   }
 
-  pendingArrival = { pid, cid, model, plate };
+  const paperworkOk = ev.paperwork === true;
 
   if (paperworkOk) {
-    showArrivalResult(true, 'Paperwork Confirmed', `${model} · ${plate}`, pid);
+    showFlash(true, 'CLEARED', `${model} · ${plate}`, false);
+    pendingArrival = { pid, cid, model, plate };
+    setTimeout(() => { showArrivalResult(true, 'Paperwork Confirmed', `${model} · ${plate}`, pid); closeScanner(); }, 1400);
   } else {
-    showArrivalResult(false, 'Paperwork Not Received', `${model} · ${plate} — do not admit`, pid);
-    pendingArrival = null; // can't confirm if no paperwork
+    showFlash(false, 'NOT CLEARED', 'Paperwork not received');
+    pendingArrival = null;
+    setTimeout(() => { showArrivalResult(false, 'Paperwork Not Received', `${model} · ${plate} — do not admit`, pid); closeScanner(); }, 1800);
   }
-
-  if (navigator.vibrate) navigator.vibrate(paperworkOk ? 60 : [200,100,200]);
 }
 
 function showArrivalResult(ok, title, detail, pid) {
-  // Camera overlay
-  const overlay = document.getElementById('arrivalResultOverlay');
-  const icon    = document.getElementById('arrivalResultIcon');
-  const text    = document.getElementById('arrivalResultText');
-  const sub     = document.getElementById('arrivalResultSub');
-  overlay.className = `scan-result-overlay show ${ok ? 'green' : 'red'}`;
-  icon.textContent  = ok ? '✓' : '✗';
-  text.textContent  = ok ? 'CONFIRMED' : 'NOT CLEARED';
-  sub.textContent   = detail;
-
-  // Result card
-  const card   = document.getElementById('arrivalCard');
-  const dot    = document.getElementById('arrivalDot');
-  const ctitle = document.getElementById('arrivalCardTitle');
-  const cdetail= document.getElementById('arrivalCardDetail');
-  card.className   = `result-card show ${ok ? 'green-card' : 'red-card'}`;
-  dot.className    = `result-dot ${ok ? 'green' : 'red'}`;
-  ctitle.textContent  = title;
-  cdetail.innerHTML   = detail + (pid ? `<br><span style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;color:var(--muted);">ID: ${pid.toUpperCase()}</span>` : '');
-
-  document.getElementById('arrivalIdle').style.display = 'none';
-  document.getElementById('btnConfirmArrival').style.display = ok ? 'flex' : 'none';
-  document.getElementById('btnScanNextArrival').style.display = 'flex';
+  const card = document.getElementById('arrivalResultCard');
+  card.className = `result-card show ${ok ? 'ok' : 'bad'}`;
+  document.getElementById('arrivalDot').className  = `result-dot ${ok ? 'green' : 'red'}`;
+  document.getElementById('arrivalTitle').textContent  = title;
+  document.getElementById('arrivalDetail').innerHTML   = esc(detail) + (pid ? `<br><span style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;color:var(--muted);">ID: ${pid.toUpperCase()}</span>` : '');
+  document.getElementById('arrivalIdle').style.display         = 'none';
+  document.getElementById('btnConfirmArrival').style.display   = ok ? 'flex' : 'none';
+  document.getElementById('btnScanNextArrival').style.display  = 'flex';
 }
 
 window.confirmArrival = async function() {
   if (!pendingArrival) return;
-  const { pid } = pendingArrival;
   try {
-    await update(ref(db, `eventLog/${pid}`), { arrivedAt: Date.now() });
+    await update(ref(db, `eventLog/${pendingArrival.pid}`), { arrivedAt: Date.now() });
     showToast('✓ Arrival logged');
-    if (navigator.vibrate) navigator.vibrate(60);
   } catch(e) { showToast('⚠ Firebase write failed'); }
   resetArrival();
 };
 
 window.resetArrival = function() {
   pendingArrival = null;
-  document.getElementById('arrivalResultOverlay').className = 'scan-result-overlay';
-  document.getElementById('arrivalCard').className = 'result-card';
-  document.getElementById('btnConfirmArrival').style.display = 'none';
+  document.getElementById('arrivalResultCard').className = 'result-card';
+  document.getElementById('btnConfirmArrival').style.display  = 'none';
   document.getElementById('btnScanNextArrival').style.display = 'none';
-  document.getElementById('arrivalIdle').style.display = 'block';
-  if (arrivalStream) scanArrival();
+  document.getElementById('arrivalIdle').style.display        = 'block';
 };
 
-// ══════════════════════════════
+// ════════════════════════════════
 // TAB 2 — KEY HANDOUT
-// ══════════════════════════════
+// ════════════════════════════════
 function renderCarLists() {
-  // Available cars for key handout (not yet keys out, have 2 registered participants)
+  // KEY HANDOUT LIST
   const keyList = document.getElementById('keyCarList');
-  const available = Object.entries(carsData)
-    .filter(([cid, car]) => {
-      const carPids = Object.keys(regsData).filter(pid => regsData[pid].cid === cid);
-      const anyKeysOut = carPids.some(pid => eventsData[pid]?.keysOutAt);
-      return carPids.length > 0 && !anyKeysOut;
-    })
-    .sort((a,b) => a[1].plate?.localeCompare(b[1].plate));
+  const forKeys = Object.entries(carsData).filter(([cid]) => {
+    const pids = getPidsForCar(cid);
+    return pids.length > 0 && !pids.some(pid => eventsData[pid]?.keysOutAt);
+  }).sort((a,b) => (a[1].plate||'').localeCompare(b[1].plate));
 
-  if (!available.length) {
-    keyList.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">No cars available for key handout</div>`;
+  keyList.innerHTML = '';
+  if (!forKeys.length) {
+    keyList.innerHTML = '<div class="empty-state">No cars available for key handout</div>';
   } else {
-    keyList.innerHTML = '';
-    available.forEach(([cid, car]) => {
+    forKeys.forEach(([cid, car]) => {
       const div = document.createElement('div');
       div.className = 'car-item';
       div.innerHTML = `
         <div class="car-item-plate">${esc(car.plate)}</div>
         <div class="car-item-model">${esc(car.model)}</div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
-      div.onclick = () => openKeyHandout(cid, car);
+        <svg class="car-item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+      div.onclick = () => openKeyScreen(cid, car);
       keyList.appendChild(div);
     });
   }
 
-  // Swap list — cars with keys out, not yet swapped
+  // SWAP LIST — keys out, not solo, not yet swapped
   const swapList = document.getElementById('swapCarList');
-  const keysOut = Object.entries(carsData).filter(([cid, car]) => {
-    const carPids = Object.keys(regsData).filter(pid => regsData[pid].cid === cid);
-    const anyKeysOut  = carPids.some(pid => eventsData[pid]?.keysOutAt);
-    const swapped     = eventsData[`swap_${cid}`]?.swappedAt;
-    return anyKeysOut && !swapped;
-  }).sort((a,b) => a[1].plate?.localeCompare(b[1].plate));
+  const forSwap = Object.entries(carsData).filter(([cid]) => {
+    const pids   = getPidsForCar(cid);
+    const anyOut = pids.some(pid => eventsData[pid]?.keysOutAt);
+    const swapped= eventsData[`swap_${cid}`]?.swappedAt;
+    const allSolo= pids.length > 0 && pids.every(pid => eventsData[pid]?.solo);
+    return anyOut && !swapped && !allSolo;
+  }).sort((a,b) => (a[1].plate||'').localeCompare(b[1].plate));
 
-  if (!keysOut.length) {
-    swapList.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">No cars currently out</div>`;
+  swapList.innerHTML = '';
+  if (!forSwap.length) {
+    swapList.innerHTML = '<div class="empty-state">No cars ready for swap</div>';
   } else {
-    swapList.innerHTML = '';
-    keysOut.forEach(([cid, car]) => {
-      const carPids = Object.keys(regsData).filter(pid => regsData[pid].cid === cid);
-      const d1 = carPids.find(pid => eventsData[pid]?.driverOrder === 1);
-      const d2 = carPids.find(pid => eventsData[pid]?.driverOrder === 2);
-      const div = document.createElement('div');
+    forSwap.forEach(([cid, car]) => {
+      const pids = getPidsForCar(cid);
+      const d1   = pids.find(pid => eventsData[pid]?.driverOrder === 1);
+      const d2   = pids.find(pid => eventsData[pid]?.driverOrder === 2);
+      const div  = document.createElement('div');
       div.className = 'car-item';
       div.innerHTML = `
         <div class="car-item-plate">${esc(car.plate)}</div>
-        <div class="car-item-model">${esc(car.model)}<br><span style="font-size:0.7rem;color:var(--muted);">D1: ${d1?.slice(0,8)||'—'} · D2: ${d2?.slice(0,8)||'—'}</span></div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+        <div class="car-item-model">${esc(car.model)}<br><span style="font-size:0.72rem;color:var(--muted);">D1: ${d1?d1.slice(0,8):'—'} · D2: ${d2?d2.slice(0,8):'—'}</span></div>
+        <svg class="car-item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
       div.onclick = () => openSwapConfirm(cid, car, d1, d2);
       swapList.appendChild(div);
     });
   }
 
-  // Return list — cars that have been swapped
+  // RETURN LIST — all cars with keys out, not yet returned
   const returnList = document.getElementById('returnCarList');
-  const swapped = Object.entries(carsData).filter(([cid, car]) => {
-    const swapEv    = eventsData[`swap_${cid}`]?.swappedAt;
-    const returnedEv= eventsData[`return_${cid}`]?.returnedAt;
-    return swapEv && !returnedEv;
-  }).sort((a,b) => a[1].plate?.localeCompare(b[1].plate));
+  const forReturn = Object.entries(carsData).filter(([cid]) => {
+    const pids    = getPidsForCar(cid);
+    const anyOut  = pids.some(pid => eventsData[pid]?.keysOutAt);
+    const returned= eventsData[`return_${cid}`]?.returnedAt;
+    return anyOut && !returned;
+  }).sort((a,b) => (a[1].plate||'').localeCompare(b[1].plate));
 
-  if (!swapped.length) {
-    returnList.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:0.1em;">No cars to return yet</div>`;
+  returnList.innerHTML = '';
+  if (!forReturn.length) {
+    returnList.innerHTML = '<div class="empty-state">No cars to return yet</div>';
   } else {
-    returnList.innerHTML = '';
-    swapped.forEach(([cid, car]) => {
+    forReturn.forEach(([cid, car]) => {
+      const pids    = getPidsForCar(cid);
+      const swapped = eventsData[`swap_${cid}`]?.swappedAt;
       const div = document.createElement('div');
       div.className = 'car-item';
       div.innerHTML = `
         <div class="car-item-plate">${esc(car.plate)}</div>
-        <div class="car-item-model">${esc(car.model)}</div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
-      div.onclick = () => openReturnConfirm(cid, car);
+        <div class="car-item-model">${esc(car.model)}<br><span style="font-size:0.72rem;color:var(--muted);">${swapped?'Swapped':'Not swapped'} · ${pids.length} driver${pids.length>1?'s':''}</span></div>
+        <svg class="car-item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+      div.onclick = () => openReturnConfirm(cid, car, pids);
       returnList.appendChild(div);
     });
   }
@@ -943,134 +710,113 @@ function renderCarLists() {
   updateBadges();
 }
 
-function openKeyHandout(cid, car) {
+function openKeyScreen(cid, car) {
   selectedCar = { cid, model: car.model, plate: car.plate };
-  keyScans    = [];
+  keyScans = [];
+  // Reset UI
   document.getElementById('keyCarModel').textContent = car.model;
   document.getElementById('keyCarPlate').textContent = car.plate;
-  document.getElementById('keyPid1').textContent     = 'Awaiting scan…';
-  document.getElementById('keyPid2').textContent     = 'Awaiting scan…';
+  document.getElementById('keyPid1').textContent     = 'Not scanned yet';
+  document.getElementById('keyPid2').textContent     = 'Not scanned yet';
+  document.getElementById('keyPid1').style.color     = 'var(--muted)';
+  document.getElementById('keyPid2').style.color     = 'var(--muted)';
   document.getElementById('keyRole1').textContent    = '—';
   document.getElementById('keyRole2').textContent    = '—';
   document.getElementById('keySlot1').className      = 'driver-slot';
   document.getElementById('keySlot2').className      = 'driver-slot';
+  document.getElementById('keyError').style.display  = 'none';
+  document.getElementById('keyStepLabel').textContent= 'Step 1 — Scan first driver';
+  document.getElementById('btnKeyScan').style.display     = 'flex';
+  document.getElementById('btnKeyScanLabel').textContent  = 'Scan First Driver';
+  document.getElementById('keyRoleSelect').className      = 'role-select';
+  document.getElementById('btnSolo').style.display        = 'none';
   document.getElementById('btnConfirmKeys').style.display = 'none';
-  document.getElementById('keyError').style.display       = 'none';
-  document.getElementById('keyRoleSelect').style.display  = 'none';
-  document.getElementById('keyScanInstruction').textContent = 'Scan the first driver\'s QR code';
-  document.getElementById('keyScannerWrap').classList.add('show');
-  document.getElementById('keyConfirmScreen').classList.add('show');
-  startKeyCamera();
+  document.getElementById('keyDivider').style.display     = 'none';
+  document.getElementById('keyScreen').classList.add('show');
 }
 
-window.closeKeyConfirm = function() {
-  stopKeyCamera();
-  document.getElementById('keyConfirmScreen').classList.remove('show');
+window.closeKeyScreen = function() {
+  document.getElementById('keyScreen').classList.remove('show');
   selectedCar = null; keyScans = [];
 };
 
-async function startKeyCamera() {
-  stopKeyCamera();
-  try {
-    keyStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } });
-    const video = document.getElementById('keyVideo');
-    video.srcObject = keyStream;
-    await video.play();
-    scanKey();
-  } catch(e) { showToast('⚠ Camera unavailable'); }
-}
+function handleKeyScan(pid, cid) {
+  const errEl = document.getElementById('keyError');
 
-function stopKeyCamera() {
-  if (keyStream) { keyStream.getTracks().forEach(t => t.stop()); keyStream = null; }
-  if (keyFrame)  { cancelAnimationFrame(keyFrame); keyFrame = null; }
-}
-
-function scanKey() {
-  const video  = document.getElementById('keyVideo');
-  const canvas = document.getElementById('keyCanvas');
-  const ctx    = canvas.getContext('2d');
-
-  function loop() {
-    if (!keyStream) return;
-    if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
-      const img  = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
-      if (code && code.data) {
-        handleKeyScan(code.data);
-        return;
-      }
-    }
-    keyFrame = requestAnimationFrame(loop);
-  }
-  keyFrame = requestAnimationFrame(loop);
-}
-
-function handleKeyScan(raw) {
-  let parsed;
-  try { parsed = JSON.parse(raw); } catch { showToast('⚠ Invalid QR'); scanKey(); return; }
-
-  const { pid, cid } = parsed;
-  if (!pid || !cid) { showToast('⚠ Not a valid event QR'); scanKey(); return; }
-
-  // Check belongs to selected car
+  // Wrong car
   if (cid !== selectedCar.cid) {
-    const errEl = document.getElementById('keyError');
-    errEl.textContent = `⚠ Wrong car — this QR is registered for a different vehicle`;
+    showFlash(false, 'WRONG CAR', 'This QR belongs to a different vehicle');
+    errEl.textContent = '⚠ Wrong car — QR belongs to a different vehicle';
     errEl.style.display = 'block';
-    if (navigator.vibrate) navigator.vibrate([200,100,200]);
-    scanKey();
+    setTimeout(() => { if (scannerActive) scanLoop(); }, 2000);
     return;
   }
+  errEl.style.display = 'none';
 
-  document.getElementById('keyError').style.display = 'none';
-
-  // Check not already scanned
+  // Duplicate
   if (keyScans.find(s => s.pid === pid)) {
-    showToast('⚠ Already scanned this QR');
-    scanKey();
+    showFlash(false, 'DUPLICATE', 'Already scanned this QR');
+    setTimeout(() => { if (scannerActive) scanLoop(); }, 1800);
     return;
   }
 
-  // Add to scans
+  showFlash(true, 'SCANNED', pid.toUpperCase().slice(0,12), false);
   keyScans.push({ pid, role: null });
-  const idx = keyScans.length - 1;
 
-  if (navigator.vibrate) navigator.vibrate(60);
-
-  if (idx === 0) {
-    // First scan — ask role
+  if (keyScans.length === 1) {
+    // First scan — show role selection, close scanner after flash
     document.getElementById('keyPid1').textContent = pid.toUpperCase().slice(0,12);
-    document.getElementById('keyScanInstruction').textContent = 'Who drives first?';
-    document.getElementById('keyScannerWrap').classList.remove('show');
-    document.getElementById('keyRoleSelect').style.display = 'flex';
-    stopKeyCamera();
+    document.getElementById('keyPid1').style.color = 'var(--green-bright)';
+    setTimeout(() => {
+      closeScanner();
+      document.getElementById('btnKeyScan').style.display     = 'none';
+      document.getElementById('keyStepLabel').textContent     = 'Who drives first?';
+      document.getElementById('keyRoleSelect').className      = 'role-select show';
+    }, 1400);
   } else {
-    // Second scan — auto-assign opposite role
-    const firstRole = keyScans[0].role;
-    keyScans[1].role = firstRole === 1 ? 2 : 1;
+    // Second scan — auto-assign role, show confirm
+    keyScans[1].role = keyScans[0].role === 1 ? 2 : 1;
     document.getElementById('keyPid2').textContent  = pid.toUpperCase().slice(0,12);
+    document.getElementById('keyPid2').style.color  = 'var(--green-bright)';
     document.getElementById('keyRole1').textContent = `Driver ${keyScans[0].role}`;
     document.getElementById('keyRole2').textContent = `Driver ${keyScans[1].role}`;
     document.getElementById('keySlot1').className   = 'driver-slot confirmed';
     document.getElementById('keySlot2').className   = 'driver-slot confirmed';
-    document.getElementById('keyScannerWrap').classList.remove('show');
-    document.getElementById('keyScanInstruction').textContent = 'Both drivers confirmed — hand over keys';
-    document.getElementById('btnConfirmKeys').style.display = 'flex';
-    stopKeyCamera();
+    setTimeout(() => {
+      closeScanner();
+      document.getElementById('btnKeyScan').style.display     = 'none';
+      document.getElementById('btnSolo').style.display        = 'none';
+      document.getElementById('keyDivider').style.display     = 'none';
+      document.getElementById('keyStepLabel').textContent     = 'Both drivers confirmed — hand over keys';
+      document.getElementById('btnConfirmKeys').style.display = 'flex';
+    }, 1400);
   }
 }
 
 window.assignRole = function(role) {
   if (!keyScans.length) return;
   keyScans[0].role = role;
-  document.getElementById('keyRole1').textContent = `Driver ${role}`;
-  document.getElementById('keySlot1').className   = 'driver-slot confirmed';
-  document.getElementById('keyRoleSelect').style.display = 'none';
-  document.getElementById('keyScanInstruction').textContent = 'Now scan the second driver\'s QR code';
-  document.getElementById('keyScannerWrap').classList.add('show');
-  startKeyCamera();
+  document.getElementById('keyRole1').textContent    = `Driver ${role}`;
+  document.getElementById('keySlot1').className      = 'driver-slot confirmed';
+  document.getElementById('keyRoleSelect').className = 'role-select';
+  document.getElementById('keyStepLabel').textContent= 'Step 2 — Scan second driver or skip';
+  document.getElementById('btnKeyScan').style.display    = 'flex';
+  document.getElementById('btnKeyScanLabel').textContent = 'Scan Second Driver';
+  document.getElementById('keyDivider').style.display    = 'block';
+  document.getElementById('btnSolo').style.display       = 'flex';
+};
+
+window.confirmSoloDrive = async function() {
+  if (!keyScans.length || keyScans[0].role === null) return;
+  const now = Date.now();
+  try {
+    await update(ref(db, `eventLog/${keyScans[0].pid}`), {
+      keysOutAt: now, driverOrder: keyScans[0].role,
+      cid: selectedCar.cid, solo: true
+    });
+    showToast(`✓ Solo driver logged — ${selectedCar.plate}`);
+    closeKeyScreen();
+  } catch(e) { showToast('⚠ Firebase write failed'); }
 };
 
 window.confirmKeyHandout = async function() {
@@ -1079,26 +825,24 @@ window.confirmKeyHandout = async function() {
   try {
     for (const scan of keyScans) {
       await update(ref(db, `eventLog/${scan.pid}`), {
-        keysOutAt:   now,
-        driverOrder: scan.role,
-        cid:         selectedCar.cid
+        keysOutAt: now, driverOrder: scan.role,
+        cid: selectedCar.cid, solo: false
       });
     }
     showToast(`✓ Keys logged — ${selectedCar.plate}`);
-    if (navigator.vibrate) navigator.vibrate([60,40,60]);
-    closeKeyConfirm();
+    closeKeyScreen();
   } catch(e) { showToast('⚠ Firebase write failed'); }
 };
 
-// ══════════════════════════════
+// ════════════════════════════════
 // TAB 3 — SWAP
-// ══════════════════════════════
+// ════════════════════════════════
 function openSwapConfirm(cid, car, d1pid, d2pid) {
   selectedSwapCar = { cid, model: car.model, plate: car.plate };
   document.getElementById('swapCarModel').textContent = car.model;
   document.getElementById('swapCarPlate').textContent = car.plate;
-  document.getElementById('swapD1Pid').textContent    = d1pid?.toUpperCase().slice(0,10) || '—';
-  document.getElementById('swapD2Pid').textContent    = d2pid?.toUpperCase().slice(0,10) || '—';
+  document.getElementById('swapD1').textContent = d1pid ? d1pid.toUpperCase().slice(0,10) : '—';
+  document.getElementById('swapD2').textContent = d2pid ? d2pid.toUpperCase().slice(0,10) : '—';
   document.getElementById('swapConfirmScreen').classList.add('show');
 }
 
@@ -1112,18 +856,21 @@ window.confirmSwap = async function() {
   try {
     await update(ref(db, `eventLog/swap_${selectedSwapCar.cid}`), { swappedAt: Date.now(), cid: selectedSwapCar.cid });
     showToast(`✓ Swap confirmed — ${selectedSwapCar.plate}`);
-    if (navigator.vibrate) navigator.vibrate(60);
     closeSwapConfirm();
   } catch(e) { showToast('⚠ Firebase write failed'); }
 };
 
-// ══════════════════════════════
+// ════════════════════════════════
 // TAB 4 — RETURN
-// ══════════════════════════════
-function openReturnConfirm(cid, car) {
-  selectedReturnCar = { cid, model: car.model, plate: car.plate };
+// ════════════════════════════════
+function openReturnConfirm(cid, car, pids) {
+  selectedReturnCar = { cid, model: car.model, plate: car.plate, pids };
   document.getElementById('returnCarModel').textContent = car.model;
   document.getElementById('returnCarPlate').textContent = car.plate;
+  document.getElementById('returnDriverList').innerHTML = pids.map((pid, i) => {
+    const ev = eventsData[pid] || {};
+    return `Driver ${ev.driverOrder || i+1}: ${pid.toUpperCase().slice(0,12)}${ev.solo?' (solo)':''}`;
+  }).join('<br>');
   document.getElementById('returnConfirmScreen').classList.add('show');
 }
 
@@ -1134,40 +881,43 @@ window.closeReturnConfirm = function() {
 
 window.confirmReturn = async function() {
   if (!selectedReturnCar) return;
+  const now = Date.now();
   try {
-    await update(ref(db, `eventLog/return_${selectedReturnCar.cid}`), { returnedAt: Date.now(), cid: selectedReturnCar.cid });
+    for (const pid of selectedReturnCar.pids) {
+      await update(ref(db, `eventLog/${pid}`), { returnedAt: now });
+    }
+    await update(ref(db, `eventLog/return_${selectedReturnCar.cid}`), { returnedAt: now, cid: selectedReturnCar.cid });
     showToast(`✓ Return confirmed — ${selectedReturnCar.plate}`);
-    if (navigator.vibrate) navigator.vibrate(60);
     closeReturnConfirm();
   } catch(e) { showToast('⚠ Firebase write failed'); }
 };
 
 // ── Badges ──
 function updateBadges() {
-  // Arrived but not yet keys
-  const arrived = Object.values(eventsData).filter(e => e.arrivedAt && !e.keysOutAt).length;
-  // Keys out not swapped
-  const keysOut = Object.entries(carsData).filter(([cid]) => {
-    const carPids = Object.keys(regsData).filter(pid => regsData[pid].cid === cid);
-    return carPids.some(pid => eventsData[pid]?.keysOutAt) && !eventsData[`swap_${cid}`]?.swappedAt;
+  const forSwap = Object.entries(carsData).filter(([cid]) => {
+    const pids   = getPidsForCar(cid);
+    const anyOut = pids.some(pid => eventsData[pid]?.keysOutAt);
+    const swapped= eventsData[`swap_${cid}`]?.swappedAt;
+    const allSolo= pids.length > 0 && pids.every(pid => eventsData[pid]?.solo);
+    return anyOut && !swapped && !allSolo;
   }).length;
-  // Swapped not returned
-  const swapped = Object.entries(carsData).filter(([cid]) =>
-    eventsData[`swap_${cid}`]?.swappedAt && !eventsData[`return_${cid}`]?.returnedAt
-  ).length;
 
-  setBadge('arrival', arrived);
-  setBadge('swap',    keysOut);
-  setBadge('return',  swapped);
+  const forReturn = Object.entries(carsData).filter(([cid]) => {
+    const pids   = getPidsForCar(cid);
+    const anyOut = pids.some(pid => eventsData[pid]?.keysOutAt);
+    return anyOut && !eventsData[`return_${cid}`]?.returnedAt;
+  }).length;
+
+  setBadge('swap',   forSwap);
+  setBadge('return', forReturn);
 }
 
 function setBadge(tab, count) {
   const el = document.getElementById(`badge-${tab}`);
   if (count > 0) { el.textContent = count; el.classList.add('visible'); }
-  else { el.classList.remove('visible'); }
+  else el.classList.remove('visible');
 }
 
-// ── Helpers ──
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 window.showToast = function(msg) {
