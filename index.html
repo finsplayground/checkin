@@ -1247,13 +1247,15 @@ async function generateAndEmailPDF() {
   // ── Consents confirmed ──
   const cy = y + 48;
   doc.setFillColor(248,248,248);
-  doc.rect(M, cy, W-M*2, 22, 'F');
-  doc.setDrawColor(220,220,220); doc.rect(M, cy, W-M*2, 22);
+  doc.rect(M, cy, W-M*2, 26, 'F');
+  doc.setDrawColor(220,220,220); doc.rect(M, cy, W-M*2, 26);
   doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(80,80,80);
   doc.text('DECLARATIONS CONFIRMED AT TIME OF SIGNING', M+3, cy+6);
   doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60);
-  doc.text('☑  Data Processing Agreement — I have read and accepted the Privacy Policy & GDPR Statement.', M+3, cy+13);
-  doc.text('☑  Eligibility — Valid licence held · 18+ years · Authorised to drive in Germany · Not under influence of any substance.', M+3, cy+19);
+  const consent1 = doc.splitTextToSize('[X]  Data Processing Agreement - I have read and accepted the Privacy Policy & GDPR Statement.', W-M*2-6);
+  const consent2 = doc.splitTextToSize('[X]  Eligibility - Valid licence held, 18+ years, authorised to drive in Germany, not under influence of any substance.', W-M*2-6);
+  doc.text(consent1, M+3, cy+13);
+  doc.text(consent2, M+3, cy+19);
 
   // ── Footer ──
   doc.setFillColor(245,245,245);
