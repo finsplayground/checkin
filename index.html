@@ -309,12 +309,83 @@ body::before {
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
 
+/* ── Landing Page ── */
+.landing {
+  display: flex; flex-direction: column;
+  position: relative; z-index: 1;
+  padding: 40px 24px 48px;
+  animation: fadeUp 0.35s ease;
+}
+
+.landing-welcome {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.landing-welcome::before { content: ''; display: block; width: 24px; height: 1px; background: var(--red); }
+
+.landing-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.8rem, 7vw, 3rem); font-weight: 800;
+  line-height: 1; letter-spacing: -0.01em;
+  text-transform: uppercase; color: var(--white); margin-bottom: 24px;
+}
+
+.landing-body {
+  font-size: 0.9rem; line-height: 1.8; color: var(--grey);
+  font-weight: 300; margin-bottom: 28px; max-width: 520px;
+}
+
+.landing-body strong { color: var(--text); font-weight: 500; }
+
+.landing-info {
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 16px 20px; margin-bottom: 28px;
+  font-size: 0.82rem; line-height: 1.7; color: var(--grey);
+}
+
+.landing-info-row {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+}
+.landing-info-row:last-child { border-bottom: none; }
+.landing-info-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); flex-shrink: 0; width: 100px;
+}
+.landing-info-val { color: var(--text); font-size: 0.85rem; }
+
+.landing-consents { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+
+.consent-block {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 14px 16px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.consent-block:has(input:checked) { border-color: rgba(187,10,33,0.4); }
+.consent-block input[type=checkbox] {
+  width: 20px; height: 20px; margin-top: 1px;
+  accent-color: var(--red); flex-shrink: 0; cursor: pointer;
+}
+.consent-block-text { font-size: 0.82rem; color: var(--grey); line-height: 1.5; }
+.consent-block-text strong { color: var(--text); display: block; margin-bottom: 3px; font-size: 0.85rem; }
+.consent-block-text a { color: var(--red); text-decoration: none; }
+.consent-block-text a:hover { text-decoration: underline; }
+
+.privacy-note {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: rgba(187,10,33,0.06); border: 1px solid rgba(187,10,33,0.2);
+  border-radius: 6px; padding: 14px 16px; margin-bottom: 28px;
+  font-size: 0.8rem; line-height: 1.6; color: var(--grey);
+}
+.privacy-note-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.privacy-note a { color: var(--red); text-decoration: none; }
+
 @media (max-width: 480px) {
-  .hero { padding: 36px 20px 32px; }
-  .form-page { padding: 0 20px 40px; }
-  .steps-bar { padding: 18px 20px; }
-  .step-label { display: none; }
-  .field-row { grid-template-columns: 1fr; gap: 0; }
+  .landing { padding: 32px 20px 40px; }
 }
 </style>
 </head>
@@ -336,12 +407,68 @@ body::before {
   <div class="header-date">17.09.2026</div>
 </header>
 
-<div class="hero">
-  <div class="hero-label">Vehicle Borrowing Agreement</div>
-  <p class="hero-body">To borrow a vehicle at today's event, please complete this registration form. Your data is used solely to generate your borrowing agreement — nothing personal is stored online.</p>
+<!-- ═══════════════════════════════
+     LANDING PAGE
+════════════════════════════════ -->
+<div class="landing" id="landingPage">
+  <div class="landing-welcome">Welcome</div>
+  <div class="landing-title">Audi Investor<br>Relations Event</div>
+
+  <p class="landing-body">
+    The Audi Investor Relations team is delighted to welcome you to today's driving experience.<br><br>
+    To enable you to drive one of our vehicles, we are required by law to complete a <strong>Vehicle Borrowing Agreement</strong>. This form will guide you through the process — at the end, a signed PDF will be generated on your device.<br><br>
+    Please email the completed agreement to <strong>xx@xx.de</strong> before the event.
+  </p>
+
+  <div class="landing-info">
+    <div class="landing-info-row">
+      <span class="landing-info-key">What we collect</span>
+      <span class="landing-info-val">Name, company, email, date of birth, driver's licence, address</span>
+    </div>
+    <div class="landing-info-row">
+      <span class="landing-info-key">Where it's stored</span>
+      <span class="landing-info-val">Only on your device until you email it to us</span>
+    </div>
+    <div class="landing-info-row">
+      <span class="landing-info-key">Why we need it</span>
+      <span class="landing-info-val">Legal requirement for vehicle borrowing agreements</span>
+    </div>
+    <div class="landing-info-row">
+      <span class="landing-info-key">Your rights</span>
+      <span class="landing-info-val">You may request deletion at any time — contact us at the address above</span>
+    </div>
+  </div>
+
+  <div class="landing-consents">
+    <label class="consent-block">
+      <input type="checkbox" id="consentGDPR" onchange="updateProceedBtn()">
+      <div class="consent-block-text">
+        <strong>Data Processing Agreement</strong>
+        I have read and accept the <a href="https://YOUR-GDPR-POLICY-URL.com" target="_blank" onclick="event.stopPropagation()">Privacy Policy & GDPR Statement</a>. I understand how my personal data will be collected, used, and stored, and I am aware of my rights under GDPR.
+      </div>
+    </label>
+
+    <label class="consent-block">
+      <input type="checkbox" id="consentAge" onchange="updateProceedBtn()">
+      <div class="consent-block-text">
+        <strong>Eligibility Confirmation</strong>
+        I confirm that I hold a valid driver's licence, am at least 18 years of age, and am authorised to operate a motor vehicle in Germany. I further confirm that I am not under the influence of alcohol, drugs, medication, or any other substance that may impair my ability to drive safely.
+      </div>
+    </label>
+  </div>
+
+  <div class="privacy-note">
+    <div class="privacy-note-icon">🔒</div>
+    <div>Your personal data is processed exclusively on your device. Nothing is transmitted to any server until you choose to email your completed agreement. We do not use tracking cookies or analytics on this page.</div>
+  </div>
+
+  <button class="btn btn-primary" id="btnProceed" onclick="proceedToForm()" disabled>
+    Proceed to Registration Form
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
 </div>
 
-<div class="steps-bar" id="stepsBar">
+<div class="steps-bar" id="stepsBar" style="display:none;">
   <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">Details</div></div>
   <div class="step-line" id="line1"></div>
   <div class="step" id="step2"><div class="step-num">2</div><div class="step-label">Vehicle</div></div>
@@ -565,7 +692,19 @@ const MODELS     = ['Audi RS5', 'Audi Q4 e-tron', 'Audi Q7'];
 const ORG_EMAIL  = 'daria.fomenko@gmail.com';
 const TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
 
-// ── Session state ──
+// ── Landing page ──
+window.updateProceedBtn = function() {
+  const gdpr = document.getElementById('consentGDPR').checked;
+  const age  = document.getElementById('consentAge').checked;
+  document.getElementById('btnProceed').disabled = !(gdpr && age);
+};
+
+window.proceedToForm = function() {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('stepsBar').style.display = 'flex';
+  document.querySelector('.form-page').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 const sessionId    = Date.now().toString(36) + Math.random().toString(36).slice(2,5);
 let carsData       = {};
 let selectedModel  = null;
@@ -937,6 +1076,16 @@ window.submitRegistration = async function() {
       return;
     }
 
+    // ── Write anonymous registration match to Firebase ──
+    // Only pid → cid + plate + model. Zero personal data.
+    await set(ref(db, `registrations/${participantId}`), {
+      pid:         participantId,
+      cid:         assignedCarId,
+      plate:       assignedPlate,
+      model:       selectedModel,
+      confirmedAt: Date.now()
+    });
+
     stopCountdown();
     softReservedCarId = null;
 
@@ -1108,9 +1257,13 @@ async function generateAndEmailPDF() {
   // PDF has already downloaded — instructions to attach it manually are in the body
   const subject = encodeURIComponent(`Vehicle Borrowing Agreement — ${first} ${last} — ${company}`);
   const body = encodeURIComponent(
-`Dear IR Team,
+`⚠ ACTION REQUIRED: Please attach the PDF file "${fname}" (downloaded to your device) before sending this email.
 
-Please find below the vehicle borrowing agreement details for the following participant. The signed PDF has been downloaded to their device — please request it or check your downloads folder.
+---
+
+Dear IR Team,
+
+Please find below the vehicle borrowing agreement details for the following participant.
 
 PARTICIPANT DETAILS
 -------------------
@@ -1128,13 +1281,6 @@ Licence Plate:    ${assignedPlate}
 Participant ID:   ${participantId.toUpperCase()}
 Event Date:       17 September 2026
 
-QR CODE (Participant ID)
-------------------------
-The participant's QR code is embedded in the downloaded PDF.
-Participant ID: ${participantId.toUpperCase()}
-
-⚠ ACTION REQUIRED: Please attach the PDF file "${fname}" which has been downloaded to your device before sending this email.
-
 Best regards,
 ${first} ${last}
 ${company}`
@@ -1151,6 +1297,7 @@ ${company}`
 function showSuccessScreen() {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('stepsBar').style.display = 'none';
+  document.getElementById('landingPage').style.display = 'none';
   const first = document.getElementById('firstName').value.trim();
   const last  = document.getElementById('lastName').value.trim();
   document.getElementById('suc-name').textContent  = first+' '+last;
