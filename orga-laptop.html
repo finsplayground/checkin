@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audi IR — Event Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:  #080808;
+  --dark:   #111111;
+  --dark2:  #161616;
+  --dark3:  #1e1e1e;
+  --dark4:  #242424;
+  --red:    #BB0A21;
+  --red-dim:rgba(187,10,33,0.12);
+  --green:  #1a7a45;
+  --green-light: rgba(26,122,69,0.12);
+  --amber:  #b8860b;
+  --amber-light: rgba(184,134,11,0.12);
+  --white:  #ffffff;
+  --grey:   #888888;
+  --grey2:  #444444;
+  --border: rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:   #e8e8e8;
+  --muted:  #555555;
+}
+
+html, body { height: 100%; background: var(--black); color: var(--text); font-family: 'Barlow', sans-serif; overflow: hidden; }
+
+/* ── Login Screen ── */
+.login-screen {
+  position: fixed; inset: 0; background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; flex-direction: column; gap: 24px;
+}
+
+.login-box {
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 40px; width: 360px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.login-logo {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+}
+
+.login-logo svg { height: 24px; }
+
+.login-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.02em; color: var(--white);
+}
+
+.login-sub { font-size: 0.8rem; color: var(--muted); margin-top: -12px; }
+
+.login-field { display: flex; flex-direction: column; gap: 6px; }
+.login-field label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey); }
+.login-field input {
+  background: var(--dark3); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 11px 14px;
+  font-family: 'Barlow', sans-serif; font-size: 0.95rem; color: var(--white);
+  outline: none; transition: border-color 0.2s;
+}
+.login-field input:focus { border-color: var(--red); }
+
+.login-btn {
+  background: var(--red); color: var(--white); border: none;
+  border-radius: 6px; padding: 13px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem;
+  font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+}
+.login-btn:hover { background: #d40d26; }
+
+.login-error { font-size: 0.78rem; color: var(--red); text-align: center; display: none; }
+.login-error.visible { display: block; }
+
+/* ── App Shell ── */
+.app { display: none; height: 100vh; flex-direction: column; }
+.app.visible { display: flex; }
+
+/* ── Top Bar ── */
+.topbar {
+  height: 56px; background: var(--dark2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; flex-shrink: 0;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { display: flex; align-items: center; gap: 10px; }
+.topbar-logo svg { height: 20px; }
+.topbar-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--white);
+}
+.topbar-divider { width: 1px; height: 20px; background: var(--border2); }
+.topbar-event { font-size: 0.75rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.08em; }
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.live-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--green-light); border: 1px solid rgba(26,122,69,0.3);
+  border-radius: 20px; padding: 4px 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; letter-spacing: 0.12em; color: #4caf50;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+.stat-chips { display: flex; gap: 8px; }
+.stat-chip {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 5px 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem; color: var(--grey);
+  display: flex; align-items: center; gap: 6px;
+}
+.stat-chip strong { color: var(--white); font-size: 0.9rem; }
+
+/* ── Tabs ── */
+.tabs {
+  display: flex; gap: 0;
+  background: var(--dark2); border-bottom: 1px solid var(--border);
+  padding: 0 24px; flex-shrink: 0;
+}
+
+.tab {
+  padding: 12px 20px; border: none; background: transparent;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--white); border-bottom-color: var(--red); }
+.tab-count {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1px 7px;
+  font-size: 0.65rem; color: var(--grey);
+}
+.tab.active .tab-count { background: var(--red-dim); border-color: rgba(187,10,33,0.3); color: #ff8899; }
+
+/* ── Content Area ── */
+.content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.tab-panel { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+.tab-panel.active { display: flex; }
+
+/* ── Panel Header ── */
+.panel-header {
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; background: var(--dark2);
+}
+.panel-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+.panel-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.panel-actions { display: flex; gap: 10px; align-items: center; }
+
+/* ── Buttons ── */
+.btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: 6px; border: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer; transition: all 0.18s;
+}
+.btn-primary { background: var(--red); color: var(--white); }
+.btn-primary:hover { background: #d40d26; }
+.btn-secondary { background: var(--dark3); color: var(--text); border: 1px solid var(--border2); }
+.btn-secondary:hover { border-color: var(--grey); }
+.btn-green { background: var(--green); color: var(--white); }
+.btn-green:hover { background: #1e8f4f; }
+.btn-sm { padding: 5px 10px; font-size: 0.7rem; }
+
+/* ── Import Area ── */
+.import-area {
+  border: 1.5px dashed var(--border2); border-radius: 8px;
+  padding: 24px; text-align: center; cursor: pointer;
+  transition: border-color 0.2s; background: var(--dark2);
+  margin: 16px 24px 0;
+}
+.import-area:hover { border-color: var(--red); }
+.import-area svg { color: var(--muted); margin-bottom: 8px; }
+.import-area p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+.import-area strong { color: var(--text); }
+#csvFileInput { display: none; }
+
+/* ── Participant Table ── */
+.table-wrap { flex: 1; overflow-y: auto; padding: 0 24px 24px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 16px; }
+
+thead { position: sticky; top: 0; z-index: 10; }
+thead tr { background: var(--dark3); }
+th {
+  padding: 10px 12px; text-align: left;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+  font-weight: 600; border-bottom: 1px solid var(--border2);
+  white-space: nowrap;
+}
+
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:hover { background: var(--dark3); }
+td { padding: 10px 12px; vertical-align: middle; }
+
+.td-name { font-weight: 600; color: var(--white); }
+.td-company { color: var(--grey); font-size: 0.78rem; }
+.td-pid {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; letter-spacing: 0.04em;
+}
+.td-car { font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; }
+.td-plate {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; color: var(--grey);
+  background: var(--dark3); padding: 2px 8px;
+  border-radius: 4px; display: inline-block;
+  border: 1px solid var(--border2);
+}
+
+/* PID input inline */
+.pid-input-wrap { display: flex; align-items: center; gap: 6px; }
+.pid-input {
+  background: var(--dark3); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 5px 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem; color: var(--white); outline: none;
+  width: 120px; transition: border-color 0.2s;
+}
+.pid-input:focus { border-color: var(--red); }
+.pid-confirm { background: none; border: none; color: var(--muted); cursor: pointer; padding: 4px; border-radius: 4px; transition: color 0.2s; }
+.pid-confirm:hover { color: var(--green); }
+
+/* Status badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; letter-spacing: 0.08em; font-weight: 600;
+  text-transform: uppercase; white-space: nowrap;
+}
+.badge-pending   { background: var(--dark4); color: var(--muted); border: 1px solid var(--border); }
+.badge-paperwork { background: var(--amber-light); color: #d4a017; border: 1px solid rgba(184,134,11,0.3); }
+.badge-arrived   { background: var(--green-light); color: #4caf50; border: 1px solid rgba(76,175,80,0.3); }
+.badge-keys      { background: var(--red-dim); color: #ff8899; border: 1px solid rgba(187,10,33,0.3); }
+.badge-returned  { background: rgba(255,255,255,0.05); color: var(--grey); border: 1px solid var(--border2); }
+
+/* Paperwork checkbox */
+.paperwork-check {
+  width: 18px; height: 18px; cursor: pointer;
+  accent-color: var(--green); flex-shrink: 0;
+}
+
+/* ── Dashboard ── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px; padding: 20px 24px;
+}
+
+.car-card {
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 16px; position: relative;
+  overflow: hidden; transition: border-color 0.2s;
+}
+
+.car-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--grey2); transition: background 0.3s;
+}
+
+.car-card.status-waiting::before  { background: var(--grey2); }
+.car-card.status-arrived::before  { background: var(--amber); }
+.car-card.status-keys::before     { background: var(--red); }
+.car-card.status-swapped::before  { background: #9c27b0; }
+.car-card.status-returned::before { background: var(--green); }
+
+.car-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.car-model { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; color: var(--white); }
+.car-plate-badge {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem;
+  background: var(--dark3); border: 1px solid var(--border2);
+  padding: 3px 8px; border-radius: 4px; color: var(--grey);
+  letter-spacing: 0.06em;
+}
+
+.car-drivers { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.car-driver-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 10px; background: var(--dark3); border-radius: 6px;
+  font-size: 0.78rem;
+}
+.driver-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+.driver-pid { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; color: var(--grey); }
+.driver-time { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; color: var(--muted); }
+
+.car-timeline { display: flex; flex-direction: column; gap: 4px; }
+.timeline-item { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--muted); }
+.timeline-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grey2); flex-shrink: 0; }
+.timeline-dot.done { background: var(--green); }
+.timeline-dot.active { background: var(--red); animation: pulse 1.5s infinite; }
+.timeline-label { flex: 1; }
+.timeline-time { font-family: 'Barlow Condensed', sans-serif; color: var(--grey); }
+
+/* ── Export Panel ── */
+.export-panel { padding: 24px; display: flex; flex-direction: column; gap: 20px; max-width: 600px; }
+
+.export-info {
+  background: var(--dark2); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 16px 20px;
+}
+.export-info-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 12px; }
+.export-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+.export-row:last-child { border-bottom: none; }
+.export-key { color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.export-val { color: var(--text); font-weight: 500; }
+
+.export-preview {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem;
+  color: var(--grey); line-height: 1.8; letter-spacing: 0.02em;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--dark3); border: 1px solid var(--border2);
+  color: var(--white); padding: 10px 20px; border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  z-index: 999; transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+  white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--grey2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     LOGIN
+══════════════════════════════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg viewBox="0 0 148 40" fill="none">
+        <circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+        <circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+        <circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+        <circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="login-title">Event Management</div>
+    <p class="login-sub">Audi Investor Relations · 17.09.2026</p>
+    <div class="login-field">
+      <label>Access Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter') login()">
+    </div>
+    <button class="login-btn" onclick="login()">Access Event Dashboard</button>
+    <div class="login-error" id="loginError">Incorrect password</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     APP
+══════════════════════════════ -->
+<div class="app" id="app">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 148 40" fill="none">
+          <circle cx="20" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+          <circle cx="49.3" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+          <circle cx="78.7" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+          <circle cx="108" cy="20" r="18.5" stroke="white" stroke-width="3"/>
+        </svg>
+        <div class="topbar-title">Investor Relations</div>
+      </div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-event">Event Management · 17.09.2026 · 15:00–16:30</div>
+    </div>
+    <div class="topbar-right">
+      <div class="stat-chips">
+        <div class="stat-chip">Participants <strong id="statTotal">0</strong></div>
+        <div class="stat-chip">Paperwork <strong id="statPaperwork">0</strong></div>
+        <div class="stat-chip">Arrived <strong id="statArrived">0</strong></div>
+        <div class="stat-chip">Keys Out <strong id="statKeys">0</strong></div>
+      </div>
+      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('participants')" id="tab-participants">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Participants
+      <span class="tab-count" id="tabCountP">0</span>
+    </button>
+    <button class="tab" onclick="showTab('dashboard')" id="tab-dashboard">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Live Dashboard
+      <span class="tab-count" id="tabCountD">0</span>
+    </button>
+    <button class="tab" onclick="showTab('export')" id="tab-export">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════
+         TAB 1 — PARTICIPANTS
+    ══════════════════════════════ -->
+    <div class="tab-panel active" id="panel-participants">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Participant List</div>
+          <div class="panel-sub">Import CSV · Enter PIDs as emails arrive · Tick paperwork received</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-secondary" onclick="clearParticipants()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            Clear All
+          </button>
+          <button class="btn btn-primary" onclick="document.getElementById('csvFileInput').click()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Import CSV
+          </button>
+          <input type="file" id="csvFileInput" accept=".csv" onchange="importCSV(event)">
+        </div>
+      </div>
+
+      <!-- CSV format hint -->
+      <div style="padding:12px 24px 0;font-size:0.72rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.06em;">
+        CSV FORMAT: <span style="color:var(--grey);">FirstName, LastName, Company</span> — one row per participant, first row is header
+      </div>
+
+      <div class="table-wrap">
+        <table id="participantTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Company</th>
+              <th>Participant ID</th>
+              <th>Car</th>
+              <th>Plate</th>
+              <th>Paperwork</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="participantBody">
+            <tr>
+              <td colspan="8" style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;font-size:0.8rem;">
+                No participants yet — import a CSV to begin
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         TAB 2 — DASHBOARD
+    ══════════════════════════════ -->
+    <div class="tab-panel" id="panel-dashboard">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Live Event Dashboard</div>
+          <div class="panel-sub">Real-time from Firebase — updates automatically</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-secondary btn-sm" onclick="refreshDashboard()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="dashboard-grid" id="dashboardGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;font-size:0.8rem;">
+          Loading event data…
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         TAB 3 — EXPORT
+    ══════════════════════════════ -->
+    <div class="tab-panel" id="panel-export">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Export Event Log</div>
+          <div class="panel-sub">Joins local participant data with Firebase event timestamps</div>
+        </div>
+      </div>
+
+      <div class="export-panel">
+        <div class="export-info">
+          <div class="export-info-title">CSV Columns</div>
+          <div class="export-row"><span class="export-key">Last Name</span><span class="export-val">Participant surname</span></div>
+          <div class="export-row"><span class="export-key">First Name</span><span class="export-val">Participant first name</span></div>
+          <div class="export-row"><span class="export-key">Company</span><span class="export-val">Participant company</span></div>
+          <div class="export-row"><span class="export-key">Participant ID</span><span class="export-val">Anonymous event ID</span></div>
+          <div class="export-row"><span class="export-key">Car Model</span><span class="export-val">Assigned vehicle</span></div>
+          <div class="export-row"><span class="export-key">Licence Plate</span><span class="export-val">Assigned plate</span></div>
+          <div class="export-row"><span class="export-key">Paperwork</span><span class="export-val">Received yes/no</span></div>
+          <div class="export-row"><span class="export-key">Arrived At</span><span class="export-val">Check-in timestamp</span></div>
+          <div class="export-row"><span class="export-key">Driver Order</span><span class="export-val">Driver 1 or Driver 2</span></div>
+          <div class="export-row"><span class="export-key">Keys Out</span><span class="export-val">Key handout timestamp</span></div>
+          <div class="export-row"><span class="export-key">Swap At</span><span class="export-val">Driver swap timestamp</span></div>
+          <div class="export-row"><span class="export-key">Keys Returned</span><span class="export-val">Return timestamp</span></div>
+        </div>
+
+        <div class="export-preview" id="exportPreview">
+          LastName, FirstName, Company, ParticipantID, CarModel, Plate, Paperwork, ArrivedAt, DriverOrder, KeysOut, SwapAt, KeysReturned
+        </div>
+
+        <button class="btn btn-green" onclick="exportCSV()" style="width:100%;padding:14px;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Complete Event Log CSV
+        </button>
+
+        <div style="font-size:0.72rem;color:var(--muted);text-align:center;line-height:1.6;">
+          Participants without a matched PID will appear with their name but empty event columns.<br>
+          Firebase-only entries (no name match) will appear with PID only.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAgaGPUrRWslO7IPht1L6EbTix-a0FjRcw",
+  authDomain: "checkin-d0dd5.firebaseapp.com",
+  databaseURL: "https://checkin-d0dd5-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "checkin-d0dd5",
+  storageBucket: "checkin-d0dd5.firebasestorage.app",
+  messagingSenderId: "476599099077",
+  appId: "1:476599099077:web:bbb6d53db6690b7e0c1aac"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+const PASSWORD = 'Audi@F1';
+const STORAGE_KEY = 'audir_orga_participants_v1';
+
+// ── State ──
+let participants = []; // [{firstName, lastName, company, pid, car, plate, paperwork}]
+let firebaseData = { registrations: {}, events: {} };
+
+// ── Login ──
+window.login = function() {
+  const pw = document.getElementById('loginPassword').value;
+  if (pw === PASSWORD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    loadParticipants();
+    startFirebaseListeners();
+  } else {
+    document.getElementById('loginError').classList.add('visible');
+    document.getElementById('loginPassword').value = '';
+  }
+};
+
+// ── Local Storage ──
+function saveParticipants() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(participants));
+}
+
+function loadParticipants() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) participants = JSON.parse(raw);
+  } catch(e) { participants = []; }
+  renderParticipants();
+  updateStats();
+}
+
+// ── Firebase Listeners ──
+function startFirebaseListeners() {
+  // Listen to registrations (pid → cid matches)
+  onValue(ref(db, 'registrations'), snap => {
+    firebaseData.registrations = snap.val() || {};
+    // Auto-fill car data for any matched PIDs
+    participants.forEach(p => {
+      if (p.pid && firebaseData.registrations[p.pid] && !p.car) {
+        const reg = firebaseData.registrations[p.pid];
+        p.car   = reg.model  || '';
+        p.plate = reg.plate  || '';
+      }
+    });
+    saveParticipants();
+    renderParticipants();
+    updateStats();
+  });
+
+  // Listen to event log (arrivals, keys, swaps, returns)
+  onValue(ref(db, 'eventLog'), snap => {
+    firebaseData.events = snap.val() || {};
+    renderParticipants();
+    renderDashboard();
+    updateStats();
+  });
+
+  // Listen to cars for dashboard
+  onValue(ref(db, 'cars'), snap => {
+    firebaseData.cars = snap.val() || {};
+    renderDashboard();
+  });
+}
+
+// ── CSV Import ──
+window.importCSV = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    if (lines.length < 2) { showToast('⚠ CSV must have a header row and at least one participant'); return; }
+
+    const imported = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+      if (cols.length < 2) continue;
+      const [firstName, lastName, company = ''] = cols;
+      if (!firstName && !lastName) continue;
+      imported.push({ firstName, lastName, company, pid: '', car: '', plate: '', paperwork: false });
+    }
+
+    // Merge with existing — don't duplicate by name
+    imported.forEach(imp => {
+      const exists = participants.find(p => p.firstName === imp.firstName && p.lastName === imp.lastName);
+      if (!exists) participants.push(imp);
+    });
+
+    // Sort alphabetically by last name
+    participants.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+    saveParticipants();
+    renderParticipants();
+    updateStats();
+    showToast(`✓ ${imported.length} participants imported`);
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+};
+
+// ── Render Participants ──
+function renderParticipants() {
+  const tbody = document.getElementById('participantBody');
+  if (!participants.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;font-size:0.8rem;">No participants yet — import a CSV to begin</td></tr>`;
+    document.getElementById('tabCountP').textContent = '0';
+    return;
+  }
+
+  tbody.innerHTML = '';
+  participants.forEach((p, i) => {
+    const ev = p.pid ? (firebaseData.events?.[p.pid] || {}) : {};
+    const status = getStatus(p, ev);
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;">${i+1}</td>
+      <td class="td-name">${esc(p.lastName)}, ${esc(p.firstName)}</td>
+      <td class="td-company">${esc(p.company)}</td>
+      <td class="td-pid">
+        ${p.pid
+          ? `<span style="color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;letter-spacing:0.04em;">${esc(p.pid.toUpperCase())}</span>`
+          : `<div class="pid-input-wrap">
+              <input class="pid-input" placeholder="Enter PID…" onkeydown="if(event.key==='Enter')confirmPID(${i},this.value)" value="">
+              <button class="pid-confirm" onclick="confirmPID(${i},this.previousElementSibling.value)" title="Confirm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>`
+        }
+      </td>
+      <td class="td-car">${p.car ? esc(p.car) : '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${p.plate ? `<span class="td-plate">${esc(p.plate)}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
+      <td style="text-align:center;">
+        <input type="checkbox" class="paperwork-check" ${p.paperwork ? 'checked' : ''} onchange="togglePaperwork(${i}, this.checked)" ${!p.pid ? 'disabled title="Enter PID first"' : ''}>
+      </td>
+      <td><span class="badge badge-${status.cls}">${status.label}</span></td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('tabCountP').textContent = participants.length;
+}
+
+function getStatus(p, ev) {
+  if (!p.pid)        return { cls: 'pending',   label: 'No PID' };
+  if (!p.paperwork)  return { cls: 'pending',   label: 'Pending' };
+  if (ev.returnedAt) return { cls: 'returned',  label: 'Returned' };
+  if (ev.keysOutAt)  return { cls: 'keys',      label: 'Keys Out' };
+  if (ev.arrivedAt)  return { cls: 'arrived',   label: 'Arrived' };
+  return { cls: 'paperwork', label: 'Cleared' };
+}
+
+// ── PID Confirmation ──
+window.confirmPID = async function(index, pid) {
+  pid = pid.trim().toLowerCase();
+  if (!pid) { showToast('⚠ Enter a participant ID'); return; }
+
+  // Check if PID exists in Firebase registrations
+  const reg = firebaseData.registrations[pid];
+  if (!reg) {
+    showToast('⚠ PID not found in Firebase — check the ID');
+    return;
+  }
+
+  // Check not already used
+  const duplicate = participants.find((p, i) => p.pid === pid && i !== index);
+  if (duplicate) {
+    showToast(`⚠ PID already assigned to ${duplicate.firstName} ${duplicate.lastName}`);
+    return;
+  }
+
+  participants[index].pid   = pid;
+  participants[index].car   = reg.model  || '';
+  participants[index].plate = reg.plate  || '';
+
+  saveParticipants();
+  renderParticipants();
+  showToast(`✓ ${participants[index].firstName} ${participants[index].lastName} → ${reg.model} ${reg.plate}`);
+};
+
+// ── Paperwork Toggle ──
+window.togglePaperwork = async function(index, checked) {
+  const p = participants[index];
+  if (!p.pid) return;
+  p.paperwork = checked;
+  saveParticipants();
+
+  // Write to Firebase
+  try {
+    await update(ref(db, `eventLog/${p.pid}`), {
+      paperworkAt: checked ? Date.now() : null,
+      paperwork: checked
+    });
+    showToast(checked ? `✓ Paperwork confirmed — ${p.firstName} ${p.lastName}` : `Paperwork unmarked — ${p.firstName} ${p.lastName}`);
+  } catch(e) {
+    showToast('⚠ Firebase write failed — check connection');
+  }
+  updateStats();
+};
+
+// ── Clear ──
+window.clearParticipants = function() {
+  if (!confirm('Clear all participants? This only clears local data — Firebase is unaffected.')) return;
+  participants = [];
+  saveParticipants();
+  renderParticipants();
+  updateStats();
+  showToast('Participant list cleared');
+};
+
+// ── Dashboard ──
+window.refreshDashboard = renderDashboard;
+
+function renderDashboard() {
+  const grid = document.getElementById('dashboardGrid');
+  const cars = firebaseData.cars || {};
+  const regs  = firebaseData.registrations || {};
+  const events = firebaseData.events || {};
+
+  if (!Object.keys(cars).length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;font-size:0.8rem;">No car data — run the seeder first</div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+
+  Object.entries(cars).forEach(([cid, car]) => {
+    if (!car.plate) return;
+
+    // Find participants for this car
+    const carPids = Object.keys(regs).filter(pid => regs[pid].cid === cid);
+    const carEvents = carPids.map(pid => ({ pid, ...( events[pid] || {}) }));
+
+    // Determine car status
+    const anyReturned = carEvents.some(e => e.returnedAt);
+    const anyKeys     = carEvents.some(e => e.keysOutAt);
+    const anyArrived  = carEvents.some(e => e.arrivedAt);
+    const swapEvent   = firebaseData.events?.[`swap_${cid}`];
+
+    let statusClass = 'status-waiting';
+    if (anyReturned)    statusClass = 'status-returned';
+    else if (swapEvent) statusClass = 'status-swapped';
+    else if (anyKeys)   statusClass = 'status-keys';
+    else if (anyArrived)statusClass = 'status-arrived';
+
+    // Find driver 1 and 2
+    const d1 = carEvents.find(e => e.driverOrder === 1);
+    const d2 = carEvents.find(e => e.driverOrder === 2);
+
+    // Look up names from local participants
+    function getName(pid) {
+      const p = participants.find(x => x.pid === pid);
+      return p ? `${p.lastName}, ${p.firstName}` : pid ? pid.toUpperCase().slice(0,8) : '—';
+    }
+
+    const fmt = ts => ts ? new Date(ts).toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }) : '—';
+
+    const div = document.createElement('div');
+    div.className = `car-card ${statusClass}`;
+    div.innerHTML = `
+      <div class="car-card-header">
+        <div class="car-model">${esc(car.model || '')}</div>
+        <div class="car-plate-badge">${esc(car.plate)}</div>
+      </div>
+      <div class="car-drivers">
+        <div class="car-driver-row">
+          <div>
+            <div class="driver-label">Driver 1</div>
+            <div style="font-size:0.82rem;color:var(--text);margin-top:2px;">${getName(d1?.pid)}</div>
+          </div>
+          <div class="driver-time">${d1?.keysOutAt ? fmt(d1.keysOutAt) : ''}</div>
+        </div>
+        <div class="car-driver-row">
+          <div>
+            <div class="driver-label">Driver 2</div>
+            <div style="font-size:0.82rem;color:var(--text);margin-top:2px;">${getName(d2?.pid)}</div>
+          </div>
+          <div class="driver-time">${d2?.keysOutAt ? fmt(d2.keysOutAt) : ''}</div>
+        </div>
+      </div>
+      <div class="car-timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot ${anyArrived ? 'done' : ''}"></div>
+          <span class="timeline-label">Arrived</span>
+          <span class="timeline-time">${anyArrived ? fmt(Math.min(...carEvents.filter(e=>e.arrivedAt).map(e=>e.arrivedAt))) : '—'}</span>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot ${anyKeys ? (anyReturned ? 'done' : 'active') : ''}"></div>
+          <span class="timeline-label">Keys Out</span>
+          <span class="timeline-time">${d1?.keysOutAt ? fmt(d1.keysOutAt) : '—'}</span>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot ${swapEvent ? 'done' : ''}"></div>
+          <span class="timeline-label">Swapped</span>
+          <span class="timeline-time">${swapEvent?.swappedAt ? fmt(swapEvent.swappedAt) : '—'}</span>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot ${anyReturned ? 'done' : ''}"></div>
+          <span class="timeline-label">Returned</span>
+          <span class="timeline-time">${anyReturned ? fmt(Math.max(...carEvents.filter(e=>e.returnedAt).map(e=>e.returnedAt))) : '—'}</span>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+
+  document.getElementById('tabCountD').textContent = Object.keys(cars).length;
+}
+
+// ── Stats ──
+function updateStats() {
+  const total     = participants.length;
+  const paperwork = participants.filter(p => p.paperwork).length;
+  const events    = firebaseData.events || {};
+  const arrived   = participants.filter(p => p.pid && events[p.pid]?.arrivedAt).length;
+  const keys      = participants.filter(p => p.pid && events[p.pid]?.keysOutAt).length;
+
+  document.getElementById('statTotal').textContent     = total;
+  document.getElementById('statPaperwork').textContent = paperwork;
+  document.getElementById('statArrived').textContent   = arrived;
+  document.getElementById('statKeys').textContent      = keys;
+}
+
+// ── Export CSV ──
+window.exportCSV = function() {
+  const events = firebaseData.events || {};
+  const fmt = ts => ts ? new Date(ts).toLocaleString('en-GB') : '';
+
+  const header = ['LastName','FirstName','Company','ParticipantID','CarModel','Plate','Paperwork','ArrivedAt','DriverOrder','KeysOut','SwapAt','KeysReturned'];
+
+  const rows = participants.map(p => {
+    const ev = p.pid ? (events[p.pid] || {}) : {};
+    const swapEv = p.pid ? (events[`swap_${p.car}`] || {}) : {};
+    return [
+      p.lastName, p.firstName, p.company,
+      p.pid || '', p.car || '', p.plate || '',
+      p.paperwork ? 'Yes' : 'No',
+      fmt(ev.arrivedAt),
+      ev.driverOrder ? `Driver ${ev.driverOrder}` : '',
+      fmt(ev.keysOutAt),
+      fmt(swapEv.swappedAt),
+      fmt(ev.returnedAt)
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+
+  // Also add any Firebase entries without a local name match
+  const matchedPids = new Set(participants.map(p => p.pid).filter(Boolean));
+  Object.entries(firebaseData.registrations || {}).forEach(([pid, reg]) => {
+    if (!matchedPids.has(pid)) {
+      const ev = events[pid] || {};
+      const swapEv = events[`swap_${reg.cid}`] || {};
+      rows.push([
+        '', '', '', pid, reg.model || '', reg.plate || '',
+        '', fmt(ev.arrivedAt),
+        ev.driverOrder ? `Driver ${ev.driverOrder}` : '',
+        fmt(ev.keysOutAt), fmt(swapEv.swappedAt), fmt(ev.returnedAt)
+      ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    }
+  });
+
+  const csv  = [header.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a    = document.createElement('a');
+  const ts   = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).replace(/:/g,'-');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `AudiIR_EventLog_${ts}.csv`;
+  a.click();
+  showToast('✓ CSV exported');
+
+  // Update preview
+  document.getElementById('exportPreview').textContent = [header.join(', '), ...rows.slice(0,3)].join('\n');
+};
+
+// ── Tab Navigation ──
+window.showTab = function(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+};
+
+// ── Helpers ──
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+window.showToast = function(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3500);
+};
+</script>
+</body>
+</html>
