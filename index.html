@@ -688,8 +688,8 @@ body::before {
     <button class="btn btn-action" onclick="downloadQR()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="18" width="3" height="3"/></svg>
       <div class="btn-action-text">
-        <span class="btn-action-label">Save QR Code</span>
-        <span class="btn-action-sub">Download as image to your device</span>
+        <span class="btn-action-label">Save Event ID</span>
+        <span class="btn-action-sub">Download card with QR, name, car and plate</span>
       </div>
       <svg class="btn-action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
     </button>
@@ -726,6 +726,8 @@ body::before {
   <div class="loading-text" id="loadingText">Processing…</div>
 </div>
 
+<canvas id="qrImageCanvas" style="display:none"></canvas>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -750,7 +752,7 @@ const db  = getDatabase(app);
 
 // ── Constants ──
 const MODELS     = ['Audi RS5', 'Audi Q4 e-tron', 'Audi Q7'];
-const ORG_EMAIL  = 'daria.fomenko@gmail.com';
+const ORG_EMAIL  = 'finsternis483@gmail.com';
 const TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
 
 // ── Landing page consent ──
@@ -1149,7 +1151,7 @@ window.submitRegistration = async function() {
     await generateAndEmailPDF();
 
     hideLoading();
-    showSuccessScreen();
+    await showSuccessScreen();
   } catch(e) {
     hideLoading();
     showToast('✗ ' + e.message);
@@ -1359,13 +1361,14 @@ ${company}`
 }
 
 // ── Success screen actions ──
-window.downloadQR = function() {
-  const canvas = document.getElementById('qrCanvas');
+window.downloadQR = async function() {
+  if (!window._qrCardDataUrl) { showToast('⚠ Please complete registration first'); return; }
   const a = document.createElement('a');
-  a.href     = canvas.toDataURL('image/png');
-  a.download = 'AudiIR_EventQR.png';
+  const last = document.getElementById('lastName').value.trim();
+  a.href = window._qrCardDataUrl;
+  a.download = `${last}_${assignedPlate.replace(/\s+/g,'')}_EventID.png`;
   a.click();
-  showToast('✓ QR code saved');
+  showToast('✓ Event ID saved');
 };
 
 window.downloadPDF = function() {
@@ -1383,7 +1386,7 @@ window.openEmail = function() {
   a.href = url;
   a.click();
 };
-function showSuccessScreen() {
+async function showSuccessScreen() {
   document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
   document.getElementById('stepsBar').style.display = 'none';
   const first = document.getElementById('firstName').value.trim();
@@ -1391,9 +1394,90 @@ function showSuccessScreen() {
   document.getElementById('suc-name').textContent  = first+' '+last;
   document.getElementById('suc-car').textContent   = selectedModel;
   document.getElementById('suc-plate').textContent = assignedPlate;
-  QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, { width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' } });
+
+  await QRCode.toCanvas(document.getElementById('qrCanvas'), window._qrPayload, {
+    width:200, margin:1, color:{ dark:'#080808', light:'#ffffff' }
+  });
+
+  // Build downloadable event ID card
+  await buildQRCard(first, last, assignedPlate, selectedModel);
+
   document.getElementById('successScreen').classList.add('active');
   window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+async function buildQRCard(first, last, plate, model) {
+  const qrDataUrl = await QRCode.toDataURL(window._qrPayload, {
+    width: 200, margin: 1,
+    color: { dark: '#080808', light: '#ffffff' }
+  });
+
+  const canvas = document.getElementById('qrImageCanvas');
+  const dpr    = window.devicePixelRatio || 1;
+  const W = 320, H = 440;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // Background
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+
+  // Red top bar
+  ctx.fillStyle = '#BB0A21';
+  ctx.fillRect(0, 0, W, 6);
+
+  // Event name
+  ctx.fillStyle = '#888888';
+  ctx.font = '500 11px "Helvetica Neue", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('AUDI INVESTOR RELATIONS', W/2, 30);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 13px "Helvetica Neue", sans-serif';
+  ctx.fillText('VEHICLE EXPERIENCE · 17.09.2026', W/2, 48);
+
+  // QR code
+  const qrImg = new Image();
+  await new Promise(res => { qrImg.onload = res; qrImg.src = qrDataUrl; });
+  const qrSize = 200;
+  ctx.drawImage(qrImg, (W - qrSize) / 2, 66, qrSize, qrSize);
+
+  // Divider
+  ctx.strokeStyle = '#222222';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(24, 280); ctx.lineTo(W-24, 280); ctx.stroke();
+
+  // Name
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 18px "Helvetica Neue", sans-serif';
+  ctx.fillText(`${last.toUpperCase()}, ${first}`, W/2, 308);
+
+  // Participant ID
+  ctx.fillStyle = '#BB0A21';
+  ctx.font = '500 11px "Helvetica Neue", sans-serif';
+  ctx.fillText(`ID: ${participantId.toUpperCase()}`, W/2, 330);
+
+  // Car model + plate
+  ctx.fillStyle = '#888888';
+  ctx.font = '500 12px "Helvetica Neue", sans-serif';
+  ctx.fillText(`${model} · ${plate}`, W/2, 354);
+
+  // Divider
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.beginPath(); ctx.moveTo(24, 372); ctx.lineTo(W-24, 372); ctx.stroke();
+
+  // Footer instruction
+  ctx.fillStyle = '#444444';
+  ctx.font = '10px "Helvetica Neue", sans-serif';
+  ctx.fillText('Present this QR code at the arrival desk', W/2, 395);
+  ctx.fillText('15:00 – 16:30', W/2, 412);
+
+  // Red bottom bar
+  ctx.fillStyle = '#BB0A21';
+  ctx.fillRect(0, H-6, W, 6);
+
+  window._qrCardDataUrl = canvas.toDataURL('image/png');
 }
 
 // ── Helpers ──
