@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>Audi Investor Relations — Vehicle Registration</title>
+<title>IR — Vehicle Experience Registration</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -435,10 +435,10 @@ body::before {
 ════════════════════════════════ -->
 <div class="form-page active" id="page1">
   <div class="landing-welcome">Welcome</div>
-  <div class="landing-title">Audi Investor<br>Relations Event</div>
+  <div class="landing-title">Investor<br>Relations Event</div>
 
   <p class="landing-body">
-    The Audi Investor Relations team is delighted to welcome you to today's driving experience.<br><br>
+    The Investor Relations team is delighted to welcome you to today's driving experience.<br><br>
     To enable you to drive one of our vehicles, we are required by law to complete a <strong>Vehicle Borrowing Agreement</strong>. This form will guide you through the process — at the end, a signed PDF will be generated on your device.<br><br>
     Please email the completed agreement to <strong>xx@xx.de</strong> before the event.
   </p>
@@ -592,7 +592,7 @@ body::before {
 
   <div class="legal-box">
     <strong style="color:var(--white);display:block;margin-bottom:8px;">Vehicle Borrowing Agreement — 17 September 2026</strong>
-    I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. Audi AG and the event organiser reserve the right to terminate borrowing privileges at any time. This agreement is legally binding upon signature.
+    I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. The event organiser reserves the right to terminate borrowing privileges at any time. This agreement is legally binding upon signature.
   </div>
 
   <div class="field">
@@ -823,7 +823,7 @@ function renderCarOptions() {
     div.setAttribute('data-model', model);
     div.innerHTML = `
       <div class="car-option-header">
-        <div class="car-name">${modelShort}<span>Audi AG · Event Fleet</span></div>
+        <div class="car-name">${modelShort}<span>IR Event Fleet</span></div>
         <div class="car-slots ${slotClass}">${slotLabel}</div>
       </div>
       <div class="car-slot-bar">${pips}</div>`;
@@ -1196,7 +1196,7 @@ async function generateAndEmailPDF() {
   doc.line(0, 46, W, 46);
 
   doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(30,30,30);
-  doc.text('AUDI INVESTOR RELATIONS', M+2, 14);
+  doc.text('INVESTOR RELATIONS', M+2, 14);
   doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(120,120,120);
   doc.text('VEHICLE EXPERIENCE EVENT', M+2, 20);
 
@@ -1258,7 +1258,7 @@ async function generateAndEmailPDF() {
   doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(80,80,80);
   doc.text('TERMS & CONDITIONS', M+3, y+6);
   doc.setFont('helvetica','normal'); doc.setTextColor(90,90,90);
-  const legal = "I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Audi Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. Audi AG and the event organiser reserve the right to terminate borrowing privileges at any time.";
+  const legal = "I, the undersigned, hereby confirm that I hold a valid driver's licence and am authorised to operate the vehicle assigned to me at the Investor Relations Event on 17.09.2026. I agree to operate the vehicle responsibly, in compliance with all applicable traffic regulations, and within the designated event area only. I accept full personal liability for any damage caused to the vehicle or third parties during the borrowing period. The vehicle must be returned in the same condition it was received. The event organiser reserves the right to terminate borrowing privileges at any time.";
   const legalLines = doc.splitTextToSize(legal, W-M*2-6);
   doc.text(legalLines, M+3, y+12);
 
@@ -1306,7 +1306,7 @@ async function generateAndEmailPDF() {
   doc.rect(0, 282, W, 15, 'F');
   doc.setDrawColor(220,220,220); doc.line(0, 282, W, 282);
   doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,160);
-  doc.text('AUDI INVESTOR RELATIONS  ·  VEHICLE EXPERIENCE  ·  17.09.2026  ·  CONFIDENTIAL', M, 290);
+  doc.text('INVESTOR RELATIONS  ·  VEHICLE EXPERIENCE  ·  17.09.2026  ·  CONFIDENTIAL', M, 290);
   const idText = 'ID: ' + participantId.toUpperCase();
   doc.text(idText, W - M - doc.getTextWidth(idText), 290);
 
@@ -1423,7 +1423,7 @@ async function buildQRCard(first, last, plate, model) {
   ctx.fillStyle = '#888888';
   ctx.font = '500 11px "Helvetica Neue", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('AUDI INVESTOR RELATIONS', W/2, 30);
+  ctx.fillText('INVESTOR RELATIONS', W/2, 30);
   ctx.fillStyle = '#ffffff';
   ctx.font = 'bold 13px "Helvetica Neue", sans-serif';
   ctx.fillText('VEHICLE EXPERIENCE · 17.09.2026', W/2, 48);
